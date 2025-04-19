@@ -1,4 +1,4 @@
-@extends('user.layouts.app')
+{{-- @extends('user.layouts.app')
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('public/dist/plugins/intl-tel-input/css/intlTelInput.min.css') }}">
@@ -576,4 +576,403 @@
 </script>
 <script src="{{ asset('public/user/customs/js/phone.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/user/customs/js/profile.min.js')}}" type="text/javascript"></script>
+@endpush --}}
+
+@extends('user.layouts.app')
+
+@section('content')
+<section class="dashboard-section body-collapse account">
+    <div class="overlay pt-120">
+        <div class="container-fruid">
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-xxl-3 col-xl-4 col-md-6">
+                        <div class="owner-details">
+                            <div class="profile-area">
+                                <div class="profile-img">
+                                    <img width="120" height="120" src="{{ image(auth()->user()->picture, 'profile') }}" alt="{{ __('profile') }}">
+                                </div>
+                                <div class="name-area">
+                                    <h6>{{ getColumnValue($user) }}</h6>
+                                    <p class="active-status">Active</p>
+                                </div>
+                            </div>
+                            <div class="owner-info">
+                                <ul>
+                                    <li>
+                                        <p>Account ID:</p>
+                                        <span class="mdr">Rex49484</span>
+                                    </li>
+                                    <li>
+                                        <p>Joined:</p>
+                                        <span class="mdr">Aug 25,2021</span>
+                                    </li>
+                                    <li>
+                                        <p>Confirm status:</p>
+                                        <span class="mdr">80%</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="owner-action">
+                                <a href="{{ route('user.logout') }}">
+                                    <img src="{{ asset('public/user') }}/assets/images/icon/logout.png" alt="logout">
+                                    {{ __('Logout') }}
+                                </a>
+                                <a href="javascript:void(0)" class="delete">
+                                    <img src="{{ asset('public/user') }}/assets/images/icon/delete-2.png" alt="delete">
+                                    Delete Account
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-9 col-xl-8">
+                        <div class="tab-main">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="account-tab" data-bs-toggle="tab"
+                                        data-bs-target="#account" type="button" role="tab" aria-controls="account"
+                                        aria-selected="true">Account</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="security-tab" data-bs-toggle="tab"
+                                        data-bs-target="#security" type="button" role="tab" aria-controls="security"
+                                        aria-selected="false">Security</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="payment-tab" data-bs-toggle="tab"
+                                        data-bs-target="#payment" type="button" role="tab" aria-controls="payment"
+                                        aria-selected="false">Payment Methods</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="notification-tab" data-bs-toggle="tab"
+                                        data-bs-target="#notification" type="button" role="tab"
+                                        aria-controls="notification" aria-selected="false">Notification</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content mt-40">
+                                <div class="tab-pane fade show active" id="account" role="tabpanel"
+                                    aria-labelledby="account-tab">
+                                    <div class="upload-avatar">
+                                        <div class="avatar-left d-flex align-items-center">
+                                            <div class="profile-img">
+                                                <img width="80" height="80" src="{{ image(auth()->user()->picture, 'profile') }}" alt="owner">
+                                            </div>
+                                            <div class="instraction">
+                                                <h6>Your Avatar</h6>
+                                                <p>Profile picture size: 400px x 400px</p>
+                                            </div>
+                                        </div>
+                                        <div class="avatar-right">
+                                            <div class="file-upload">
+                                                <div class="right-area">
+                                                    <label class="file">
+                                                        <input type="file">
+                                                        <span class="file-custom"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form action="#">
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-6">
+                                                <div class="single-input">
+                                                    <label for="fName">{{ __('First Name') }}</label>
+                                                    <input type="text" id="fName" placeholder="Alfred" value="{{ $user->first_name }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="single-input">
+                                                    <label for="lName">{{ __('Last Name') }}</label>
+                                                    <input type="text" id="lName" placeholder="Davis" value="{{ $user->last_name }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="single-input">
+                                                    <label for="email">{{ __('Email') }}</label>
+                                                    <div class="row input-status d-flex align-items-center">
+                                                        <div class="col-6">
+                                                            <input type="text" id="email" placeholder="alfred6598@gmail.com" value="{{ $user->email }}">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <span class="pending">
+                                                                <img src="{{ asset('public/user') }}/assets/images/icon/pending.png" alt="icon">
+                                                                E-mail confirmation in pending
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="single-input">
+                                                    <label for="phone">{{ __('Phone') }}</label>
+                                                    <div class="row input-status d-flex align-items-center">
+                                                        <div class="col-6">
+                                                            <input type="text" id="phone" placeholder="(316) 555-0116" value="{{ $user->phone }}">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <span class="confirm">
+                                                                <img src="{{ asset('public/user') }}/assets/images/icon/confirm.png" alt="icon">
+                                                                Phone number confirm
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="single-input file">
+                                                    <label>ID Confirmation documents</label>
+                                                    <div class="row input-status d-flex align-items-center">
+                                                        <div class="col-6">
+                                                            <div class="file-upload">
+                                                                <div class="right-area">
+                                                                    <label class="file">
+                                                                        <input type="file">
+                                                                        <span class="file-custom"></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <span class="notconfirm">
+                                                                <img src="{{ asset('public/user') }}/assets/images/icon/not-confirm.png" alt="icon">
+                                                                Person not confirmed
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="single-input">
+                                                    <label for="address">{{ __('Address') }}</label>
+                                                    <input type="text" id="address" placeholder="2972 Westheimer Rd. Santa Ana, Illinois 85486" value="{{ $user->address }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="btn-border">
+                                                    <button class="cmn-btn">Account</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="security" role="tabpanel"
+                                    aria-labelledby="security-tab">
+                                    <div class="single-content authentication d-flex align-items-center justify-content-between">
+                                        <div class="left">
+                                            <h5>Two Factor Authentication</h5>
+                                            <p>Two-Factor Authentication (2FA) can be used to help protect your account</p>
+                                        </div>
+                                        <div class="right">
+                                            <button>Enable</button>
+                                        </div>
+                                    </div>
+                                    <div class="change-pass mb-40">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h5>Change Password</h5>
+                                                <p>You can always change your password for security reasons or reset your password in case you forgot it.</p>
+                                                <a href="javascript:void(0)">Forgot password?</a>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <form action="#">
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-md-12">
+                                                            <div class="single-input">
+                                                                <label for="current-password">Current password</label>
+                                                                <input type="text" id="current-password" placeholder="Current password">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="single-input">
+                                                                <label for="new-password">New password</label>
+                                                                <input type="text" id="new-password" placeholder="New password">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="single-input">
+                                                                <label for="confirm-password">Confirm New password</label>
+                                                                <input type="text" id="confirm-password" placeholder="Confirm New password">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="btn-border w-100">
+                                                                <button class="cmn-btn w-100">Update password</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="single-content additional-security">
+                                        <h5>Additional security</h5>
+                                        <div class="single-setting">
+                                            <div class="left">
+                                                <h6>SMS recovery</h6>
+                                                <p>Number ending with 1234</p>
+                                            </div>
+                                            <div class="right">
+                                                <button class="active">Disable SMS</button>
+                                            </div>
+                                        </div>
+                                        <div class="single-setting">
+                                            <div class="left">
+                                                <h6>Autheticator App</h6>
+                                                <p>Google Authenticator</p>
+                                            </div>
+                                            <div class="right">
+                                                <button>Configure</button>
+                                            </div>
+                                        </div>
+                                        <div class="single-setting">
+                                            <div class="left">
+                                                <h6>SSL Certificate</h6>
+                                                <p>Secure Sockets Layer</p>
+                                            </div>
+                                            <div class="right">
+                                                <button>Configure</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="single-content your-devices">
+                                        <div class="head-item d-flex align-items-center justify-content-between">
+                                            <h5>Your devices</h5>
+                                            <a href="javascript:void(0)">Log out on all devices</a>
+                                        </div>
+                                        <div class="single-setting">
+                                            <div class="left">
+                                                <div class="icon-area">
+                                                    <img src="{{ asset('public/user') }}/assets/images/icon/iphone.png" alt="icon">
+                                                </div>
+                                                <div class="text-area">
+                                                    <h6>Iphone 13 Pro Max</h6>
+                                                    <p>New York City · June 20 at 14:00</p>
+                                                </div>
+                                            </div>
+                                            <div class="right">
+                                                <button>Log out</button>
+                                            </div>
+                                        </div>
+                                        <div class="single-setting">
+                                            <div class="left">
+                                                <div class="icon-area">
+                                                    <img src="{{ asset('public/user') }}/assets/images/icon/ipad.png" alt="icon">
+                                                </div>
+                                                <div class="text-area">
+                                                    <h6>iPad Pro</h6>
+                                                    <p>New York City · June 20 at 14:00</p>
+                                                </div>
+                                            </div>
+                                            <div class="right">
+                                                <button>Log out</button>
+                                            </div>
+                                        </div>
+                                        <div class="single-setting">
+                                            <div class="left">
+                                                <div class="icon-area">
+                                                    <img src="{{ asset('public/user') }}/assets/images/icon/imac.png" alt="icon">
+                                                </div>
+                                                <div class="text-area">
+                                                    <h6>iMac OSX</h6>
+                                                    <p>New York City · June 20 at 14:00</p>
+                                                </div>
+                                            </div>
+                                            <div class="right">
+                                                <button>Log out</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane pb-120 fade" id="payment" role="tabpanel"
+                                    aria-labelledby="payment-tab">
+                                    <div class="card-area">
+                                        <h6>Linked Payment system</h6>
+                                        <div class="card-content d-flex flex-wrap">
+                                            <div class="single-card">
+                                                <button type="button" class="reg w-100" data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                                    <img src="{{ asset('public/user') }}/assets/images/visa-card.png" alt="image" class="w-100">
+                                                </button>
+                                            </div>
+                                            <div class="single-card">
+                                                <button type="button" class="reg w-100" data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                                    <img src="{{ asset('public/user') }}/assets/images/paylio-card.png" alt="image" class="w-100">
+                                                </button>
+                                            </div>
+                                            <div class="single-card">
+                                                <button type="button" class="reg w-100" data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                                    <img src="{{ asset('public/user') }}/assets/images/paypal-card.png" alt="image" class="w-100">
+                                                </button>
+                                            </div>
+                                            <div class="single-card">
+                                                <button type="button" class="reg w-100" data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                                    <img src="{{ asset('public/user') }}/assets/images/blockchain-card.png" alt="image" class="w-100">
+                                                </button>
+                                            </div>
+                                            <div class="single-card">
+                                                <button type="button" class="reg w-100" data-bs-toggle="modal" data-bs-target="#addcardMod">
+                                                    <img src="{{ asset('public/user') }}/assets/images/add-new.png" alt="image" class="w-100">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="notification" role="tabpanel"
+                                    aria-labelledby="notification-tab">
+
+                                    <div class="notification-single">
+                                        <h6>Announcements</h6>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-single">
+                                        <h6>Send payment</h6>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-single">
+                                        <h6>Receive a payment</h6>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-single">
+                                        <h6>Request payment</h6>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-single">
+                                        <h6>Have a problem with a payment</h6>
+                                        <label class="switch">
+                                            <input type="checkbox">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-single">
+                                        <h6>Special Offers</h6>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endsection
+
+@push('js')
+
 @endpush

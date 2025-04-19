@@ -1,4 +1,4 @@
-@extends('user.layouts.app')
+{{-- @extends('user.layouts.app')
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('public/dist/plugins/daterangepicker/daterangepicker.min.css') }}">
@@ -131,4 +131,221 @@
     <script src="{{ asset('public/user/customs/js/user-transaction.min.js') }}"></script>
     <script src="{{ asset('public/user/customs/js/transaction.min.js') }}"></script>
     <script src="{{ asset('public/user/customs/js/daterange-select.min.js') }}"></script> 
-@endpush
+@endpush --}}
+
+@extends('user.layouts.app')
+
+@section('content')
+<section class="dashboard-section body-collapse transactions">
+    <div class="overlay pt-120">
+        <div class="container-fruid">
+            <div class="head-area">
+                <div class="row">
+                    <div class="col-lg-5 col-md-4">
+                        <h4>Transactions</h4>
+                    </div>
+                    <div class="col-lg-7 col-md-8">
+                        <div class="transactions-right d-flex align-items-center">
+                            <form action="#" class="flex-fill">
+                                <div class="form-group d-flex align-items-center">
+                                    <img src="{{ asset('public/user') }}/assets/images/icon/search.png" alt="icon">
+                                    <input type="text" placeholder="Type to search...">
+                                </div>
+                            </form>
+                            <a href="javascript:void(0)">Monthly Statement</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="transactions-main">
+                        <div class="top-items">
+                            <h6>All Transactions</h6>
+                            <div class="export-area">
+                                <ul class="d-flex align-items-center">
+                                    <li><a href="javascript:void(0)"><img src="{{ asset('public/user') }}/assets/images/icon/printer.png" alt="icon">Print</a></li>
+                                    <li><a href="javascript:void(0)"><img src="{{ asset('public/user') }}/assets/images/icon/excel.png" alt="icon">Excel</a></li>
+                                    <li><a href="javascript:void(0)"><img src="{{ asset('public/user') }}/assets/images/icon/pdf.png" alt="icon">PDF</a></li>
+                                    <li><a href="javascript:void(0)"><img src="{{ asset('public/user') }}/assets/images/icon/csv.png" alt="icon">CSV</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="filters-item">
+                            <div class="single-item">
+                                <select>
+                                    <option value="1">23 Nov 2021- 21 Feb 2022</option>
+                                    <option value="2">23 Feb 2021- 21 Mar 2022</option>
+                                    <option value="3">23 Mar 2021- 21 Apr 2022</option>
+                                </select>
+                            </div>
+                            <div class="single-item">
+                                <select>
+                                    <option value="1">Balance</option>
+                                    <option value="2">Balance</option>
+                                    <option value="3">Balance</option>
+                                </select>
+                            </div>
+                            <div class="single-item">
+                                <select>
+                                    <option>All Filters</option>
+                                    <option value="1">Filters 1</option>
+                                    <option value="2">Filters 2</option>
+                                    <option value="3">Filters 3</option>
+                                </select>
+                            </div>
+                            <div class="single-item">
+                                <button>Clear Filters</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name/ Business</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                        <th scope="row">
+                                            <p>Bangkok Bank</p>
+                                            <p class="mdr">Withdraw to bank account</p>
+                                        </th>
+                                        <td>
+                                            <p>03:00 PM</p>
+                                            <p class="mdr">10 Mar 2022</p>
+                                        </td>
+                                        <td>
+                                            <p class="inprogress">In Progress</p>
+                                        </td>
+                                        <td>
+                                            <p>-$520</p>
+                                            <p class="mdr">$3.0</p>
+                                        </td>
+                                    </tr>
+                                    <tr data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                        <th scope="row">
+                                            <p>Envato Pty Ltd</p>
+                                            <p class="mdr">Marketplace Payment Received</p>
+                                        </th>
+                                        <td>
+                                            <p>04:30 PM</p>
+                                            <p class="mdr">01 Mar 2022</p>
+                                        </td>
+                                        <td>
+                                            <p class="completed">Completed</p>
+                                        </td>
+                                        <td>
+                                            <p>+$450</p>
+                                            <p class="mdr">No Fees</p>
+                                        </td>
+                                    </tr>
+                                    <tr data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                        <th scope="row">
+                                            <p>Mailchimp</p>
+                                            <p class="mdr">Subscription Service Payment</p>
+                                        </th>
+                                        <td>
+                                            <p>01:15 PM</p>
+                                            <p class="mdr">25 Mar 2022</p>
+                                        </td>
+                                        <td>
+                                            <p class="completed">Completed</p>
+                                        </td>
+                                        <td>
+                                            <p>-$100</p>
+                                            <p class="mdr">No Fees</p>
+                                        </td>
+                                    </tr>
+                                    <tr data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                        <th scope="row">
+                                            <p>Facebook Ads</p>
+                                            <p class="mdr">Ads Service</p>
+                                        </th>
+                                        <td>
+                                            <p>07:05 PM</p>
+                                            <p class="mdr">15 Mar 2022</p>
+                                        </td>
+                                        <td>
+                                            <p class="pending">Pending</p>
+                                        </td>
+                                        <td>
+                                            <p>$200</p>
+                                            <p class="mdr">No Fees</p>
+                                        </td>
+                                    </tr>
+                                    <tr data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                        <th scope="row">
+                                            <p>Upwork Escow Inc</p>
+                                            <p class="mdr">Payment payment</p>
+                                        </th>
+                                        <td>
+                                            <p>04:02 PM</p>
+                                            <p class="mdr">10 Mar 2022</p>
+                                        </td>
+                                        <td>
+                                            <p class="completed">Completed</p>
+                                        </td>
+                                        <td>
+                                            <p>$450</p>
+                                            <p class="mdr">$.5</p>
+                                        </td>
+                                    </tr>
+                                    <tr data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                        <th scope="row">
+                                            <p>Ron Stewart</p>
+                                            <p class="mdr">Payment Refund</p>
+                                        </th>
+                                        <td>
+                                            <p>11:00 PM</p>
+                                            <p class="mdr">21 Mar 2022</p>
+                                        </td>
+                                        <td>
+                                            <p class="cancelled">Cancelled</p>
+                                        </td>
+                                        <td>
+                                            <p>+$450</p>
+                                            <p class="mdr">No Fees</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation" class="d-flex justify-content-center mt-40">
+                            <ul class="pagination justify-content-center align-items-center mb-40">
+                                <li class="page-item">
+                                    <a class="page-link previous" href="javascript:void(0)" aria-label="Previous">
+                                        <i class="fa-solid fa-angles-left"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link previous" href="javascript:void(0)" aria-label="Previous">
+                                        <i class="fa-solid fa-angle-left"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="javascript:void(0)">1</a></li>
+                                <li class="page-item"><a class="page-link active" href="javascript:void(0)">2</a></li>
+                                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                                <li class="page-item"><a class="page-link" href="javascript:void(0)">...</a></li>
+                                <li class="page-item">
+                                    <a class="page-link next" href="javascript:void(0)" aria-label="Next">
+                                        <i class="fa-solid fa-angle-right"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link next" href="javascript:void(0)" aria-label="Next">
+                                        <i class="fa-solid fa-angles-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endsection

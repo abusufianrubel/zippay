@@ -1,4 +1,4 @@
-<script src="{{ asset('public/dist/libraries/jquery/dist/jquery.min.js') }}"></script>
+{{-- <script src="{{ asset('public/dist/libraries/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('public/frontend/templates/js/owl.carousel.min.js') }}"></script>
 <script src="{{ asset('public/dist/libraries/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('public/frontend/templates/js/main.min.js') }}"></script>
@@ -156,4 +156,16 @@ $(document).ready(function() {
 create_custom_dropdowns();
 });
 
-</script>
+</script> --}}
+
+
+<script src="{{ asset('public/frontend') }}/assets/js/jquery.min.js"></script>
+<script src="{{ asset('public/frontend') }}/assets/js/proper-min.js"></script>
+<script src="{{ asset('public/frontend') }}/assets/js/bootstrap.min.js"></script>
+<script src="{{ asset('public/frontend') }}/assets/js/fontawesome.js"></script>
+<script src="{{ asset('public/frontend') }}/assets/js/plugin/slick.js"></script>
+<script src="{{ asset('public/frontend') }}/assets/js/plugin/jquery.magnific-popup.min.js"></script>
+<script src="{{ asset('public/frontend') }}/assets/js/plugin/jquery.nice-select.min.js"></script>
+<script src="{{ asset('public/frontend') }}/assets/js/plugin/wow.min.js"></script>
+<script src="{{ asset('public/frontend') }}/assets/js/plugin/plugin.js"></script>
+<script src="{{ asset('public/frontend') }}/assets/js/main.js"></script>

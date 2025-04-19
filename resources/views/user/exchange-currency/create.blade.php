@@ -1,4 +1,4 @@
-@extends('user.layouts.app')
+{{-- @extends('user.layouts.app')
 
 @section('content')
 @include('user.common.alert')
@@ -143,4 +143,94 @@
         let submitBtnText = '{{ __("Processing...") }}';
     </script>
     <script src="{{ asset('public/user/customs/js/exchange-currency.min.js') }}"></script>
-@endpush
+@endpush --}}
+
+@extends('user.layouts.app')
+
+@section('content')
+<section class="dashboard-section body-collapse pay step step-2">
+    <div class="overlay pt-120">
+        <div class="container-fruid">
+            <div class="main-content">
+                <div class="head-area d-flex align-items-center justify-content-between">
+                    <h4>Money Exchange</h4>
+                    <div class="icon-area">
+                        <img src="{{ asset('public/user') }}/assets/images/icon/support-icon.png" alt="icon">
+                    </div>
+                </div>
+                <form action="#">
+                    <div class="exchange-content">
+                        <div class="send-banance">
+                            <span class="mdr">You Send</span>
+                            <div class="input-area">
+                                <input class="xxlr" placeholder="400.00" type="number">
+                                <select>
+                                    <option value="1">USD</option>
+                                    <option value="2">USD</option>
+                                    <option value="3">USD</option>
+                                </select>
+                            </div>
+                            <p>Available Balance<b>$30,700.00</b></p>
+                        </div>
+                        <div class="send-banance recipient">
+                            <span class="mdr">Recipient gets</span>
+                            <div class="input-area">
+                                <input class="xxlr" placeholder="45162.98" type="number">
+                                <select>
+                                    <option value="1">BDT</option>
+                                    <option value="2">BDT</option>
+                                    <option value="3">BDT</option>
+                                </select>
+                            </div>
+                            <p>Today’s rate: <b>1 GBP = 112.90745 BDT</b></p>
+                        </div>
+                    </div>
+                    <div class="pay-option">
+                        <div class="pay-option-single">
+                            <h6>Delivery method</h6>
+                            <select>
+                                <option value="1">Bank Tranfer</option>
+                                <option value="2">Bank Tranfer</option>
+                                <option value="3">Bank Tranfer</option>
+                            </select>
+                        </div>
+                        <div class="pay-option-single border-area">
+                            <h6>Bank Transfer Partner</h6>
+                            <select>
+                                <option value="1">Dutch bangla bank</option>
+                                <option value="2">Dutch bangla bank</option>
+                                <option value="3">Dutch bangla bank</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pay-details">
+                        <ul>
+                            <li>
+                                <p>Estimated fee</p>
+                                <p>+0.33GBP</p>
+                            </li>
+                            <li>
+                                <p>Transfer time</p>
+                                <p>Same Day</p>
+                            </li>
+                        </ul>
+                        <div class="tatal-pay">
+                            <div class="single">
+                                <h5>Total To Pay</h5>
+                                <h5>400.99GBP</h5>
+                            </div>
+                            <div class="single">
+                                <p>Recipient gets</p>
+                                <h5>45299.58BDT</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-area mt-40">
+                        <a href="money-exchange-step-1.html" class="w-100 active text-center">Continue</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+@endsection

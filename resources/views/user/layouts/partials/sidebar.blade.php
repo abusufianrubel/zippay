@@ -1,4 +1,4 @@
-<!-- Sidebar Start -->
+{{-- <!-- Sidebar Start -->
 <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
     <div class="bg-secondary vh-100 position-fixed d-flex flex-column w-inherit drop-parent">
         <div>
@@ -163,4 +163,86 @@
         </div>
     </div>
 </div>
-<!-- Sidebar End -->
+<!-- Sidebar End --> --}}
+
+<div class="sidebar-wrapper">
+    <div class="close-btn">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+    <div class="sidebar-logo">
+        <a href="{{ url('/') }}"><img src="{{ asset('public/user') }}/assets/images/logo.png" alt="{{ __('logo') }}"></a>
+    </div>
+    <ul>
+        <li class="{{ request()->route()->named('user.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('user.dashboard') }}">
+                <img src="{{ asset('public/user') }}/assets/images/icon/dashboard.png" alt="{{ __('Dashboard') }}"> <span>{{ __('Dashboard') }}</span>
+            </a>
+        </li>
+        <li class="{{ request()->route()->named('user.transactions.*') ? 'active' : '' }}">
+            <a href="{{ route('user.transactions.index') }}">
+                <img src="{{ asset('public/user') }}/assets/images/icon/transactions.png" alt="{{ __('Transactions') }}"> <span>{{ __('Transactions') }}</span>
+            </a>
+        </li>
+        <li class="{{ request()->route()->named('user.wallets.*') ? 'active' : '' }}">
+            <a href="pay.html">
+                <img src="{{ asset('public/user') }}/assets/images/icon/pay.png" alt="Pay"> <span>Pay</span>
+            </a>
+        </li>
+        <li class="{{ request()->route()->named('user.receives.*') ? 'active' : '' }}">
+            <a href="{{ route('user.request_money.create') }}">
+                <img src="{{ asset('public/user') }}/assets/images/icon/receive.png" alt="Receive"> <span>Receive</span>
+            </a>
+        </li>
+        <li class="{{ request()->route()->named('user.exchange_money.*') ? 'active' : '' }}">
+            <a href="{{ route('user.exchange_money.create') }}">
+                <img src="{{ asset('public/user') }}/assets/images/icon/exchange.png" alt="{{ __('Exchange') }}"> <span>{{ __('Exchange') }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="recipients.html">
+                <img src="{{ asset('public/user') }}/assets/images/icon/recipients.png" alt="Recipients"> <span>Recipients</span>
+            </a>
+        </li>
+        <li>
+            <a href="crypto.html">
+                <img src="{{ asset('public/user') }}/assets/images/icon/crypto.png" alt="Crypto"> <span>Crypto</span>
+            </a>
+        </li>
+        <li class="{{ request()->route()->named('user.deposits.*') ? 'active' : '' }}">
+            <a href="{{ route('user.deposit.create') }}">
+                <img src="{{ asset('public/user') }}/assets/images/icon/deposit.png" alt="Deposit"> <span>Deposit Money</span>
+            </a>
+        </li>
+        <li class="{{ request()->route()->named('user.withdrawals.*') ? 'active' : '' }}">
+            <a href="{{ route('user.withdrawal.create') }}">
+                <img src="{{ asset('public/user') }}/assets/images/icon/withdraw.png" alt="Withdraw"> <span>Withdraw Money</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="bottom-item">
+        <li>
+            <a href="{{ route('user.profiles.index') }}">
+                <img src="{{ asset('public/user') }}/assets/images/icon/account.png" alt="Account"> <span>Account</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('user.tickets.create') }}">
+                <img src="{{ asset('public/user') }}/assets/images/icon/support.png" alt="Support"> <span>Support</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)">
+                <img src="{{ asset('public/user') }}/assets/images/icon/quit.png" alt="Quit"> <span>Quit</span>
+            </a>
+        </li>
+    </ul>
+    <div class="pt-120">
+        <div class="invite-now">
+            <div class="img-area">
+                <img src="{{ asset('public/user') }}/assets/images/invite-now-illus.png" alt="user-1">
+            </div>
+            <p>Invite your friend and get $25</p>
+            <a href="javascript:void(0)" class="cmn-btn">Invite Now</a>
+        </div>
+    </div>
+</div>
