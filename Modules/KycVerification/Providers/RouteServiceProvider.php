@@ -51,8 +51,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes(): void
     {
-        Route::prefix('api')
-            ->middleware('api')
+        Route::prefix('api/v2')
+            ->middleware(['api', 'api_version:v2'])
             ->namespace($this->moduleNamespace)
             ->group(module_path('KycVerification', '/Routes/api.php'));
     }

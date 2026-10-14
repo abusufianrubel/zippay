@@ -70,5 +70,7 @@
     "Verify Identity": "Kimliği Doğrula",
     "You need to verify your account first. To verify your account please :x": "Önce hesabınızı doğrulamanız gerekiyor. Hesabınızı doğrulamak için lütfen :x",
     "click here": "buraya tıklayın",
-    "Class :x must extend the :y class as it requires credentials for verification.": ":x sınıfı, doğrulama için kimlik bilgileri gerektiğinden :y sınıfını genişletmelidir."
+    "Class :x must extend the :y class as it requires credentials for verification.": ":x sınıfı, doğrulama için kimlik bilgileri gerektiğinden :y sınıfını genişletmelidir.",
+    "This name will be visible on the verification list as provider.": "Bu isim, doğrulama listesinde sağlayıcı olarak görünecektir.",
+    "If set to Yes, this will be the default verification provider for all users.": "Evet olarak ayarlanırsa, bu tüm kullanıcılar için varsayılan doğrulama sağlayıcısı olacaktır."
 }

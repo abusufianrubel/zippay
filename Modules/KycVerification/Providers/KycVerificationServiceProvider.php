@@ -3,6 +3,7 @@
 namespace Modules\KycVerification\Providers;
 
 use App\Facade\VerificationProviderManager;
+use App\libraries\VerificationProviderManager as VerificationProviderManagerConcrete;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,6 +30,12 @@ class KycVerificationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        if (! $this->app->bound('verificationprovidermanager')) {
+            $this->app->singleton('verificationprovidermanager', function () {
+                return new VerificationProviderManagerConcrete;
+            });
+        }
+
         // Add the manual verification processor to the VerificationProviderManager
         VerificationProviderManager::add(\Modules\KycVerification\Processor\ManualVerificationProcessor::class, 'manual');
 

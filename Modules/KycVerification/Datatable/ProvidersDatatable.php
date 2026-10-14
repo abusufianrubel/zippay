@@ -13,19 +13,27 @@ class ProvidersDatatable extends DataTable
     {
         return datatables()
             ->eloquent($this->query())
-            ->addColumn('name', function ($provider) {
+            ->editColumn('name', function ($provider) {
                 return $provider->name;
             })
-            ->addColumn('action', function ($provider) {
-                return (Common::has_permission(auth('admin')->id(), 'edit_kyc_provider')) ? '<a href="' . route('admin.kyc.providers.edit', $provider->id) . '" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>&nbsp;' : '';
+            ->editColumn('is_default', function ($provider) {
+                return isDefault($provider->is_default);
             })
-            ->rawColumns(['action'])
+            ->addColumn('action', function ($provider) {
+                
+                $edit = (Common::has_permission(auth('admin')->id(), 'edit_kyc_provider')) ? '<a href="' . route('admin.kyc.providers.edit', $provider->id) . '" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>&nbsp;' : '';
+
+                $credential = Common::has_permission(auth('admin')->user()->id, 'view_kyc_credential_setting') && verifyModulesCredentialRequirement($provider->alias) && $provider->is_default == 'Yes' ? '<a href="' . route('admin.kyc.credentials.active-provider-setting') . '" class="btn btn-xs btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="' . __('Credential Settings') . '"><i class="fa fa-cog"></i></a>&nbsp;' : '';
+
+                return $edit . $credential;
+            })
+            ->rawColumns(['is_default', 'action'])
             ->make(true);
     }
 
     public function query()
     {
-        $query = KycProvider::select('id', 'name');
+        $query = KycProvider::select('id', 'name', 'is_default', 'alias');
         return $this->applyScopes($query);
     }
 
@@ -43,6 +51,11 @@ class ProvidersDatatable extends DataTable
                 'data' => 'name',
                 'name' => 'kyc_providers.name',
                 'title' => __('Provider')
+            ])
+            ->addColumn([
+                'data' => 'is_default',
+                'name' => 'kyc_providers.is_default',
+                'title' => __('Default')
             ])
             ->addColumn([
                 'data' => 'action',

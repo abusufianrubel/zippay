@@ -33,7 +33,7 @@
 					<h4>{{ __('Download PrestaShop Plugin') }}</h4>
 					<p>{{ __('To install PrestaShop Plugin in your admin panel, you need to first click on the download button to get the plugin file on your computer.') }}</p>
 					<div class="download-btn mt-12">
-						<a href="{{ url('public/uploads/prestashop', $plugin_name) }}" class="btn btn-sm btn-primary">{{ __('Download') }}</a>
+						<a href="{{ url('uploads/prestashop', $plugin_name) }}" class="btn btn-sm btn-primary">{{ __('Download') }}</a>
 					</div>
 				</div>
 				<div class="details-box">

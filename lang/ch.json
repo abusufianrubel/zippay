@@ -1710,6 +1710,7 @@
     "Bank": "銀行",
     "Branch": "分支",
     "Cache Clear": "緩存清除",
+    "Pay with :x": "使用 :x 支付",
     "Maximum acceptable amount is :x" : "最大可接受金额为 :x",
     "Minimum acceptable amount is :x" : "最小可接受金额为 :x",
     "Unable to retrieve the exchange rate at this moment" : "无法获取当前汇率",
@@ -1740,10 +1741,7 @@
     "FOR THE CRYPTO ENTHUSIASTS" : "为加密货币爱好者",
     "Unlock the Power of :x" : "解锁潜能 :x",
     "Digital Assets" : "数字资产",
-    ":x integrates blockchain APIs to enable seamless creation, management, and transactions of cryptocurrencies, enhancing its platform with secure and versatile digital asset capabilities." : ":x 集成了区块链 API，以实现加密货币的无缝创建、管理和交易，增强其平台的安全性和多功能的数字资产能力。"
-
-
-
-
-
+    ":x integrates blockchain APIs to enable seamless creation, management, and transactions of cryptocurrencies, enhancing its platform with secure and versatile digital asset capabilities." : ":x 集成了区块链 API，以实现加密货币的无缝创建、管理和交易，增强其平台的安全性和多功能的数字资产能力。",
+    "Services" : "服务",
+    "Activities": "活动"
 }

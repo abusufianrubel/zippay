@@ -86,9 +86,8 @@
                             <div class="form-group row"  id="exchange_rate_div">
                                 <label class="col-sm-3 control-label mt-11 f-14 fw-bold text-sm-end require" for="exchange_rate">{{ __('Exchange Rate') }}</label>
                                 <div class="col-sm-6">
-                                    <div>
-                                        <input type="text" class="form-control f-14 exchange_rate" id="exchange_rate" name="exchange_rate"  placeholder="{{ __('Exchange Rate') }}" value="{{ old('exchange_rate') }}" data-value-missing="{{ __('This field is required.') }}"  onkeypress="return isNumberOrDecimalPointKey(this,event)" oninput="restrictNumberToPrefdecimalOnInputExchange(this)" required>
-                                    </div>
+                                    <input type="text" class="form-control f-14 exchange_rate" id="exchange_rate" name="exchange_rate"  placeholder="{{ __('Exchange Rate') }}" value="{{ old('exchange_rate') }}" data-value-missing="{{ __('This field is required.') }}"  onkeypress="return isNumberOrDecimalPointKey(this,event)" oninput="restrictNumberToPrefdecimalOnInputExchange(this)" required>
+                                    <div class="clearfix"></div>
                                     <small class="form-text text-muted f-12">
                                         <strong>* {{ __('Equavalent with To Currency') }}</strong>
                                     </small>

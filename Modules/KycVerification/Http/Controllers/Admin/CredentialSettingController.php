@@ -36,7 +36,7 @@ class CredentialSettingController extends Controller
             // Handle the exception and display an error message to the user
             (new Common())->one_time_message('error', $exception->getMessage());
             // Redirect the user to the create credential settings page
-            return redirect()->route('admin.kyc.settings.create');
+            return redirect()->route('admin.kyc.providers.index');
         }
     }
 }

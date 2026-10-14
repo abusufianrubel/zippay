@@ -319,5 +319,6 @@
     "The requested data does not exist for this feature overview.": "Bu özelliğe genel bakış için istenen veriler mevcut değildir.",
     "We have sent you the crypto Exchange status. Please check your email.": "Size kripto değişim durumunu gönderdik.Lütfen emailinizi kontrol edin.",
     "We have sent you the Crypto details. Please check your email.": "Size kripto detaylarını gönderdik.Lütfen emailinizi kontrol edin.",
-    "We have sent you the cryptoExchange status. Please check your sms.": "Size CryptoExchange durumunu gönderdik.Lütfen SMS'inizi kontrol edin."
+    "We have sent you the cryptoExchange status. Please check your sms.": "Size CryptoExchange durumunu gönderdik.Lütfen SMS'inizi kontrol edin.",
+    "User's can change crypto to fiat, fiat to crypto and swap crypto currency by the crypto exchange module.": "Kullanıcılar kripto para birimini fiat para birimine ve fiat para birimini kripto para birimine değiştirebilirler."
 }

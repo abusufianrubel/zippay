@@ -49,7 +49,4 @@
 <script src="{{ asset('public/dist/plugins/DataTables/Responsive/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
 
 {!! $dataTable->scripts() !!}
-
-<script type="text/javascript">
-</script>
 @endpush

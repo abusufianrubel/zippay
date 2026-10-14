@@ -1,21 +1,9 @@
-{{-- <script src="{{ asset('public/dist/libraries/jquery/dist/jquery.min.js') }}" ></script>
+<script src="{{ asset('public/dist/libraries/jquery/dist/jquery.min.js') }}" ></script>
 <script src="{{ asset('public/dist/libraries/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('public/dist/plugins/select2/js/select2.min.js') }}"></script>
 <script src="{{ asset('public/user/templates/js/chart.umd.min.js') }}"></script>
 <script src="{{ asset('public/user/templates/js/main.min.js') }}"></script>
-<script src="{{ asset('public/user/customs/js/common.min.js') }}"></script> --}}
-
-<script src="{{ asset('public/user') }}/assets/js/jquery.min.js"></script>
-<script src="{{ asset('public/user') }}/assets/js/bootstrap.min.js"></script>
-<script src="{{ asset('public/user') }}/assets/js/jquery-ui.js"></script>
-<script src="{{ asset('public/user') }}/assets/js/plugin/apexcharts.js"></script>
-<script src="{{ asset('public/user') }}/assets/js/plugin/jquery.nice-select.min.js"></script>
-<script src="{{ asset('public/user') }}/assets/js/plugin/waypoint.min.js"></script>
-<script src="{{ asset('public/user') }}/assets/js/plugin/wow.min.js"></script>
-<script src="{{ asset('public/user') }}/assets/js/plugin/plugin.js"></script>
-<script src="{{ asset('public/user') }}/assets/js/main.js"></script>
-
-
+<script src="{{ asset('public/user/customs/js/common.min.js') }}"></script>
 <script type="text/javascript">
     var SITE_URL = "{{ url('/') }}";
     var FIATDP = "{{ number_format(0, preference('decimal_format_amount', 2)) }}";

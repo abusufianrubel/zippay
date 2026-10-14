@@ -77,7 +77,8 @@ class MoneyTransferController extends Controller
         $res = [
             'status' => 'fail',
         ];
-        if (count($user) > 0) {
+        
+        if (!empty($user) && count($user) > 0) {
             $res = [
                 'status' => 'success',
                 'data'   => $user,

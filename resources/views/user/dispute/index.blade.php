@@ -5,6 +5,7 @@
 @endpush
 
 @section('content')
+@include('user.common.alert')
 <div class="text-center">
     <p class="mb-0 gilroy-Semibold f-26 text-dark theme-tran r-f-20">{{ __('Disputes') }}</p>
     <p class="mb-0 gilroy-medium text-gray-100 f-16 r-f-12 mt-2 tran-title">{{ __('Your conservations with admin relating problems') }}</p>

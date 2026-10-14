@@ -164,7 +164,25 @@ class GatewayController extends Controller
         }
 
         return redirect()->to('payment/fail');
-
     }
 
+    /**
+     * Process the payment
+     *
+     * @param Request $request
+     * @param PaymentProcessor $processor
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function processPayment(Request $request, PaymentProcessor $processor)
+    {
+        try {
+            return $processor->processPayment($request);
+        } catch (Exception $e) {
+            $this->helper->one_time_message('error', $e->getMessage());
+            return redirect()->to('payment/fail');
+        }
+    }
 }

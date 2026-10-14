@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100)->unique();
             $table->string('alias', 100)->unique();
+            $table->string('is_default', 5)->default('No')->comment('Yes, No');
             $table->timestamps();
         });
     }

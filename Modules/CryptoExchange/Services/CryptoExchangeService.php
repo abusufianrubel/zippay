@@ -56,7 +56,10 @@ class CryptoExchangeService
         }
 
         if (!count($directions)) {
-            throw new Exception(__('Direction not available.'));
+            return [
+                'status' => 'error',
+                'message' => __('Direction not available.')
+            ];
         }
 
         if (!is_null($fromCurrency) && !is_null($toCurrency)) {
@@ -69,12 +72,21 @@ class CryptoExchangeService
 
         $toCurrencies = $this->getToCurrencies($fromCurrency, $exchangeType);
 
+  
+        if (isset($toCurrencies['status']) && $toCurrencies['status'] == 'error') {
+            return [
+                'status' => 'error',
+                'message' => __('Direction not available.')
+            ];
+        }
+        
         $collection = collect($toCurrencies);
         $firstElement = $collection->first();
 
         $direction = $directions->where('from_currency_id', $fromCurrency)->where('to_currency_id', $firstElement->id)->first();
 
         return [
+            'status' => 'success',
             'direction' => $direction,
             'min_amount' => $direction->min_amount,
             'fromCurrencies' => new FromCurrenciesCollection($directions->unique('from_currency_id')),
@@ -135,7 +147,10 @@ class CryptoExchangeService
         $toCurrencies = $this->direction->getCurrencies($from_currency, $exchangeType);
 
         if (is_null($toCurrencies)) {
-            throw new Exception(__('Direction not available.'));
+            return [
+                'status' => 'error',
+                'message' => __('Direction not available.')
+            ];
         }
 
         return $toCurrencies;
@@ -146,7 +161,13 @@ class CryptoExchangeService
         $this->sendAmount = $amount;
         $this->getAmount = $get_amount;
 
-        $this->getTransactionDirection($from_currency, $to_currency);
+        $direction = $this->getTransactionDirection($from_currency, $to_currency);
+
+        if ($direction['status'] == 'error') {
+            return [
+                'message' => $direction['message']
+            ];
+        }
 
         $this->setAmount();
 
@@ -154,7 +175,7 @@ class CryptoExchangeService
             'send_amount' => ($this->exchangeType == 'crypto_buy') ? decimalFormat($this->sendAmount) : cryptoFormat($this->sendAmount),
             'get_amount' => ($this->exchangeType == 'crypto_sell') ? decimalFormat($this->getAmount ) : cryptoFormat($this->getAmount),
             'exchange_rate' => $this->exchangeRate,
-            'exchange_fee' => $this->exchangeFee(),
+            'exchange_fee' => formatNumber($this->exchangeFee(), $from_currency),
             'exchange_rate_display' => $this->exchangeRateDisplay(),
             'message' => $this->checkLimit('message'),
         ];
@@ -164,7 +185,14 @@ class CryptoExchangeService
 
     public function confirmCryptoExchange($from_currency, $to_currency, $amount)
     {
-        $this->getTransactionDirection($from_currency, $to_currency);
+        $direction = $this->getTransactionDirection($from_currency, $to_currency);
+
+        if ($direction['status'] == 'error') {
+            return [
+                'status' => $direction['status'],
+                'message' => $direction['message']
+            ];
+        }
 
         $this->sendAmount = $amount;
 
@@ -175,6 +203,7 @@ class CryptoExchangeService
         $this->checkLimit();
 
         return [
+            'status' => 'success',
             'exchange_type' => $this->exchangeType,
             'from_currency_code' => $this->fromCurrencyCode,
             'to_currency_code' => $this->toCurrencyCode,
@@ -211,7 +240,14 @@ class CryptoExchangeService
     public function processExchange($data)
     {
         try {
-            $this->getTransactionDirection($data['from_currency'], $data['to_currency']);
+            $direction = $this->getTransactionDirection($data['from_currency'], $data['to_currency']);
+
+            if ($direction['status'] == 'error') {
+                return [
+                    'status' => $direction['status'],
+                    'message' => $direction['message']
+                ];
+            }
 
             $this->sendAmount = $data['send_amount'];
 
@@ -281,11 +317,17 @@ class CryptoExchangeService
         $direction = $this->direction->getDirection($from_currency, $to_currency);
 
         if (empty($direction)) {
-            throw new Exception(__('Direction not available.'));
+            return [
+                'status' => 'error',
+                'message' => __('Direction not available.')
+            ];
         }
 
         if ($direction->status  == 'Inactive') {
-           throw new Exception(__('Exchange direction not active, please try again.'));
+            return [
+                'status' => 'error',
+                'message' => __('Exchange direction not active, please try again.')
+            ];
         }
 
         $this->fromCurrency = $direction->from_currency_id;
@@ -302,6 +344,10 @@ class CryptoExchangeService
         $this->toCurrencyLogo = optional($direction->toCurrency)->logo;
         $this->exchangeRate = ($this->exchangeFrom == 'api') ? getCryptoCurrencyRate($this->fromCurrencyCode, $this->toCurrencyCode) :  $direction->exchange_rate;
         $this->gateways = $direction->gateways;
+
+        return [
+            'status' => 'success'
+        ];
 
     }
 
@@ -344,13 +390,12 @@ class CryptoExchangeService
 
     public function exchangeFee()
     {
-        return formatNumber( $this->getPercentage() + $this->feesFixed, $this->fromCurrency);
-
+        return $this->getPercentage() + $this->feesFixed;
     }
 
     public function getPercentage()
     {
-       return  $this->sendAmount * ($this->feesPercentage / 100);
+       return  (float) $this->sendAmount * ( (float) $this->feesPercentage / 100);
     }
 
     public function checkLimit($type = 'submit')

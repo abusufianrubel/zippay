@@ -59,12 +59,12 @@ class CryptoReceivedTransactionsDataTable extends DataTable
             ->addColumn(['data' => 'txid', 'name' => 'cryptoAssetApiLog.payload', 'title' => __('Txid'), 'visible' => false])
             ->addColumn(['data' => 'uuid', 'name' => 'transactions.uuid', 'title' => __('UUID'), 'visible' => false])
             ->addColumn(['data' => 'created_at', 'name' => 'transactions.created_at', 'title' => __('Date')])
-            ->addColumn(['data' => 'sender', 'name' => 'user.last_name', 'title' => __('Sender'), 'visible' => false])
-            ->addColumn(['data' => 'sender', 'name' => 'user.first_name', 'title' => __('Sender')])
+            ->addColumn(['data' => 'sender', 'name' => 'end_user.last_name', 'title' => __('Sender'), 'visible' => false])
+            ->addColumn(['data' => 'sender', 'name' => 'end_user.first_name', 'title' => __('Sender')])
             ->addColumn(['data' => 'subtotal', 'name' => 'transactions.subtotal', 'title' => __('Amount')])
             ->addColumn(['data' => 'currency_id', 'name' => 'currency.code', 'title' => __('Crypto Currency')])
-            ->addColumn(['data' => 'receiver', 'name' => 'end_user.last_name', 'title' => __('Receiver'), 'visible' => false])
-            ->addColumn(['data' => 'receiver', 'name' => 'end_user.first_name', 'title' => __('Receiver')])
+            ->addColumn(['data' => 'receiver', 'name' => 'user.last_name', 'title' => __('Receiver'), 'visible' => false])
+            ->addColumn(['data' => 'receiver', 'name' => 'user.first_name', 'title' => __('Receiver')])
             ->addColumn(['data' => 'action', 'name' => 'action', 'title' => __('Action'), 'orderable' => false, 'searchable' => false])
             ->parameters(dataTableOptions());
     }

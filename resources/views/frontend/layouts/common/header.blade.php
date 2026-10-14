@@ -1,4 +1,4 @@
-{{-- <!-- navbar -->
+<!-- navbar -->
     <div class="navigation-wrap bg-white start-header start-style {{ request()->is('login') || request()->is('forget-password') || request()->is('password/resets/*') || request()->is('register') || request()->is('register/store-personal-info') || request()->is('2fa') || request()->is('google2fa') ? 'd-none' : '' }}">
 		<div class="container-fluid px-240">
 			<div class="row">
@@ -20,8 +20,27 @@
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="navbar-nav ms-auto py-4 py-md-0 gilroy-medium nav-align">
 								<li class="nav-item {{ isset( $menu ) && ( $menu == 'home' ) ? 'nav-active': '' }}">
-									<a class="nav-link" href="{{ url('/') }}">{{ __('Home') }}</a>
+									<a class="nav-link" href="{{ url('/') }}">{{ __('Accueil') }}</a>
 								</li>
+
+
+                                <!-- new nav links here by Dhananjay -->
+                                <li class="nav-item {{ isset($menu) && ($menu == 'a-propos') ? 'nav-active' : '' }}">
+                                    <a class="nav-link" href="{{ url('a-propos') }}">{{ __('À Propos') }}</a>
+                                </li>
+
+                              <!--  <li class="nav-item {{ isset($menu) && ($menu == 'carte-virtuelle') ? 'nav-active' : '' }}">
+                                    <a class="nav-link" href="{{ url('carte-virtuelle') }}">{{ __('Carte Virtuelle') }}</a>
+                                </li> -->
+
+                                <!-- <li class="nav-item {{ isset($menu) && ($menu == 'privacy-policy') ? 'nav-active' : '' }}">
+                                    <a class="nav-link" href="{{ url('privacy-policy') }}">{{ __('Privacy Policy') }}</a>
+                                </li> -->
+
+                             <!--   <li class="nav-item {{ isset($menu) && ($menu == 'terms-conditions') ? 'nav-active' : '' }}">
+                                    <a class="nav-link" href="{{ url('terms-conditions') }}">{{ __('Terms & Conditions') }}</a>
+                                </li>
+                                <!-- end here changes by Dhananjay -->
                                 
                                 @if(!empty(getMenuContent('Header')))
                                     @foreach(getMenuContent('Header') as $top_navbar)
@@ -41,20 +60,20 @@
                                 @endif
                                 <!-- Custom Addons Header Menu End -->
 
-                                <li class="nav-item {{ isset( $menu ) && ( $menu == 'privacy-policy' ) ? 'nav-active': '' }}">
+                            <!--     <li class="nav-item {{ isset( $menu ) && ( $menu == 'privacy-policy' ) ? 'nav-active': '' }}">
 									<a class="nav-link" href="{{ route('privacy_policy') }}">{{ __('Privacy Policy') }}</a>
-								</li>
+								</li>-->
 
-								<li>
-									<div class="color-parent mt-2p">
-										<div class="switch">
-											<div id="switch">
-												<img src="{{ asset('public/frontend/templates/images/home/moon.png') }}" class="moon img-none" width="26px" alt="">
-												<img src="{{ asset('public/frontend/templates/images/home/sun2.png') }}" class="img-none sun" width="26px" alt="">
-											</div>
-										</div>
-									</div>
-								</li>
+								<!--<li>-->
+								<!--	<div class="color-parent mt-2p">-->
+								<!--		<div class="switch">-->
+								<!--			<div id="switch">-->
+								<!--				<img src="{{ asset('frontend/templates/images/home/moon.png') }}" class="moon img-none" width="26px" alt="">-->
+								<!--				<img src="{{ asset('frontend/templates/images/home/sun2.png') }}" class="img-none sun" width="26px" alt="">-->
+								<!--			</div>-->
+								<!--		</div>-->
+								<!--	</div>-->
+								<!--</li>-->
                                 
                                 <div class="d-flex">
                                     @guest
@@ -83,67 +102,4 @@
 				</div>
 			</div>
 		</div>
-	</div> --}}
-
-    <header class="header-section">
-        <div class="overlay">
-            <div class="container">
-                <div class="row d-flex header-area">
-                    <nav class="navbar d-flex navbar-expand-lg navbar-dark">
-                        <a class="navbar-brand" href="{{ url('/') }}">
-                            <img src="{{ asset('public/frontend') }}/assets/img/logo.png" class="logo" alt="logo">
-                        </a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarNavDropdown" aria-label="Toggle navigation">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-                            <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ url('/') }}">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="index-4.html">Send</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="index-5.html">Receive</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="blog.html">Blog</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button"
-                                        data-bs-toggle="dropdown">
-                                        Pages
-                                    </a>
-                                    <div class="dropdown-menu show mega-menu">
-                                        <ul class="dropdown">
-                                            <li><a class="nav-item" href="about-us.html">About Us</a></li>
-                                            <li><a class="nav-item" href="careers.html">Careers</a></li>
-                                            <li><a class="nav-item" href="fees.html">Fees</a></li>
-                                            <li><a class="nav-item" href="{{ route('privacy_policy') }}">Privacy Policy</a></li>
-                                            <li><a class="nav-item" href="terms-conditions.html">Terms Conditions</a></li>
-                                            <li><a class="nav-item" href="faqs.html">Faq</a></li>
-                                            <li><a class="nav-item" href="contact.html">Contact</a></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="right-area header-action d-flex align-items-center">
-                                <div class="lang d-flex align-items-center">
-                                    <img src="{{ asset('public/frontend') }}/assets/img/lang.png" alt="icon">
-                                    <select>
-                                    @foreach (getLanguagesListAtFooterFrontEnd() as $lang)
-                                        <option {{ session('dflt_lang') == $lang->short_name ? 'selected' : '' }} value="{{ $lang->short_name }}">{{ strtoupper($lang->short_name) }}</option>
-                                    @endforeach
-                                    </select>
-                                </div>
-                                <a href="{{ url('login') }}" class="cmn-btn login">{{ __('Login') }}</a>
-                                <a href="{{ url('register') }}" class="cmn-btn">{{ __('Sign up') }}</a>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
+	</div>

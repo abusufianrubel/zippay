@@ -33,9 +33,9 @@
                   </div>
                 </div>
 
-                <!-- Logo -->
+                <!-- Light Logo -->
                 <div class="form-group row">
-                  <label class="col-sm-4 control-label mt-11 f-14 fw-bold text-sm-end mt-2" for="logo">{{ __('Logo') }}</label>
+                  <label class="col-sm-4 control-label mt-11 f-14 fw-bold text-sm-end mt-2" for="logo">{{ __('Light Logo') }}</label>
                   <div class="col-sm-6">
                     <input type="file" name="photos[logo]" id="logo" class="form-control f-14 input-file-field" data-rel="{{ isset($result['logo']) ? $result['logo'] : '' }}" value="{{ old('photos[logo]') }}" placeholder="{{ __('photos[logo]') }}">
                     <span class="text-danger">{{ $errors->first('photos[logo]') }}</span>
@@ -48,6 +48,26 @@
                       <img class="d-block mt-1" src='{{ image($result['logo'], 'logo') }}' width="250" height="66" id="{{  isset($result['logo']) ? 'logo-preview' : 'logo-demo-preview'}}">
                       @if (isset($result['logo']))
                       <span class="remove_img_preview_site_logo"></span>
+                      @endif
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Dark Logo -->
+                <div class="form-group row">
+                  <label class="col-sm-4 control-label mt-11 f-14 fw-bold text-sm-end mt-2" for="dark_logo">{{ __('Dark Logo') }}</label>
+                  <div class="col-sm-6">
+                    <input type="file" name="photos[dark_logo]" id="dark_logo" class="form-control f-14 input-file-field" data-rel="{{ isset($result['dark_logo']) ? $result['dark_logo'] : '' }}" value="{{ old('photos[dark_logo]') }}" placeholder="{{ __('photos[dark_logo]') }}">
+                    <span class="text-danger">{{ $errors->first('photos[dark_logo]') }}</span>
+                    <div class="clearfix"></div>
+                    <small class="form-text text-muted f-12">
+                      <strong>{{ allowedImageDimension(288,90) }}</strong>
+                    </small>
+
+                    <div class="position-relative d-flex">
+                      <img class="d-block mt-1" src='{{ image($result['dark_logo'], 'dark_logo') }}' width="250" height="66" id="{{  isset($result['dark_logo']) ? 'dark-logo-preview' : 'dark-logo-demo-preview'}}">
+                      @if (isset($result['dark_logo']))
+                      <span class="remove_img_preview_dark_logo"></span>
                       @endif
                     </div>
                   </div>
@@ -175,6 +195,7 @@
     var submittingText = '{{ __("Submitting...") }}';
     var defaultImageUrl = '{{ url("public/uploads/userPic/default-image.png") }}';
     var selectedAllowedWallets = '{{ $selectedAllowedWallets }}';
+    var defaultLogoUrl = '{{ url("public/uploads/userPic/default-logo.jpg") }}';
   </script>
   <script src="{{ asset('public/admin/customs/js/settings/general/settings.min.js') }}" type="text/javascript"></script>
 @endpush

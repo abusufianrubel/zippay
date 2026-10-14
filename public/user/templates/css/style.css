@@ -9,7 +9,8 @@
 /* Colors*/
 :root {
   --bs-primary: #635bfe;
-  --bs-secondary: #2e2446;
+  {% comment %} --bs-secondary: #2e2446; {% endcomment %}
+  --bs-secondary: #0A2843;
   --bs-success: #2AAA5E;
   --bs-white: #ffffff;
   --bs-danger: #D9204C;

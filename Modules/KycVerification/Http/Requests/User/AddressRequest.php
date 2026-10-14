@@ -3,9 +3,9 @@
 namespace Modules\KycVerification\Http\Requests\User;
 
 use App\Rules\CheckValidFile;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CustomFormRequest;
 
-class AddressRequest extends FormRequest
+class AddressRequest extends CustomFormRequest
 {
     /**
      * Get the validation rules that apply to the request.

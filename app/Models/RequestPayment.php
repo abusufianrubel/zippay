@@ -354,7 +354,7 @@ class RequestPayment extends Model
         $transaction->save();
 
 
-        if (module('Referral') && settings('referral_enabled') == 'Yes') {
+        if (moduleExists('Referral') && isActive('Referral') && settings('referral_enabled') == 'Yes') {
             $currency   = Currency::find($arr['currency_id'], ['code']);
             
             $refAwardData = [
@@ -479,7 +479,7 @@ class RequestPayment extends Model
                 
                 // Send referral award email/sms to users
                 (new NotifyAdminOnRequestMoneyMailService())->send($requestPayment, ['type' => 'request', 'medium' => 'email']);
-                if (module('Referral') && settings('referral_enabled') == 'Yes' && !empty($awardResponse)) {
+                if (moduleExists('Referral') && settings('referral_enabled') == 'Yes' && !empty($awardResponse)) {
                     if (isset($awardResponse['email_status']) && $awardResponse['email_status'] === 200 && !empty($awardResponse['email_details'])) {
                         $awardInfo = (new \Modules\Referral\Services\Email\ReferralAwardMailService)->send($awardResponse['email_details']);
                         \Modules\Referral\Jobs\ProcessRewardEmail::dispatch($awardInfo);

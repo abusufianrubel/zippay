@@ -1,8 +1,8 @@
-{{-- <script src="{{ asset('public/dist/libraries/jquery/dist/jquery.min.js') }}"></script>
-<script src="{{ asset('public/frontend/templates/js/owl.carousel.min.js') }}"></script>
-<script src="{{ asset('public/dist/libraries/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('public/frontend/templates/js/main.min.js') }}"></script>
-<script src="{{ asset('public/dist/plugins/select2/js/select2.min.js') }}"></script>
+<script src="{{ asset('dist/libraries/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('frontend/templates/js/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('dist/libraries/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('frontend/templates/js/main.min.js') }}"></script>
+<script src="{{ asset('dist/plugins/select2/js/select2.min.js') }}"></script>
 <script>
 	$(".custom-select").select2()
 </script>
@@ -30,10 +30,10 @@
 		if (headerEl) {
 			if (distanceY > shrinkOn) {
 				headerEl.classList.add("smaller-header");
-				$("#logo_container").attr('src', SITE_URL + '/public/frontend/images/logo_sm.png');
+				$("#logo_container").attr('src', SITE_URL + 'frontend/images/logo_sm.png');
 			} else {
 				headerEl.classList.remove("smaller-header");
-				$("#logo_container").attr('src', SITE_URL + '/public/frontend/images/logo.png');
+				$("#logo_container").attr('src', SITE_URL + 'frontend/images/logo.png');
 			}
 		}
 	}
@@ -156,16 +156,4 @@ $(document).ready(function() {
 create_custom_dropdowns();
 });
 
-</script> --}}
-
-
-<script src="{{ asset('public/frontend') }}/assets/js/jquery.min.js"></script>
-<script src="{{ asset('public/frontend') }}/assets/js/proper-min.js"></script>
-<script src="{{ asset('public/frontend') }}/assets/js/bootstrap.min.js"></script>
-<script src="{{ asset('public/frontend') }}/assets/js/fontawesome.js"></script>
-<script src="{{ asset('public/frontend') }}/assets/js/plugin/slick.js"></script>
-<script src="{{ asset('public/frontend') }}/assets/js/plugin/jquery.magnific-popup.min.js"></script>
-<script src="{{ asset('public/frontend') }}/assets/js/plugin/jquery.nice-select.min.js"></script>
-<script src="{{ asset('public/frontend') }}/assets/js/plugin/wow.min.js"></script>
-<script src="{{ asset('public/frontend') }}/assets/js/plugin/plugin.js"></script>
-<script src="{{ asset('public/frontend') }}/assets/js/main.js"></script>
+</script>

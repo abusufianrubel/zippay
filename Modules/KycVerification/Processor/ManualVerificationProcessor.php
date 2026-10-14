@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\DB;
 use App\Services\KycVerificationService;
 use Modules\KycVerification\Entities\KycProvider;
 use App\Models\{User, File, DocumentVerification};
+use Modules\KycVerification\Transformers\AddressResource;
 use Modules\KycVerification\Contract\VerificationContract;
+use Modules\KycVerification\Transformers\IdentityResource;
 
 class ManualVerificationProcessor extends VerificationContract
 {
@@ -290,5 +292,100 @@ class ManualVerificationProcessor extends VerificationContract
             'provider' => KycProvider::where('alias', 'manual')->first(),
             'verification' => DocumentVerification::where(['user_id' => auth()->id(), 'verification_type' => $type])->first()
         ];
+    }
+
+    public function identityRequirements()
+    {
+        return [
+            'verification_type' => [
+                'type' => 'hidden',
+                'required' => true,
+                'input_type' => 'text'
+            ],
+            'existing_file_id' => [
+                'type' => 'hidden',
+                'required' => false,
+                'input_type' => 'text'
+            ],
+            'provider_id' => [
+                'type' => 'hidden',
+                'required' => true,
+                'input_type' => 'text'
+            ],
+            
+            'identity_type' => [
+                'type' => 'visible',
+                'required' => true,
+                'input_type' => 'select',
+                'options' => [
+                    'national_id' => 'National ID',
+                    'driving_license' => 'Driving License',
+                    'passport' => 'Passport'
+                ]
+            ],
+            'identity_number' => [
+                'type' => 'visible',
+                'required' => true,
+                'input_type' => 'text'
+            ],
+            'verification_file' => [
+                'type' => 'visible',
+                'required' => true,
+                'input_type' => 'file'
+            ]
+        ];
+    }
+
+    public function addressRequirements()
+    {
+        return [
+            'verification_type' => [
+                'type' => 'hidden',
+                'required' => true,
+                'input_type' => 'text'
+            ],
+            'existing_file_id' => [
+                'type' => 'hidden',
+                'required' => false,
+                'input_type' => 'text'
+            ],
+            'provider_id' => [
+                'type' => 'hidden',
+                'required' => true,
+                'input_type' => 'text'
+            ],
+            'verification_file' => [
+                'type' => 'visible',
+                'required' => true,
+                'input_type' => 'file'
+            ]
+        ];
+    }
+
+    /**
+     * Retrieve the user's identity or address verification data.
+     * @param string $type Either 'identity' or 'address'
+     * @return \Illuminate\Http\Resources\Json\JsonResource
+     */
+    public function verificationData($type)
+    {
+        $verification = DocumentVerification::where(['user_id' => auth()->id(), 'verification_type' => $type])->first();
+
+        $provider = KycProvider::where('is_default', 'Yes')->select('id', 'name', 'alias')->first();
+
+        $data = [
+            'provider' => $provider,
+            'verification' => $type == 'address' ? new AddressResource($verification) : new IdentityResource($verification)
+        ];
+
+        if ($type == 'identity') {
+            $data['identity_types'] = [
+                'national_id' => 'National ID',
+                'driving_license' => 'Driving License',
+                'passport' => 'Passport'
+            ];
+        }
+
+        return $data;
     }
 }

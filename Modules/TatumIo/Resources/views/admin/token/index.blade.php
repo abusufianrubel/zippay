@@ -18,7 +18,9 @@
                        TatumIo
                         <strong class="crypto-text-success">
                             <small>
-                                ( Free )
+                                {{ !$provider->cryptoAssetSettings->isEmpty() ? '(' : '' }}
+                                {{ json_decode($provider->subscription_details)->current_plan ?? '' }}
+                                {{ !$provider->cryptoAssetSettings->isEmpty() ? ')' : '' }}
                             </small>
                         </strong>
                     </div>

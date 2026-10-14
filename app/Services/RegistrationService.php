@@ -59,20 +59,20 @@ class RegistrationService
                 $userEmail, $userFormattedPhone, $user, settings('default_currency')
             );
    
-            if (isActive('TatumIo') && CryptoProvider::getStatus('TatumIo') == 'Active') {
+            if (!checkDemoEnvironment() && isActive('TatumIo') && CryptoProvider::getStatus('TatumIo') == 'Active') {
                 $generateUserCryptoWalletAddress = $this->user->generateUserTatumIoWalletAddress($user);
                 if ($generateUserCryptoWalletAddress['status'] == 401) {
-                    throw new RegistrationException($generateUserCryptoWalletAddress['message']);          
+                    throw new RegistrationException($generateUserCryptoWalletAddress['message']);
                 }
             }
 
-            $this->emailVerification($user);
-
             DB::commit();
+
+            $emailVerificationMessage = $this->emailVerification($user);
 
             return [
                 'status'  => true,
-                'message' => __('Registration Successful.')
+                'message' => __('Registration Successful.') . ' ' . $emailVerificationMessage
             ];
 
         } catch (Exception $e) {
@@ -84,12 +84,12 @@ class RegistrationService
 
     public function emailVerification($user)
     {
-        if ('Enabled' == preference('verification_mail')) {
-            if (0 == optional($user->user_detail)->email_verification) {
-                (new VerifyUser())->createVerifyUser($user->id);
-                (new UserVerificationMailService())->send($user);
-            }
+        if ('Enabled' == preference('verification_mail') && 0 == optional($user->user_detail)->email_verification) {
+            (new VerifyUser())->createVerifyUser($user->id);
+            (new UserVerificationMailService())->send($user);
+            return __('We sent you an activation code. Check your email and click on the link to verify.');
         }
+        return null;
     }
 
 }

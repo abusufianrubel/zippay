@@ -62,7 +62,7 @@ class TatumIoTransaction
 
     public function getMerchantBalance()
     {
-        return $this->cryptoNetwork->getBalanceOfAddress($this->getMerchantAddress());
+        return checkDemoEnvironment() ? $this->networkCredentials->balance : $this->cryptoNetwork->getBalanceOfAddress($this->getMerchantAddress());
     }
 
     public function getTransactionByHash($arg_hash)
@@ -115,7 +115,7 @@ class TatumIoTransaction
 
     public function getUserBalance()
     {
-        return $this->cryptoNetwork->getBalanceOfAddress($this->getUserAddress());
+        return checkDemoEnvironment() ? $this->userCryptoWallet->balance : $this->cryptoNetwork->getBalanceOfAddress($this->getUserAddress());
     }
 
     public function getAddressBalance($address)

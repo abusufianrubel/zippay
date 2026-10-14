@@ -122,7 +122,7 @@
                                         </div>
 
 
-                                         @if(module('CryptoExchange') && ($transaction->transaction_type_id == Crypto_Swap || $transaction->transaction_type_id == Crypto_Buy || $transaction->transaction_type_id == Crypto_Sell ))
+                                         @if(moduleExists('CryptoExchange') && ($transaction->transaction_type_id == Crypto_Swap || $transaction->transaction_type_id == Crypto_Buy || $transaction->transaction_type_id == Crypto_Sell ))
 
                                             @if(isset($exchange_rate))
                                                 <div class="form-group row">
@@ -217,7 +217,7 @@
                                             <label class="control-label col-sm-3 fw-bold text-sm-end" for="status">{{ __('Change Status') }}</label>
                                             <div class="col-sm-6">
                                                 <select class="form-control select2 w-60" name="status" id="status">
-                                                    @if (module('CryptoExchange') )
+                                                    @if (moduleExists('CryptoExchange') )
                                                         <option value="Success" {{ $transaction->status ==  'Success'? 'selected':"" }}>{{ __('Success') }}</option>
                                                         <option value="Pending"  {{ $transaction->status == 'Pending' ? 'selected':"" }}>{{ __('Pending') }}</option>
                                                         <option value="Blocked"  {{ $transaction->status == 'Blocked' ? 'selected':"" }}>{{ __('Cancel') }}</option>

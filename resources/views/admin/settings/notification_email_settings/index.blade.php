@@ -91,6 +91,7 @@
     <script type="text/javascript">
 
         var investment = "{{ isActive('Investment') ? true : false }}";
+        var p2pExchange = "{{ isActive('P2PXchange') ? true : false }}";
 
         $.validator.setDefaults({
             highlight: function(element) {
@@ -197,6 +198,17 @@
                         var statusCheck = $('input[name="notification[email][investment][status]"]:checked').length;
                         if(statusCheck == 1) {
                             return $("#email_investment").val() == "";
+                        } else {
+                            return false;
+                        }
+                    },
+                },
+                "notification[email][p2p_exchange][recipient]": {
+                    email: p2pExchange ? true : false,
+                    required: function(element) {
+                        var statusCheck = $('input[name="notification[email][p2p_exchange][status]"]:checked').length;
+                        if(statusCheck == 1) {
+                            return $("#email_p2p_exchange").val() == "";
                         } else {
                             return false;
                         }

@@ -1,4 +1,4 @@
-{{-- @extends('user.layouts.app')
+@extends('user.layouts.app')
 
 @section('content')
 <div class="bg-white pxy-62 shadow" id="depositCreate">
@@ -96,81 +96,4 @@
     </script>
 
     <script src="{{ asset('public/user/customs/js/deposit.min.js') }}"></script>
-@endpush --}}
-
-
-@extends('user.layouts.app')
-
-@section('content')
-<section class="dashboard-section body-collapse pay step crypto deposit-money">
-    <div class="overlay pt-120">
-        <div class="container-fruid">
-            <div class="main-content">
-                <div class="head-area d-flex align-items-center justify-content-between">
-                    <h4>Deposit Money</h4>
-                    <div class="icon-area">
-                        <img src="{{ asset('public/user') }}/assets/images/icon/support-icon.png" alt="icon">
-                    </div>
-                </div>
-                <div class="row justify-content-between pb-120">
-                    <div class="col-xl-3 col-lg-4 col-md-5">
-                        <div class="left-area">
-                            <ul>
-                                <li><a href="javascript:void(0)" class="single-link active">Choose Payment Method</a></li>
-                                <li><a href="deposit-money-2.html" class="single-link two">Enter amount</a></li>
-                                <li><a href="javascript:void(0)" class="single-link last">Confirm Order</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-9 col-lg-8 col-md-7">
-                        <div class="table-area">
-                            <div class="head-area">
-                                <h4>Linked Payment system</h4>
-                            </div>
-                            <div class="card-area d-flex flex-wrap">
-                                <div class="single-card">
-                                    <input type="radio" checked name="cardSelect" id="visa"/>
-                                    <label for="visa">
-                                        <span class="wrapper"></span>
-                                        <img src="{{ asset('public/user') }}/assets/images/visa-card.png" alt="visa-card">
-                                    </label>
-                                </div>
-                                <div class="single-card">
-                                    <input type="radio" name="cardSelect" id="paypal"/>
-                                    <label for="paypal">
-                                        <span class="wrapper"></span>
-                                        <img src="{{ asset('public/user') }}/assets/images/paypal-card.png" alt="paypal-card">
-                                    </label>
-                                </div>
-                                <div class="single-card">
-                                    <input type="radio" name="cardSelect" id="paylio"/>
-                                    <label for="paylio">
-                                        <span class="wrapper"></span>
-                                        <img src="{{ asset('public/user') }}/assets/images/paylio-card.png" alt="paylio-card">
-                                    </label>
-                                </div>
-                                <div class="single-card">
-                                    <input type="radio" name="cardSelect" id="blockchain"/>
-                                    <label for="blockchain">
-                                        <span class="wrapper"></span>
-                                        <img src="{{ asset('public/user') }}/assets/images/blockchain-card.png" alt="blockchain-card">
-                                    </label>
-                                </div>
-                                <div class="single-card">
-                                    <button type="button" class="reg w-100 p-0" data-bs-toggle="modal" data-bs-target="#addcardMod">
-                                        <img src="{{ asset('public/user') }}/assets/images/add-new.png" alt="add-new" class="w-100">
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="footer-area mt-40">
-                            <a href="javascript:void(0)">Previous Step</a>
-                            <a href="{{ route('user.deposit.confirm') }}" class="active">Next</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-@endsection
+@endpush

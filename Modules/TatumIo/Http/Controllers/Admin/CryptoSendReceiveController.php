@@ -93,7 +93,7 @@ class CryptoSendReceiveController extends Controller
 
         if ($response['status'] == 401) {
             $this->helper->one_time_message('error', $response['message']);
-            return redirect()->route('admin.crypto_send.create', ['code' => encrypt($request->network)]);
+            return redirect()->route('admin.tatum.crypto_send.create', ['code' => encrypt($request->network)]);
         }
         // For confirm page only
         $data['cryptoTrx'] = $response['cryptoTrx'];
@@ -217,7 +217,7 @@ class CryptoSendReceiveController extends Controller
 
     /* Crypto Receive :: Confirm */
     public function eachUSerCryptoReceiveConfirm(Request $request)
-    {
+    { 
         actionSessionCheck();
 
         $data['menu'] = 'crypto_providers';
@@ -235,7 +235,7 @@ class CryptoSendReceiveController extends Controller
 
     /* Crypto Sent :: success */
     public function eachUserCryptoSentSuccess(Request $request)
-    {
+    {  
         actionSessionCheck();
 
         $res = $this->cryptoSendReceiveSuccess($request, 'send');
@@ -254,7 +254,7 @@ class CryptoSendReceiveController extends Controller
         $res = $this->cryptoSendReceiveSuccess($request, 'receive');
         if ($res['status'] == 401) {
             $this->helper->one_time_message('error', $res['message']);
-            return redirect()->route('admin.crypto_receive.create', [$request->network]);
+            return redirect()->route('admin.tatum.crypto_receive.create', [encrypt($request->network)]);
         }
 
         return view('tatumio::admin.crypto.receive.success', $res['data']);

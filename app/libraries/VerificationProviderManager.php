@@ -63,8 +63,22 @@ class VerificationProviderManager
      * @param string $alias The alias of the provider to find.
      * @return string|null The provider path if found, or null if not found.
      */
-    public function find(string $alias): ?string
+    // public function find(string $alias): ?string
+    // {
+    //     return $this->providers[strtolower($alias)] ?? null;
+    // }
+
+    public function find($alias): ?string
     {
+        // If an array or object was passed by settings, safely extract a string alias or default it
+        if (is_array($alias)) {
+            $alias = $alias['alias'] ?? $alias['name'] ?? null;
+        }
+
+        if (empty($alias) || !is_string($alias)) {
+            return null;
+        }
+
         return $this->providers[strtolower($alias)] ?? null;
     }
 

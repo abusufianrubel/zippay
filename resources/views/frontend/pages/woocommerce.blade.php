@@ -34,7 +34,7 @@
 					<h4>{{ __('Download WooCommerce Plugin') }}</h4>
 					<p>{{ __('To install WooCommerce Plugin in your admin panel, you need to first click on the download button to get the plugin file on your computer.') }}</p>
 					<div class="download-btn mt-12">
-						<a href="{{ url('public/uploads/woocommerce').'/'.$plugin_name }}" class="btn btn-sm btn-primary">{{ __('Download') }}</a>
+						<a href="{{ url('uploads/woocommerce').'/'.$plugin_name }}" class="btn btn-sm btn-primary">{{ __('Download') }}</a>
 					</div>
 				</div>
 				<div class="details-box">
@@ -45,21 +45,21 @@
 					<h4>{{ __('Click Add New') }}</h4>
 					<p>{{ __('To install WooCommerce Plugin in your admin panel, you need to first click on the download button to get the plugin file on your computer.') }}</p>
 					<div>
-						<img src="{{ asset('public/frontend/templates/images/woocommerce/ad-new.svg') }}"  class="img-fluid">
+						<img src="{{ asset('frontend/templates/images/woocommerce/ad-new.svg') }}"  class="img-fluid">
 					</div>
 				</div>
 				<div class="details-box">
 					<h4>{{ __('Upload Plugin') }}</h4>
 					<p>{{ __('After that, you will an Upload Plugin button on top of the page. Click here that bring you to the plugin upload page. Here you need to click on the choose file button and select the plugin file you downloaded earlier to your computer.') }}</p>
 					<div class="download-btn mt-12">
-						<a href="{{ url('public/uploads/woocommerce').'/'.$plugin_name }}" class="btn btn-sm btn-primary">{{ __('Download') }}</a>
+						<a href="{{ url('uploads/woocommerce').'/'.$plugin_name }}" class="btn btn-sm btn-primary">{{ __('Download') }}</a>
 					</div>
 				</div>
 				<div class="details-box">
 					<h4>{{ __('Install Plugin') }}</h4>
 					<p>{{ __('After upending your WooCommerce plugin file, you need to click on the install now button.') }}</p>
 					<div>
-						<img src="{{ asset('public/frontend/templates/images/woocommerce/up-plugin.svg') }}" class="img-fluid">
+						<img src="{{ asset('frontend/templates/images/woocommerce/up-plugin.svg') }}" class="img-fluid">
 					</div>
 				</div>
 			</div>

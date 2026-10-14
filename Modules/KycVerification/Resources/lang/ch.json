@@ -70,6 +70,7 @@
     "Verify Identity": "驗證身份",
     "You need to verify your account first. To verify your account please :x": "您需要先驗證您的帳戶。請 :x 來驗證您的帳戶。",
     "click here": "點擊這裡",
-    "Class :x must extend the :y class as it requires credentials for verification.": "類別 :x 必須繼承類別 :y，因為驗證需要憑證。"
-    
+    "Class :x must extend the :y class as it requires credentials for verification.": "類別 :x 必須繼承類別 :y，因為驗證需要憑證。",
+    "This name will be visible on the verification list as provider.": "此名稱將在驗證列表中顯示為提供者。",
+    "If set to Yes, this will be the default verification provider for all users.": "如果設置為是，這將成為所有用戶的默認驗證提供者。"
 }

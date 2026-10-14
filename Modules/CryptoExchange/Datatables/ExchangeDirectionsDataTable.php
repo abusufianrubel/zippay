@@ -27,7 +27,7 @@ class ExchangeDirectionsDataTable extends DataTable
             })->editColumn('max_amount', function ($exDirection) {
                 return formatNumber($exDirection->max_amount, $exDirection->from_currency_id);
             })->editColumn('type', function ($exDirection) {
-                return ucwords(str_replace("_", " ", $exDirection->type));
+                return ucwords(str_replace("_", " ", $exDirection->direction_type));
             })->editColumn('status', function ($exDirection) {
                 if (optional($exDirection->toCurrency)->status == 'Inactive' || optional($exDirection->fromCurrency)->status == 'Inactive' ) {
                     return getStatusLabel('Inactive');
@@ -44,23 +44,78 @@ class ExchangeDirectionsDataTable extends DataTable
 
     public function query()
     {
-        $query = ExchangeDirection::with(['fromCurrency','toCurrency']);
+        $query = ExchangeDirection::with(['fromCurrency:id,code', 'toCurrency:id,code'])->select([
+            'exchange_directions.id',
+            'exchange_directions.created_at',
+            'exchange_directions.type as direction_type',
+            'exchange_directions.exchange_rate',
+            'exchange_directions.min_amount',
+            'exchange_directions.max_amount',
+            'exchange_directions.status',
+            'exchange_directions.from_currency_id',
+            'exchange_directions.to_currency_id',
+        ]);
+
         return $this->applyScopes($query);
     }
 
     public function html()
     {
         return $this->builder()
-        ->addColumn(['data' => 'id', 'name' => 'id', 'title' => __('ID'), 'searchable' => false, 'visible' => false])
-        ->addColumn(['data' => 'created_at', 'name' => 'created_at', 'title' => __('Date')])
-        ->addColumn(['data' => 'type', 'name' => 'type', 'title' => __('Type')])
-        ->addColumn(['data' => 'from_currency_id', 'name' => 'fromCurrency.code', 'title' => __('From')])
-        ->addColumn(['data' => 'to_currency_id', 'name' => 'toCurrency.code', 'title' => __('To')])
-        ->addColumn(['data' => 'exchange_rate', 'name' => 'exchange_rate', 'title' => __('Exchange Rate')])
-        ->addColumn(['data' => 'min_amount', 'name' => 'min_amount', 'title' => __('Min Amount')])
-        ->addColumn(['data' => 'max_amount', 'name' => 'max_amount', 'title' => __('Max Amount')])
-        ->addColumn(['data' => 'status', 'name' => 'status', 'title' => __('Status')])
-        ->addColumn(['data' => 'action', 'name' => 'action', 'title' => __('Action'), 'orderable' => false, 'searchable' => false])
+        ->addColumn([
+            'data' => 'id',
+            'name' => 'exchange_directions.id',
+            'title' => __('ID'),
+            'searchable' => false,
+            'visible' => false
+        ])
+        ->addColumn([
+            'data' => 'created_at',
+            'name' => 'exchange_directions.created_at',
+            'title' => __('Date')
+        ])
+        ->addColumn([
+            'data' => 'type',
+            'name' => 'exchange_directions.type',
+            'title' => __('Type')
+        ])
+        ->addColumn([
+            'data' => 'from_currency_id',
+            'name' => 'fromCurrency.code',
+            'title' => __('From')
+        ])
+        ->addColumn([
+            'data' => 'to_currency_id',
+            'name' => 'toCurrency.code',
+            'title' => __('To')
+        ])
+        ->addColumn([
+            'data' => 'exchange_rate',
+            'name' => 'exchange_directions.exchange_rate',
+            'title' => __('Exchange Rate')
+        ])
+        ->addColumn([
+            'data' => 'min_amount',
+            'name' => 'exchange_directions.min_amount',
+            'title' => __('Min Amount')
+        ])
+        ->addColumn([
+            'data' => 'max_amount',
+            'name' => 'exchange_directions.max_amount',
+            'title' => __('Max Amount')
+        ])
+        ->addColumn([
+            'data' => 'status',
+            'name' => 'exchange_directions.status',
+            'title' => __('Status')
+        ])
+        ->addColumn([
+            'data' => 'action',
+            'name' => 'action',
+            'title' => __('Action'),
+            'orderable' => false,
+            'searchable' => false
+        ])
         ->parameters(dataTableOptions());
     }
 }

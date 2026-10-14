@@ -70,6 +70,7 @@
     "Verify Identity": "تحقق من الهوية",
     "You need to verify your account first. To verify your account please :x": "تحتاج إلى التحقق من حسابك أولاً. للتحقق من حسابك، يرجى :x",
     "click here": "اضغط هنا",
-    "Class :x must extend the :y class as it requires credentials for verification.": "يجب أن تمتد الفئة :x إلى الفئة :y لأنها تتطلب بيانات الاعتماد للتحقق."
-    
+    "Class :x must extend the :y class as it requires credentials for verification.": "يجب أن تمتد الفئة :x إلى الفئة :y لأنها تتطلب بيانات الاعتماد للتحقق.",
+    "This name will be visible on the verification list as provider.": "سيكون هذا الاسم مرئيًا في قائمة التحقق كمزود.",
+    "If set to Yes, this will be the default verification provider for all users.": "إذا تم تعيينه على نعم، فسيكون هذا هو مزود التحقق الافتراضي لجميع المستخدمين."
 }

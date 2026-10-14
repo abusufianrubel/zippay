@@ -290,6 +290,25 @@ if ($('.main-containt').find('#2faVerification').length) {
             });
         });
     });
+
+    $('.resend-code').on('click', function() {
+
+        $.post({
+            url: resend2faUrl,
+            dataType: 'json',
+            data: {
+                "_token": token,
+            },
+            beforeSend: function () {
+                $('#2faVerifyCode').prop('disabled', true);
+            }
+        })
+            .done(function (data) {
+                $('#message').html(data.message);
+                $('#2faVerifyCode').prop('disabled', false);
+                
+            });
+    });
 }
 if ($('.main-containt').find('#google2faVerifySection').length) {
     function showSwal(title, text, type) {

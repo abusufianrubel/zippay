@@ -27,9 +27,18 @@
                 @if (!empty(config($module->get('alias') . '.fees_limit_settings')))
                     @foreach (config($module->get('alias') . '.' . 'fees_limit_settings') as $key => $transactionType)
                         @if(empty($transactionType['transaction_type'])) @continue @endif
-                        <li {{ isset($list_menu) && $list_menu == strtolower($transactionType['transaction_type']) ? 'class=active' : '' }} >
-                            <a data-spinner="true" href='{{ url(config('adminPrefix') . '/settings/feeslimit/'. strtolower($transactionType['transaction_type']) .'/' . $currency->id) }}'>{{ $transactionType['display_name'] }}</a>
-                        </li>
+
+                        @if (config($module->get('alias') . '.' . 'supported_currency_type') == null && $currency->type == 'fiat') 
+                            <li {{ isset($list_menu) && $list_menu == strtolower($transactionType['transaction_type']) ? 'class=active' : '' }} >
+                                <a data-spinner="true" href='{{ url(config('adminPrefix') . '/settings/feeslimit/'. strtolower($transactionType['transaction_type']) .'/' . $currency->id) }}'>{{ $transactionType['display_name'] }}</a>
+                            </li>
+                        @elseif (!empty(config($module->get('alias') . '.' . 'supported_currency_type')) && in_array($currency->type, config($module->get('alias') . '.' . 'supported_currency_type'))) 
+                            <li {{ isset($list_menu) && $list_menu == strtolower($transactionType['transaction_type']) ? 'class=active' : '' }} >
+                                <a data-spinner="true" href='{{ url(config('adminPrefix') . '/settings/feeslimit/'. strtolower($transactionType['transaction_type']) .'/' . $currency->id) }}'>{{ $transactionType['display_name'] }}</a>
+                            </li>
+                        @endif
+
+
                     @endforeach
                 @endif
             @endforeach

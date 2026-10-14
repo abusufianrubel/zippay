@@ -1,4 +1,4 @@
-{{-- <nav class="navbar navbar sticky-top top-navbar bg-white p-0">
+<nav class="navbar navbar sticky-top top-navbar bg-white p-0">
     <a class="btn border-0 menu-svg" id="menu-btn">
         <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1 7H19M1 1H19M1 13H13" stroke="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -9,20 +9,31 @@
             
         </div>
 
-        <div class="color-parent form-check form-switch d-flex mr-33">
-            <div class="switch d-flex align-items-center justify-content-center">
+        <!--<div class="color-parent form-check form-switch d-flex mr-33">-->
+        <!--    <div class="switch d-flex align-items-center justify-content-center">-->
                 
-                <span class="moon-rtl">
-                    {!! svgIcons('moon') !!}
-                </span>
-                <div class="mx-10" id="switch">
-                    <input class="form-check-input theme-check m-0" type="checkbox" id="flexSwitchCheckDefault">
-                </div>
-                <span class="moon-ltr">
-                    {!! svgIcons('moon') !!}
-                </span>
-            </div>
+        <!--        <span class="moon-rtl">-->
+        <!--            {!! svgIcons('moon') !!}-->
+        <!--        </span>-->
+        <!--        <div class="mx-10" id="switch">-->
+        <!--            <input class="form-check-input theme-check m-0" type="checkbox" id="flexSwitchCheckDefault">-->
+        <!--        </div>-->
+        <!--        <span class="moon-ltr">-->
+        <!--            {!! svgIcons('moon') !!}-->
+        <!--        </span>-->
+        <!--    </div>-->
+        <!--</div>-->
+        
+        {{-- Hidden to prevent JS crash --}}
+<div class="d-none color-parent form-check form-switch mr-33">
+    <div class="switch d-flex align-items-center justify-content-center">
+        <span class="moon-rtl">{!! svgIcons('moon') !!}</span>
+        <div class="mx-10" id="switch">
+            <input class="form-check-input theme-check m-0" type="checkbox" id="flexSwitchCheckDefault">
         </div>
+        <span class="moon-ltr">{!! svgIcons('moon') !!}</span>
+    </div>
+</div>
 
         <div class="notification-drop p-0 d-flex align-items-center">
             <div class="item">
@@ -75,7 +86,7 @@
                     </li>
 
                     <!-- Profile pay QRcode -->
-                    @if (module('PayMe') && isActive('PayMe'))
+                    @if (moduleExists('PayMe') && isActive('PayMe'))
                         <li class="d-flex align-items-center">
                             <a href="{{ route('payme.qrcode.show') }}" class="f-13 gilroy-medium">
                                 <svg class="payme-svg" width="141" height="141" viewBox="0 0 141 141" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -130,135 +141,4 @@
             </div>
         </div>
     </div>
-</nav> --}}
-
-<header class="header-section body-collapse">
-    <div class="overlay">
-        <div class="container-fruid">
-            <div class="row d-flex header-area">
-                <div class="navbar-area d-flex align-items-center justify-content-between">
-                    <div class="sidebar-icon">
-                        <img src="{{ asset('public/user') }}/assets/images/icon/menu.png" alt="icon">
-                    </div>
-                    <form action="#" class="flex-fill">
-                        <div class="form-group d-flex align-items-center">
-                            <img src="{{ asset('public/user') }}/assets/images/icon/search.png" alt="icon">
-                            <input type="text" placeholder="Type to search...">
-                        </div>
-                    </form>
-                    <div class="dashboard-nav">
-                        <div class="single-item language-area">
-                            <div class="language-btn">
-                                <img src="{{ asset('public/user') }}/assets/images/icon/lang.png" alt="icon">
-                            </div>
-
-                            <ul class="main-area language-content" id="select-height">
-                                @foreach (getLanguagesListAtFooterFrontEnd() as $lang)
-                                    <li class="{{ session('dflt_lang') == $lang->short_name ? 'active' : '' }}" value="{{ $lang->short_name }}">{{ $lang->name }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div class="single-item notifications-area">
-                            <div class="notifications-btn">
-                                <img src="{{ asset('public/user') }}/assets/images/icon/bell.png" class="bell-icon" alt="icon">
-                            </div>
-                            <div class="main-area notifications-content">
-                                <div class="head-area d-flex justify-content-between">
-                                    <h5>Notifications</h5>
-                                    <span class="mdr">4</span>
-                                </div>
-                                <ul>
-                                    <li>
-                                        <a href="javascript:void(0)" class="d-flex">
-                                            <div class="img-area">
-                                                <img src="{{ asset('public/user') }}/assets/images/user-1.png" class="max-un" alt="user-1">
-                                            </div>
-                                            <div class="text-area">
-                                                <p class="mdr">You received a payment of <b>$134.00</b> from <b>Anna
-                                                        Green</b></p>
-                                                <p class="mdr time-area">09.39AM</p>
-                                            </div>
-                                        </a>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)" class="d-flex">
-                                            <div class="img-area">
-                                                <img src="{{ asset('public/user') }}/assets/images/user-2.png" class="max-un" alt="user-2">
-                                            </div>
-                                            <div class="text-area">
-                                                <p class="mdr"><b>James Deed</b> requested a payment of
-                                                    <b>£890.00</b>
-                                                </p>
-                                                <p class="mdr time-area">08.09AM</p>
-                                            </div>
-                                        </a>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)" class="d-flex">
-                                            <div class="img-area">
-                                                <img src="{{ asset('public/user') }}/assets/images/master-card.png" class="max-un" alt="master-card">
-                                            </div>
-                                            <div class="text-area">
-                                                <p class="mdr">Your new payment method has beed added successfully
-                                                </p>
-                                                <p class="mdr time-area">09.39AM</p>
-                                            </div>
-                                        </a>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)" class="d-flex">
-                                            <div class="img-area">
-                                                <img src="{{ asset('public/user') }}/assets/images/user-3.png" class="max-un" alt="user-3">
-                                            </div>
-                                            <div class="text-area">
-                                                <p class="mdr">You received a payment of <b>$250.00</b> from Goerge
-                                                    Michael</p>
-                                                <p class="mdr time-area">Yesterday</p>
-                                            </div>
-                                        </a>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="single-item user-area">
-                            <div class="profile-area d-flex align-items-center">
-                                <span class="user-profile">
-                                    <img width="40" height="40" src="{{ image(auth()->user()->picture, 'profile') }}" alt="User">
-                                </span>
-                                <i class="fa-solid fa-sort-down"></i>
-                            </div>
-                            <div class="main-area user-content">
-                                <div class="head-area d-flex align-items-center">
-                                    <div class="profile-img">
-                                        <img width="40" height="40" src="{{ image(auth()->user()->picture, 'profile') }}" alt="User">
-                                    </div>
-                                    <div class="profile-head">
-                                        <a href="javascript:void(0)">
-                                            <h5>{{ getColumnValue(auth()->user()) }}</h5>
-                                        </a>
-                                        <p class="wallet-id">Wallet ID: 6264849965</p>
-                                    </div>
-                                </div>
-                                <ul>
-                                    <li class="border-area">
-                                        <a href="{{ route('user.profiles.index') }}"><i class="fas fa-cog"></i>{{ __('Settings') }}</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('user.logout') }}"><i class="fas fa-sign-out"></i>{{ __('Logout') }}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- sidebar section -->
-                @include('user.layouts.partials.sidebar')
-                <!-- end sidebar section -->
-            </div>
-        </div>
-    </div>
-</header>
+</nav>

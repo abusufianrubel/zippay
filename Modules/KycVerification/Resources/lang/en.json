@@ -70,5 +70,7 @@
     "Verify Identity": "Verify Identity",
     "You need to verify your account first. To verify your account please :x": "You need to verify your account first. To verify your account please :x",
     "click here": "click here",
-    "Class :x must extend the :y class as it requires credentials for verification.": "Class :x must extend the :y class as it requires credentials for verification."
+    "Class :x must extend the :y class as it requires credentials for verification.": "Class :x must extend the :y class as it requires credentials for verification.",
+    "This name will be visible on the verification list as provider.": "This name will be visible on the verification list as provider.",
+    "If set to Yes, this will be the default verification provider for all users.": "If set to Yes, this will be the default verification provider for all users."
 }

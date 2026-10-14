@@ -1,6 +1,5 @@
 <FilesMatch "^\.">
-   Order allow,deny
-   Deny from all
+   Require all denied
 </FilesMatch>
 
 <IfModule mod_headers.c>
@@ -40,6 +39,12 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
+
+    # Serve public assets when Apache's document root is the project directory.
+    # RewriteCond %{REQUEST_URI} !/public/
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^(.+\.(?:css|js|mjs|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|otf|eot|json|mp4|webm|pdf))$ public/$1 [L,NC]
 
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d

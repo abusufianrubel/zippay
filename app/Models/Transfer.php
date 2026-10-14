@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use App\Http\Controllers\Users\EmailController;
+use App\Http\Helpers\Common;
 use App\Services\Sms\SendMoneySmsService;
 use Illuminate\Database\Eloquent\Model;
-use Exception, DB, Common;
+use Exception, DB;
 use App\Services\Mail\SendMoney\{
     NotifyAdminOnSendMoneyMailService,
     EmailToReceiverMailService, 
@@ -26,7 +27,6 @@ class Transfer extends Model
     public function __construct()
     {
         $this->helper      = new Common();
-        $this->emailObject = new EmailController();
     }
 
     public function sender()
@@ -234,7 +234,7 @@ class Transfer extends Model
         $transaction->status            = $arr['status'];
         $transaction->save();
 
-        if (module('Referral') && settings('referral_enabled') == 'Yes' && isset($arr['userInfo'])) {
+        if (moduleExists('Referral') && settings('referral_enabled') == 'Yes' && isset($arr['userInfo'])) {
             $currency   = Currency::find($arr['currency_id'], ['code']);
             $refAwardData = [
                 'userId'          => $arr['userInfo']->id,
@@ -319,7 +319,7 @@ class Transfer extends Model
                 // Notification Email/SMS
                 $this->notificationToSender($transfer);
                 (new NotifyAdminOnSendMoneyMailService)->send($transfer, ['type' => 'send', 'medium' => 'email']);
-                if (module('Referral') && settings('referral_enabled') == 'Yes' && !empty($transactionResponse)) {
+                if (moduleExists('Referral') && settings('referral_enabled') == 'Yes' && !empty($transactionResponse)) {
                     if (isset($transactionResponse['email_status']) && $transactionResponse['email_status'] === 200 && !empty($transactionResponse['email_details'])) {
                         $awardInfo = (new \Modules\Referral\Services\Email\ReferralAwardMailService)->send($transactionResponse['email_details']);
                         \Modules\Referral\Jobs\ProcessRewardEmail::dispatch($awardInfo);

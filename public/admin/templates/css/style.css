@@ -653,6 +653,23 @@ a {
 .remove_img_preview_site_logo:before {
     content: "×";
 }
+
+.remove_img_preview_dark_logo {
+    position: relative;
+    background: #000;
+    color: #fff;
+    border-radius: 50px;
+    font-size: 11px;
+    text-align: center;
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    line-height: 14px;
+}
+
+.remove_img_preview_dark_logo:before {
+    content: "×";
+}
 /*end of admin/setting/logo -- css*/
 
 /*Logo -- css*/
@@ -1485,4 +1502,8 @@ input.input-mini.form-control {
 
 .word-break{
     word-break: break-all;
+}
+.payment-svg{
+    width: 18px;
+    height: 15px;
 }

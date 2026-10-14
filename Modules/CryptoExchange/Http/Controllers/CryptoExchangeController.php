@@ -54,26 +54,31 @@ class CryptoExchangeController extends Controller
         $pref = preference('transaction_type');
         $type = ($pref == 'crypto_buy_sell') ? 'crypto_buy' : 'crypto_swap';
 
-
-        if (route('guest.crypto_exchange.verification') == url()->previous()) {
-            $paymentData = getPaymentData();
-            $type = $paymentData['exchange_type'];
-        }
-
-        $data = [
-            'menu' => 'Crypto Exchange',
-            'pref' => $pref,
-            'exchange_type' => $type,
-            'min_amount' => 0,
-            'fromCurrencies' => [],
-            'toCurrencies' => [],
-            'direction' => null
-        ];
-
         try {
+
+            if (route('guest.crypto_exchange.verification') == url()->previous()) {
+                $paymentData = getPaymentData();
+                $type = $paymentData['exchange_type'];
+            }
+
+            $data = [
+                'menu' => 'Crypto Exchange',
+                'pref' => $pref,
+                'exchange_type' => $type,
+                'min_amount' => 0,
+                'fromCurrencies' => [],
+                'toCurrencies' => [],
+                'direction' => null
+            ];
+
             $fromCurrency = isset($paymentData) ? $paymentData['from_currency'] : null;
             $toCurrency = isset($paymentData) ? $paymentData['to_currency'] : null;
-            $data = array_merge($data,  $this->service->getCryptoExchangeDirection($type, $fromCurrency, $toCurrency));
+            $exchangeDirection = $this->service->getCryptoExchangeDirection($type, $fromCurrency, $toCurrency);
+            if ($exchangeDirection['status'] == 'error') {
+                $this->helper->one_time_message('error', $exchangeDirection['message']);
+            }
+
+            $data = array_merge($data,  $exchangeDirection);
             $data['min_amount'] = isset($paymentData) ? $paymentData['send_amount'] : $data['min_amount'];
         } catch (Exception $e) {
             $this->helper->one_time_message('error', $e->getMessage());
@@ -85,6 +90,7 @@ class CryptoExchangeController extends Controller
     // Set initial session value (verification page)
     public function cryptoBuySell(CryptoBuySellRequest $request)
     {
+        
         try {
             $this->service->validPairCheck(
                 $request->from_currency,
@@ -97,6 +103,11 @@ class CryptoExchangeController extends Controller
                 $request->to_currency,
                 $request->send_amount
             );
+
+            if ($data['status'] == 'error') {
+                $this->helper->one_time_message('error', $data['message']);
+                return redirect()->route('guest.crypto_exchange.home');
+            }
 
             setPaymentData($data);
 
@@ -192,7 +203,7 @@ class CryptoExchangeController extends Controller
                 'send_amount' => $request->send_amount,
                 'payment_details' =>  isset($request->payment_details) ? $request->payment_details : '',
                 'attachment' => $request->attachment,
-                'receive_via' => $request->receive_via,
+                'receive_via' => isset($data['receiving_address']) ? 'address' : $request->receive_via,
                 'email_or_phone' => $data['crypto_phone'],
                 'receiving_address' => $data['receiving_address'],
                 'receiving_details' => $data['receiving_details'],
@@ -205,6 +216,11 @@ class CryptoExchangeController extends Controller
             ];
 
             $response = $this->service->processExchange($processArray);
+
+            if (isset($response['status']) && $response['status'] == 'error') {
+                $this->helper->one_time_message('error', $response['message']);
+                return redirect()->route('guest.crypto_exchange.home');
+            }
 
             $data['uuid'] = $response['cryptoExchange']->uuid;
             $data['id'] = $response['cryptoExchangeId'];
@@ -280,6 +296,11 @@ class CryptoExchangeController extends Controller
             ];
 
             $response = $this->service->processExchange($processArray);
+
+            if (isset($response['status']) && $response['status'] == 'error') {
+                $this->helper->one_time_message('error', $response['message']);
+                return redirect()->route('guest.crypto_exchange.home');
+            }
 
             if (isset(request()->execute) && (request()->execute == 'api')) {
                 return $response['cryptoExchangeId'];
@@ -371,7 +392,12 @@ class CryptoExchangeController extends Controller
 
         try {
             $data = $this->service->getCryptoExchangeDirection($type);
-            $data['status'] = 200;
+
+            if ($data['status'] == 'success') {
+                $data['status'] = 200;
+            } else {
+                $data['status'] = '401';
+            }
         } catch (Exception $e) {
             $data['status'] = '401';
         }
@@ -502,7 +528,7 @@ class CryptoExchangeController extends Controller
             if (!empty($request->email)) {
                 $message = __(':x is your crypto transaction verification code.', ['x' => $sixDigitNumber]);
                 $subject = __('Verification Code');
-                if (checkAppMailEnvironment() == true ) {
+                if (checkAppMailEnvironment() && !checkDemoEnvironment() ) {
                     $this->email->sendEmail($email, $subject, $message);
                     $data['status'] = true;
                     $data['message'] = 'Yes';
@@ -514,6 +540,15 @@ class CryptoExchangeController extends Controller
             ]);
             $verification->code = $sixDigitNumber;
             $verification->save();
+
+            if (checkDemoEnvironment()) {
+                $data = [
+                    'status' => true,
+                    'message' => 'Yes',
+                    'code'  => $sixDigitNumber
+                ];
+            }
+
             return response()->json(['data' => $data ]);
 
         } catch (Exception $th) {

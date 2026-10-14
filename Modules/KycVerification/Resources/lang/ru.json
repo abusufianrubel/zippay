@@ -70,5 +70,7 @@
     "Verify Identity": "Проверить личность",
     "You need to verify your account first. To verify your account please :x": "Сначала необходимо подтвердить ваш аккаунт. Чтобы подтвердить ваш аккаунт, пожалуйста :x",
     "click here": "нажмите здесь",
-    "Class :x must extend the :y class as it requires credentials for verification.": "Класс :x должен наследовать класс :y, так как для проверки требуются учетные данные."
+    "Class :x must extend the :y class as it requires credentials for verification.": "Класс :x должен наследовать класс :y, так как для проверки требуются учетные данные.",
+    "This name will be visible on the verification list as provider.": "Это имя будет отображаться в списке проверки в качестве поставщика.",
+    "If set to Yes, this will be the default verification provider for all users.": "Если установлено значение 'Да', это будет поставщик проверки по умолчанию для всех пользователей."
 }

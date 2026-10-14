@@ -39,10 +39,7 @@ class CurrenciesDataTable extends DataTable
                 $type = $currency->type == 'fiat' ? 'stripe' : 'coinpayments';
 
                 if ($currency->type == 'crypto_asset') {
-                    $edit = (Common::has_permission(auth('admin')->user()->id, 'edit_currency')) ? '<a href="' . url(config('adminPrefix').'/'.strtolower(optional($currency->cryptoAssetSetting)->cryptoProvider->name).'/edit/' . encrypt($currency->code)) . '" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>' : '';
-                    if (optional($currency->cryptoAssetSetting)->cryptoProvider->name == 'BlockIo') {
-                        $edit = '';
-                    }
+                    $edit = (Common::has_permission(auth('admin')->user()->id, 'edit_currency')) ? '<a href="' . url(config('adminPrefix').'/'.strtolower(optional($currency->cryptoAssetSetting)->cryptoProvider?->name).'/edit/' . encrypt($currency->code)) . '" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>' : '';
                 } elseif ($currency->type == 'crypto_token') {
                     $edit = (Common::has_permission(auth('admin')->user()->id, 'edit_crypto_token')) ? '<a href="' . route('admin.tatumio.token.edit',  encrypt(optional($currency->cryptoToken)->id)) . '" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>' : '';
                 } else {

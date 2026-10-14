@@ -1,195 +1,188 @@
-{{-- @extends('frontend.layouts.app')
-@section('content')
-    <!-- Hero section -->
-    <div class="standards-hero-section privacy-template scrol-pt">
-        <div class="px-240">
-            <div class="d-flex flex-column align-items-start">
-                <nav class="customize-bcrm">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">{{ __('Home') }}</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ __('Privacy Policy') }}</li>
-                    </ol>
-                </nav>
-                <div class="btn-section">
-                    <button class="btn btn-dark btn-lg">{{ __('Privacy Policy') }}</button>
-                </div>
-                <div class="merchant-text">
-                    <p>{{ __('This Privacy Policy explains how we collect, use, disclose personal information when you use our online payment services') }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="px-240 code-snippet-section">
-        <div class="privacy-scrol">
-            <div class="d-flex gap-60 justify-content-center">
-                <div class="left-title-box">
-                    <div class="privacy-left-box">
-                        <nav id="navbar-privacy" class="scrolspy navbar flex-column align-items-stretch">
-                            <nav class="nav flex-column">
-                                <a class="privacy-nav privacy-nav-active" href="#item-1">{{ __('What dose this Privacy Policy Cover') }}</a>
-                                <a class="privacy-nav" href="#item-2">{{ __('Information We Collect') }}</a>
-                                <a class="privacy-nav" href="#item-3">{{ __('How We Use Your Information') }}</a>
-                                <a class="privacy-nav" href="#item-4">{{ __('How We Share Your Information') }}</a>
-                                <a class="privacy-nav" href="#item-5">{{ __('Data Security') }}</a>
-                                <a class="privacy-nav" href="#item-6">{{ __('Updates to this Privacy Policy') }}</a>
-                                <a class="privacy-nav mb-0" href="#item-7">{{ __('Contact Us') }}</a>
-                            </nav>
-                        </nav>
-                    </div>
-                </div>
-                <div class="right-content-box">
-                    <div class="privacy-nav-content" data-bs-target="#navbar-privacy">
-                        <div class="effective-description">
-                            <h4>{{ __('Effective Date: Decembar 16, 2023') }}</h4>
-                            <p>{{ __('At :x, we understand the importance of privacy and are committed to protecting the personal information of our users. This Privacy Policy explains how we collect, use, disclose, and safeguard your personal information when you use our online payment services of :y.', ['x' => settings('name'), 'y' => settings('name')]) }}</p>
-                        </div>
-                        <div class="policy-cover" id="item-1">
-                            <h2>{{ __('What dose this Privacy Policy Cover') }}</h2>
-                            <p>{{ __('Please read this Privacy Policy carefully to understand our practices regarding your personal information. By accessing or using our Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Privacy Policy. If you do not agree to the terms of this Privacy Policy, please do not access or use our Services.') }}</p>
-                        </div>
-                        <div class="privacy-mx">
-                            <div class="information">
-                                <h2 id="item-2">{{ __('Information We Collect') }}</h2>
-                                <h3>{{ __('Personal Information') }}</h3>
-                                <p>{{ __('We may collect certain personal information from you when you use our Services. The types of personal information we collect may include, but are not limited to:') }}</p>
-                                <ul>
-                                    <li>{{ __('Your name') }}</li>
-                                    <li>{{ __('Contact information, such as email address, phone number, and mailing address') }}</li>
-                                    <li>{{ __('Payment information, including credit card details, bank account information, and billing address Payment information, including credit card details, bank account information, and billing address Payment information, including credit card details, bank account information, and billing address') }}</li>
-                                    <li>{{ __('Information necessary for Know Your Customer (KYC) and anti-money laundering (AML) compliance, such as identification documents') }}</li>
-                                    <li>{{ __('Transaction details, including the amount, recipient, and date of the payment') }}</li>
-                                    <li>{{ __('Communication and support interactions with us') }}</li>
-                                </ul>
-                            </div>
-                            <div class="usage-data">
-                                <h3>{{ __('Usage Data') }}</h3>
-                                <p>{!! __('We collect server logs that may include details such as your IP address, browser type, device information, operating system, and referring/exit pages.', ['x' => '<span>'.__('Log information:').'</span>']) !!}</p>
-                                <p>{!! __(':x We collect information about your activity on our platform, such as the pages you visit, the features you use, and the actions you take.', ['x' => '<span>'.__('Usage information:').'</span>']) !!}</p>
-                                <p>{!! __(':x Cookies and similar technologies: We use cookies and similar tracking technologies to enhance your user experience and analyze usage patterns. For more information about the cookies we use and your choices regarding , please refer to our Cookie Policy.', ['x' => '<span>'.__('Usage information:').'</span>']) !!}</p>
-                            </div>
-                            <div class="information information-2">
-                                <h2 id="item-3">{{ __('How We Use Your Information') }}</h2>
-                                <p>{{ __('We use the information we collect from you for various purposes, including but not limited to') }}: </p>
-                                <ul>
-                                    <li>{{ __('Providing and maintaining our Services') }}</li>
-                                    <li>{{ __('Processing and facilitating secure transactions') }}</li>
-                                    <li>{{ __('Verifying your identity and com plying with legal obligations, including KYC and AML requirements') }}</li>
-                                    <li>{{ __('Responding to your inquiries, requests, or customer support needs') }}</li>
-                                    <li>{{ __('Sending you important notifications, updates, and administrative messages') }}</li>
-                                    <li>{{ __('Improving and personalizing your experience on our platform') }}</li>
-                                    <li>{{ __('Conducting research and analysis to enhance and develop our Services') }}</li>
-                                    <li>{{ __('Protecting against fraud, unauthorized transactions, and other potential risks') }}</li>
-                                    <li>{{ __('Enforcing our terms and policies') }}</li>
-                                </ul>
-                            </div>
-                            <div class="shareinfo">
-                                <h2 id="item-4">{{ __('How We Share Your Information') }}</h2>
-                                <p>{!! __(':x We engage trusted third-party service providers who assist us in delivering our Services, such as payment processors, fraud prevention services, customer support, and data analytics. These service providers are authorized to use your personal information only as necessary to provide services to us.', ['x' => '<span>'.__('Service Providers:').'</span>']) !!}</p>
-                                <p>{!! __('We may disclose your information if required by law or if we believe that such disclosure is necessary to protect our rights, the safety of our users, or to comply with a judicial proceeding, court order, or legal process.', ['x' => '<span>'.__('Legal Compliance and Safety:').'</span>']) !!}</p>
-                                <p>{!! __('In the event of a merger, acquisition, or sale of all or a portion of our assets, your personal information may be transferred as part of the transaction. We will notify you via email and/or prominent notice on our website of any change in ownership or the use of your personal information.', ['x' => '<span>'.__('Business Transfers:').'</span>']) !!}</p>
-                            </div>
-                            <div class="data-security">
-                                <h2 id="item-5">{{ __('Data Security') }}</h2>
-                                <p>{{ __('We employ industry-standard security measures to protect your personal information from unauthorized access, use, or disclosure. However, please be aware that no data transmission over the internet or storage system can be guaranteed to be 100% secure. Therefore, while we strive to protect your information, we cannot guarantee its absolute security.') }}</p>
-                            </div>
-                            <div class="data-policy">
-                                <h2 id="item-6">{{ __('Updates to this Privacy Policy') }}</h2>
-                                <p>{{ __('We reserve the right to update or modify this Privacy Policy at any time without prior notice. Any changes will be effective immediately upon posting the revised Privacy Policy on our website. We encourage you to review this Privacy Policy periodically for any updates. Your continued use of our Services after any changes will constitute your acceptance of the revised Privacy Policy.') }}</p>
-                            </div>
-                            <div class="data-contact">
-                                <h2 id="item-7">{{ __('Contact Us') }}</h2>
-                                <p>{{ __('If you have any questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us at') }} <a href="{{ url('/') }}"> {{ __('here') }}.</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection --}}
-
 @extends('frontend.layouts.app')
 @section('content')
-<section class="banner-section inner-pages privacy-policy">
-    <div class="overlay">
-        <div class="banner-content pb-120">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-7 col-md-10">
-                        <div class="main-content">
-                            <h1>privacy policy</h1>
-                            <div class="breadcrumb-area">
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb d-flex gap-1 align-items-center">
-                                        <li class="breadcrumb-item p-0 position-relative"><a href="index.html">Home</a></li>
-                                        <li class="breadcrumb-item p-0 position-relative"><a href="javascript:void(0)">Pages</a></li>
-                                        <li class="breadcrumb-item p-0 position-relative active" aria-current="page">Privacy Policy</li>
-                                    </ol>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="banner-bottom-area pb-120">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 cus-z">
-                    <div class="top-area">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-10">
-                                <div class="icon-area">
-                                    <img src="{{ asset('public/frontend') }}/assets/img/protecting-privacy.png" alt="image">
-                                </div>
-                                <h2 class="text-uppercase">We are committed to
-                                    protecting your privacy</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<link rel="shortcut icon" href="{{ asset('assets/images/fav.png') }}" type="image/x-icon">
+<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/fontawesome.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugin/nice-select.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugin/magnific-popup.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugin/slick.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/arafat-font.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugin/animate.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/style-rtl.min.css') }}" id="rtl-stylesheet" disabled>
 
-<section class="privacy-content">
-    <div class="overlay pb-120">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="top-wrapper">
-                        <h4>We're always looking for new ways to provide privacy for our customers.</h4>
-                        <p>Id ipsum mi tempor eget. Pretium consectetur scelerisque blandit habitasse non ullamcorper enim, diam quam id et, tempus massa. Sed nam vulputate pellentesque quis. Varius a, nunc faucibus proin elementum id odio auctor.
-                            Nunc, suspendisse consequat libero, pharetra tellus vulputate auctor venenatis tortor non rhoncus at duis. Pharetra ipsum mauris integer sit feugiat.</p>
-                        <ul>
-                            <li>— Blandit dignissim nulla varius tristique a sed integer ut tempor.</li>
-                            <li>— Augue interdum semper bibendum amet sed.</li>
-                            <li>— Dis in at ultricies tortor sit tellus.</li>
-                            <li>— Habitant ornare aenean maecenas pretium</li>
-                        </ul>
-                        <p>Eget purus aenean sit risus. Arcu, aliquam eget et viverra risus purus. Commodo fames tristique dui pharetra elit aliquet morbi. Eget consectetur risus nunc lorem sit consequat aliquet. Dolor velit consectetur etiam scelerisque. Integer interdum sodales scelerisque diam massa quam sit quis. Sed et dui a nam pulvinar. Tristique justo, donec lectus vitae, cursus ligula ridiculus lacus, tincidunt. Diam dictumst faucibus dui aliquet aenean nascetur feugiat leo. Etiam dignissim orci dignissim vitae.</p>
-                        <div class="safe-data">
-                            <h4>Your data is safe with us, we will not share any information with external sources.</h4>
-                            <p>Blandit dignissim nulla varius tristique a sed integer ut tempor. Augue interdum semper bibendum amet sed. Dis in at ultricies tortor sit tellus. Habitant ornare aenean maecenas pretium, dui ullamcorper quis. Egestas viverra et id aliquet faucibus rhoncus a. Sollicitudin nisl nulla tempor pretium lorem at mauris faucibus pulvinar.</p>
-                            <ul>
-                                <li>Eget purus aenean sit risus. Arcu, aliquam eget et viverra risus purus. Commodo fames tristique dui pharetra elit aliquet morbi.</li>
-                                <li>Eget consectetur risus nunc lorem sit consequat aliquet. Dolor velit consectetur etiam scelerisque.</li>
-                                <li>Integer interdum sodales scelerisque diam massa quam sit quis. Sed et dui a nam pulvinar. Tristique justo, donec lectus vitae, cursus ligula ridiculus lacus, tincidunt.</li>
-                                <li>Diam dictumst faucibus dui aliquet aenean nascetur feugiat leo. Etiam dignissim.</li>
-                                <li> Aliquam eget et viverra risus purus. Commodo fames tristique dui pharetra elit aliquet morbi.</li>
+
+    <!-- start preloader -->
+    <div class="preloader" id="preloader"></div>
+    <!-- end preloader -->
+
+    <!-- Scroll To Top Start-->
+    <a href="javascript:void(0)" class="scrollToTop"><i class="fas fa-angle-double-up"></i></a>
+    <!-- Scroll To Top End -->
+
+    <!-- header-section start -->
+    <header class="header-section">
+        <div class="overlay">
+            <div class="container">
+                <div class="row d-flex header-area">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="navbar-brand" href="index.html">
+                            <img src="{{ asset('assets/images/logo.png') }}" class="logo" alt="logo">
+                        </a>
+                        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbar-content">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-end" id="navbar-content">
+                            <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                                <li class="nav-item dropdown main-navbar">
+                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)"
+                                        data-bs-toggle="dropdown" data-bs-auto-close="outside">Personal</a>
+                                    <ul class="dropdown-menu main-menu shadow">
+                                        <li><a class="nav-link" href="payments-01.html">Freelancer Payments</a></li>
+                                        <li><a class="nav-link" href="subscriptions.html">Subscriptions</a></li>
+                                        <li><a class="nav-link" href="security.html">Security</a></li>
+                                        <li><a class="nav-link" href="fees.html">Fees</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown main-navbar">
+                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)"
+                                        data-bs-toggle="dropdown" data-bs-auto-close="outside">Business</a>
+                                    <ul class="dropdown-menu main-menu shadow">
+                                        <li><a class="nav-link" href="payments-01.html">Business Payments</a></li>
+                                        <li><a class="nav-link" href="business-account.html">Business Account</a></li>
+                                        <li><a class="nav-link" href="corporate-card.html">Corporate Card</a></li>
+                                        <li><a class="nav-link" href="expense-management.html">Expense Management</a></li>
+                                        <li><a class="nav-link" href="budgeting-and-analytics.html">Budgeting</a></li>
+                                        <li><a class="nav-link" href="integrations.html">Integrations</a></li>
+                                        <li><a class="nav-link" href="invoice-management.html">Invoice</a></li>
+                                        <li><a class="nav-link" href="security.html">Security</a></li>
+                                        <li><a class="nav-link" href="rewards.html">Rewards</a></li>
+                                        <li><a class="nav-link" href="fees.html">Fees</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown main-navbar">
+                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)"
+                                        data-bs-toggle="dropdown" data-bs-auto-close="outside">Company</a>
+                                    <ul class="dropdown-menu main-menu shadow">
+                                        <li><a class="nav-link" href="about-us.html">About Us</a></li>
+                                        <li><a class="nav-link" href="career.html">Career</a></li>
+                                        <li><a class="nav-link" href="career-details.html">Career Details</a></li>
+                                        <li class="dropend sub-navbar">
+                                            <a href="javascript:void(0)" class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown"
+                                              data-bs-auto-close="outside">Blog</a>
+                                            <ul class="dropdown-menu sub-menu shadow">
+                                                <li><a class="nav-link" href="blog.html">Blog</a></li>
+                                                <li><a class="nav-link" href="blog-details.html">Blog Details</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="nav-link" href="error.html">Error</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown main-navbar">
+                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)"
+                                        data-bs-toggle="dropdown" data-bs-auto-close="outside">Help</a>
+                                    <ul class="dropdown-menu main-menu shadow">
+                                        <li><a class="nav-link" href="help-center.html">Help Center</a></li>
+                                        <li><a class="nav-link" href="help-center-category.html">Help Category</a></li>
+                                    </ul>
+                                </li>
                             </ul>
+                            <div class="right-area header-action d-flex align-items-center max-un">
+                                <a href="login.html" class="login">Login</a>
+                                <a href="sign-up.html" class="cmn-btn">Sign Up
+                                    <i class="icon-d-right-arrow-2"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="cookies">
-                            <h4>Cookies and tracking</h4>
-                            <p>Consequat mauris nunc congue nisi. Cursus metus aliquam eleifend mi in nulla. Dignissim cras tincidunt lobortis feugiat vivamus. Blandit aliquam etiam erat velit. Sapien faucibus et molestie ac. Ornare aenean euismod elementum nisi quis eleifend quam adipiscing vitae. Id cursus metus aliquam eleifend mi in nulla posuere sollicitudin.</p>
-                            <div class="img-area text-center text-md-start"><img src="{{ asset('public/frontend') }}/assets/img/privacy-cookies.png" alt="image"></div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- header-section end -->
+
+    <!-- banner-section start -->
+    <section class="banner-section inner-banner privacy-content">
+        <div class="overlay">
+            <div class="banner-content d-flex align-items-center">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-lg-7 col-md-10">
+                            <div class="main-content">
+                                <h1>Privacy Policy</h1>
+                                <div class="breadcrumb-area">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb d-flex gap-1 align-items-center">
+                                            <li class="breadcrumb-item p-0 position-relative"><a href="index.html">Home</a></li>
+                                            <li class="breadcrumb-item p-0 position-relative"><a href="javascript:void(0)">Company</a></li>
+                                            <li class="breadcrumb-item p-0 position-relative active" aria-current="page">Privacy Policy</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    <!-- banner-section end -->
+
+    <!-- Privacy Content In start -->
+    <section class="privacy-content">
+        <div class="overlay pt-120 pb-120">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="top-wrapper">
+                            <h4>We're always looking for new ways to provide privacy for our customers.</h4>
+                            <p>Id ipsum mi tempor eget. Pretium consectetur scelerisque blandit habitasse non ullamcorper enim, diam quam id et, tempus massa. Sed nam vulputate pellentesque quis. Varius a, nunc faucibus proin elementum id odio auctor.
+                                Nunc, suspendisse consequat libero, pharetra tellus vulputate auctor venenatis tortor non rhoncus at duis. Pharetra ipsum mauris integer sit feugiat.</p>
+                            <ul>
+                                <li>— Blandit dignissim nulla varius tristique a sed integer ut tempor.</li>
+                                <li>— Augue interdum semper bibendum amet sed.</li>
+                                <li>— Dis in at ultricies tortor sit tellus.</li>
+                                <li>— Habitant ornare aenean maecenas pretium</li>
+                            </ul>
+                            <p>Eget purus aenean sit risus. Arcu, aliquam eget et viverra risus purus. Commodo fames tristique dui pharetra elit aliquet morbi. Eget consectetur risus nunc lorem sit consequat aliquet. Dolor velit consectetur etiam scelerisque. Integer interdum sodales scelerisque diam massa quam sit quis. Sed et dui a nam pulvinar. Tristique justo, donec lectus vitae, cursus ligula ridiculus lacus, tincidunt. Diam dictumst faucibus dui aliquet aenean nascetur feugiat leo. Etiam dignissim orci dignissim vitae.</p>
+                            <div class="safe-data">
+                                <h4>Your data is safe with us, we will not share any information with external sources.</h4>
+                                <p>Blandit dignissim nulla varius tristique a sed integer ut tempor. Augue interdum semper bibendum amet sed. Dis in at ultricies tortor sit tellus. Habitant ornare aenean maecenas pretium, dui ullamcorper quis. Egestas viverra et id aliquet faucibus rhoncus a. Sollicitudin nisl nulla tempor pretium lorem at mauris faucibus pulvinar.</p>
+                                <ul>
+                                    <li>Eget purus aenean sit risus. Arcu, aliquam eget et viverra risus purus. Commodo fames tristique dui pharetra elit aliquet morbi.</li>
+                                    <li>Eget consectetur risus nunc lorem sit consequat aliquet. Dolor velit consectetur etiam scelerisque.</li>
+                                    <li>Integer interdum sodales scelerisque diam massa quam sit quis. Sed et dui a nam pulvinar. Tristique justo, donec lectus vitae, cursus ligula ridiculus lacus, tincidunt.</li>
+                                    <li>Diam dictumst faucibus dui aliquet aenean nascetur feugiat leo. Etiam dignissim.</li>
+                                    <li> Aliquam eget et viverra risus purus. Commodo fames tristique dui pharetra elit aliquet morbi.</li>
+                                </ul>
+                            </div>
+                            <div class="cookies">
+                                <h4>Cookies and tracking</h4>
+                                <p>Consequat mauris nunc congue nisi. Cursus metus aliquam eleifend mi in nulla. Dignissim cras tincidunt lobortis feugiat vivamus. Blandit aliquam etiam erat velit. Sapien faucibus et molestie ac. Ornare aenean euismod elementum nisi quis eleifend quam adipiscing vitae. Id cursus metus aliquam eleifend mi in nulla posuere sollicitudin.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Create Account In end -->
+
+    
+
+    <!--==================================================================-->
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery-ui.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/fontawesome.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/slick.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/counter.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/waypoint.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/wow.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/plugin.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 @endsection

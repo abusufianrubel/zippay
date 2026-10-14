@@ -1,0 +1,202 @@
+@extends('frontend.layouts.app')
+@section('content')
+<link rel="shortcut icon" href="{{ asset('assets/images/fav.png') }}" type="image/x-icon">
+<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/fontawesome.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugin/nice-select.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugin/magnific-popup.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugin/slick.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/arafat-font.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugin/animate.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/style-rtl.min.css') }}" id="rtl-stylesheet" disabled>
+
+<style>
+    /* by Dhananjay: hide the shared purple footer only on this page */
+    .footer-sec,
+    .bottom-footer {
+        display: none !important;
+    }
+</style>
+
+
+
+    <!-- start preloader -->
+    <div class="preloader" id="preloader"></div>
+    <!-- end preloader -->
+
+    <!-- Scroll To Top Start-->
+    <a href="javascript:void(0)" class="scrollToTop"><i class="fas fa-angle-double-up"></i></a>
+    <!-- Scroll To Top End -->
+
+    <!-- header-section start -->
+    <header class="header-section">
+        <div class="overlay">
+            <div class="container">
+                <div class="row d-flex header-area">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="navbar-brand" href="index.html">
+                            <img src="{{ asset('assets/images/logo.png') }}" class="logo" alt="logo">
+                        </a>
+                        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbar-content">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-end" id="navbar-content">
+                            <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                                <li class="nav-item dropdown main-navbar">
+                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)"
+                                        data-bs-toggle="dropdown" data-bs-auto-close="outside">Personal</a>
+                                    <ul class="dropdown-menu main-menu shadow">
+                                        <li><a class="nav-link" href="payments-01.html">Freelancer Payments</a></li>
+                                        <li><a class="nav-link" href="subscriptions.html">Subscriptions</a></li>
+                                        <li><a class="nav-link" href="security.html">Security</a></li>
+                                        <li><a class="nav-link" href="fees.html">Fees</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown main-navbar">
+                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)"
+                                        data-bs-toggle="dropdown" data-bs-auto-close="outside">Business</a>
+                                    <ul class="dropdown-menu main-menu shadow">
+                                        <li><a class="nav-link" href="payments-01.html">Business Payments</a></li>
+                                        <li><a class="nav-link" href="business-account.html">Business Account</a></li>
+                                        <li><a class="nav-link" href="corporate-card.html">Corporate Card</a></li>
+                                        <li><a class="nav-link" href="expense-management.html">Expense Management</a></li>
+                                        <li><a class="nav-link" href="budgeting-and-analytics.html">Budgeting</a></li>
+                                        <li><a class="nav-link" href="integrations.html">Integrations</a></li>
+                                        <li><a class="nav-link" href="invoice-management.html">Invoice</a></li>
+                                        <li><a class="nav-link" href="security.html">Security</a></li>
+                                        <li><a class="nav-link" href="rewards.html">Rewards</a></li>
+                                        <li><a class="nav-link" href="fees.html">Fees</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown main-navbar">
+                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)"
+                                        data-bs-toggle="dropdown" data-bs-auto-close="outside">Company</a>
+                                    <ul class="dropdown-menu main-menu shadow">
+                                        <li><a class="nav-link" href="about-us.html">About Us</a></li>
+                                        <li><a class="nav-link" href="career.html">Career</a></li>
+                                        <li><a class="nav-link" href="career-details.html">Career Details</a></li>
+                                        <li class="dropend sub-navbar">
+                                            <a href="javascript:void(0)" class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown"
+                                              data-bs-auto-close="outside">Blog</a>
+                                            <ul class="dropdown-menu sub-menu shadow">
+                                                <li><a class="nav-link" href="blog.html">Blog</a></li>
+                                                <li><a class="nav-link" href="blog-details.html">Blog Details</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="nav-link" href="error.html">Error</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown main-navbar">
+                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)"
+                                        data-bs-toggle="dropdown" data-bs-auto-close="outside">Help</a>
+                                    <ul class="dropdown-menu main-menu shadow">
+                                        <li><a class="nav-link" href="help-center.html">Help Center</a></li>
+                                        <li><a class="nav-link" href="help-center-category.html">Help Category</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="right-area header-action d-flex align-items-center max-un">
+                                {{-- by Dhananjay: keep auth links using their Laravel routes --}}
+                                {{-- <a href="login.html" class="login">Login</a> --}}
+                                <a href="{{ url('login') }}" class="login">Login</a>
+                                {{-- <a href="sign-up.html" class="cmn-btn">Sign Up
+                                    <i class="icon-d-right-arrow-2"></i>
+                                </a> --}}
+                                <a href="{{ url('register') }}" class="cmn-btn">Sign Up
+                                    <i class="icon-d-right-arrow-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- header-section end -->
+
+    <!-- banner-section start -->
+    <section class="banner-section inner-banner privacy-content">
+        <div class="overlay">
+            <div class="banner-content d-flex align-items-center">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-lg-7 col-md-10">
+                            <div class="main-content">
+                                <h1>Terms Conditions</h1>
+                                <div class="breadcrumb-area">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb d-flex gap-1 align-items-center">
+                                            <li class="breadcrumb-item p-0 position-relative"><a href="index.html">Home</a></li>
+                                            <li class="breadcrumb-item p-0 position-relative"><a href="javascript:void(0)">Company</a></li>
+                                            <li class="breadcrumb-item p-0 position-relative active" aria-current="page">Terms Conditions</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- banner-section end -->
+
+    <!-- Privacy Content In start -->
+    <section class="privacy-content terms">
+        <div class="overlay pt-120 pb-120">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="top-wrapper">
+                            <h4>We're always looking for new ways to provide privacy for our customers.</h4>
+                            <p>Id ipsum mi tempor eget. Pretium consectetur scelerisque blandit habitasse non ullamcorper enim, diam quam id et, tempus massa. Sed nam vulputate pellentesque quis. Varius a, nunc faucibus proin elementum id odio auctor.
+                                Nunc, suspendisse consequat libero, pharetra tellus vulputate auctor venenatis tortor non rhoncus at duis. Pharetra ipsum mauris integer sit feugiat.</p>
+                            <ul>
+                                <li>— Blandit dignissim nulla varius tristique a sed integer ut tempor.</li>
+                                <li>— Augue interdum semper bibendum amet sed.</li>
+                                <li>— Dis in at ultricies tortor sit tellus.</li>
+                                <li>— Habitant ornare aenean maecenas pretium</li>
+                            </ul>
+                            <p>Eget purus aenean sit risus. Arcu, aliquam eget et viverra risus purus. Commodo fames tristique dui pharetra elit aliquet morbi. Eget consectetur risus nunc lorem sit consequat aliquet. Dolor velit consectetur etiam scelerisque. Integer interdum sodales scelerisque diam massa quam sit quis. Sed et dui a nam pulvinar. Tristique justo, donec lectus vitae, cursus ligula ridiculus lacus, tincidunt. Diam dictumst faucibus dui aliquet aenean nascetur feugiat leo. Etiam dignissim orci dignissim vitae.</p>
+                            <div class="safe-data">
+                                <h4>Your data is safe with us, we will not share any information with external sources.</h4>
+                                <p>Blandit dignissim nulla varius tristique a sed integer ut tempor. Augue interdum semper bibendum amet sed. Dis in at ultricies tortor sit tellus. Habitant ornare aenean maecenas pretium, dui ullamcorper quis. Egestas viverra et id aliquet faucibus rhoncus a. Sollicitudin nisl nulla tempor pretium lorem at mauris faucibus pulvinar.</p>
+                                <ul>
+                                    <li>Eget purus aenean sit risus. Arcu, aliquam eget et viverra risus purus. Commodo fames tristique dui pharetra elit aliquet morbi.</li>
+                                    <li>Eget consectetur risus nunc lorem sit consequat aliquet. Dolor velit consectetur etiam scelerisque.</li>
+                                    <li>Integer interdum sodales scelerisque diam massa quam sit quis. Sed et dui a nam pulvinar. Tristique justo, donec lectus vitae, cursus ligula ridiculus lacus, tincidunt.</li>
+                                    <li>Diam dictumst faucibus dui aliquet aenean nascetur feugiat leo. Etiam dignissim.</li>
+                                    <li> Aliquam eget et viverra risus purus. Commodo fames tristique dui pharetra elit aliquet morbi.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Create Account In end -->
+
+    
+
+    <!--==================================================================-->
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery-ui.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/fontawesome.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/slick.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/counter.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/waypoint.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/wow.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/plugin.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+<script>
+    /* by Dhananjay: override the fallback title shown by the shared layout */
+    document.title = 'Terms & Conditions | Zippay';
+</script>
+@endsection

@@ -12,7 +12,7 @@ class KycProvider extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['name', 'alias'];
+    protected $fillable = ['name', 'alias', 'is_default'];
 
     /**
      * Update provider name
@@ -23,6 +23,11 @@ class KycProvider extends Model
     public function updateProvider($request, $provider)
     {
         $provider->name = $request->name;
+        $provider->is_default = $request->is_default;
         $provider->save();
+        
+        if ($request->is_default == 'Yes') {
+            $this->where('id', '!=', $provider->id)->update(['is_default' => 'No']);
+        }
     }
 }

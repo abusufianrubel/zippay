@@ -319,5 +319,6 @@
     "The requested data does not exist for this feature overview.": "Os dados solicitados não existem para essa visão geral do recurso.",
     "We have sent you the crypto Exchange status. Please check your email.": "Nós enviamos o status de troca de criptografia.Por favor verifique seu email.",
     "We have sent you the Crypto details. Please check your email.": "Nós enviamos os detalhes da criptografia.Por favor verifique seu email.",
-    "We have sent you the cryptoExchange status. Please check your sms.": "Enviamos -lhe o status de troca de criptoxange.Por favor, verifique seu SMS."
+    "We have sent you the cryptoExchange status. Please check your sms.": "Enviamos -lhe o status de troca de criptoxange.Por favor, verifique seu SMS.",
+    "User's can change crypto to fiat, fiat to crypto and swap crypto currency by the crypto exchange module.": "Os usuários podem mudar cripto para fiat e fiat para cripto através do módulo de troca de cripto."
 }

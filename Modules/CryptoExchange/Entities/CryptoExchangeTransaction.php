@@ -23,10 +23,17 @@ class CryptoExchangeTransaction
         if(!empty($data['transaction']->crypto_exchange?->receiver_address)) {
             $data['receiver_address'] = optional($data['transaction']->crypto_exchange)->receiver_address;
         }
+
+        if(!empty($data['transaction']->crypto_exchange?->receiving_details)) {
+            $data['receiving_details'] = optional($data['transaction']->crypto_exchange)->receiving_details;
+        }
+
         if(!empty($data['transaction']->crypto_exchange?->file_name)) {
             $data['file_name'] = optional($data['transaction']->crypto_exchange)->file_name;
         }
+
         $data['payment_details'] = optional($data['transaction']->crypto_exchange)->payment_details;
+        
         $data['exchange_rate'] = moneyFormat(optional($data['transaction']->crypto_exchange->fromCurrency)->symbol, formatNumber(1, optional($data['transaction']->crypto_exchange)->from_currency)).'  =  '. moneyFormat(optional($data['transaction']->crypto_exchange->toCurrency)->symbol, formatNumber(optional($data['transaction']->crypto_exchange)->exchange_rate, optional($data['transaction']->crypto_exchange)->to_currency) );
 
         return $data;

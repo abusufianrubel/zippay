@@ -78,11 +78,13 @@
 
                                             <input type="hidden" class="form-control" name="receiver" value="
                                                 @switch($transaction->transaction_type_id)
-                                                    @case(module('TatumIo') ? 'Crypto_Sent' : false)
-                                                    @case(module('TatumIo') ? 'Crypto_Received' : false)
-                                                    @case(module('TatumIo') ? 'Token_Sent' : false)
-                                                    @case(module('TatumIo') ? 'Token_Received' : false)
+                                                    @case(moduleExists('TatumIo') ? Crypto_Sent : false)
+                                                    @case(moduleExists('TatumIo') ? Token_Sent : false)
                                                         {{ getColumnValue($transaction->end_user) }}
+                                                        @break
+                                                    @case(moduleExists('TatumIo') ? Crypto_Received : false)
+                                                    @case(moduleExists('TatumIo') ? Token_Received : false)
+                                                        {{ getColumnValue($transaction->user) }}
                                                         @break
                                                 @endswitch
                                             ">
@@ -90,13 +92,13 @@
                                             <div class="col-sm-9">
                                                 <p class="form-control-static">
                                                     @switch($transaction->transaction_type_id)
-                                                        @case(module('TatumIo') ? Crypto_Sent : false)
-                                                        @case(module('TatumIo') ? Token_Sent : false)
+                                                        @case(moduleExists('TatumIo') ? Crypto_Sent : false)
+                                                        @case(moduleExists('TatumIo') ? Token_Sent : false)
                                                             {{ getColumnValue($transaction->end_user) }}
                                                             @break
-                                                        @case(module('TatumIo') ? Crypto_Received : false)
-                                                        @case(module('TatumIo') ? Token_Received : false)
-                                                            {{ getColumnValue($transaction->end_user) }}
+                                                        @case(moduleExists('TatumIo') ? Crypto_Received : false)
+                                                        @case(moduleExists('TatumIo') ? Token_Received : false)
+                                                            {{ getColumnValue($transaction->user) }}
                                                             @break
                                                     @endswitch
                                                 </p>
@@ -104,7 +106,7 @@
                                         </div>
 
                                          <!-- TatumIo -->
-                                        @if (module('TatumIo'))
+                                        @if (moduleExists('TatumIo'))
                                             @if (isset($senderAddress))
                                                 <div class="form-group row">
                                                     <label class="control-label col-sm-3 fw-bold text-sm-end" for="crypto_sender_address">{{ __('Sender Address') }}</label>
@@ -266,7 +268,7 @@
 
                                             <input type="hidden" class="form-control" name="fee" value="{{ ($total_transaction_fees) }}">
                                             <div class="col-sm-6">
-                                                @if (module('TatumIo') && ($transaction->currency?->type == 'crypto_asset' || $transaction->currency?->type == 'crypto_token'))
+                                                @if (moduleExists('TatumIo') && ($transaction->currency?->type == 'crypto_asset' || $transaction->currency?->type == 'crypto_token'))
                                                     <p class="form-control-static">
                                                         @if ($transaction->transaction_type_id == Crypto_Sent)
                                                             {{ moneyFormat(optional($transaction->currency)->symbol, formatNumber($network_fee, $transaction->currency_id)) }}
@@ -290,11 +292,11 @@
                                                 <input type="hidden" class="form-control" name="total" value="{{ ($transaction->total) }}">
                                                 <div class="col-sm-6">
                                                     <p class="form-control-static">
-                                                        @if (module('TatumIo') && ($transaction->currency->type == 'crypto_asset') && ($transaction->transaction_type_id == Crypto_Sent))
+                                                        @if (moduleExists('TatumIo') && ($transaction->currency->type == 'crypto_asset') && ($transaction->transaction_type_id == Crypto_Sent))
                                                             {{ moneyFormat(optional($transaction->currency)->symbol, formatNumber($transaction->subtotal + $network_fee, $transaction->currency_id)) }}
                                                         @endif
 
-                                                        @if (module('TatumIo') && ($transaction->currency->type == 'crypto_token') && ($transaction->transaction_type_id == Token_Sent || $transaction->transaction_type_id == Token_Received))
+                                                        @if (moduleExists('TatumIo') && ($transaction->currency->type == 'crypto_token') && ($transaction->transaction_type_id == Token_Sent || $transaction->transaction_type_id == Token_Received))
                                                             {{ moneyFormat(optional($transaction->currency)->symbol, formatNumber($transaction->subtotal, $transaction->currency_id)) }}
                                                         @endif
 

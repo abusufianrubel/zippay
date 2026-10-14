@@ -355,22 +355,25 @@ class Common
         $maxError = $currencyFee->max_limit &&  $amount > $currencyFee->max_limit;
 
         if ($minError && $maxError) {
-            throw new AmountLimitException(__("Maximum acceptable amount is :x and minimum acceptable amount is :y", [
+            throw new AmountLimitException(__("Maximum acceptable amount is :x :z and minimum acceptable amount is :y :z", [
                 "x" => formatNumber($currencyFee->max_limit, optional($currencyFee->currency)->id),
                 "y" => formatNumber($currencyFee->min_limit, optional($currencyFee->currency)->id),
+                "z" => optional($currencyFee->currency)->code
             ]));
         } elseif ($maxError) {
             throw new AmountLimitException(__(
-                "Maximum acceptable amount is :x",
+                "Maximum acceptable amount is :x :y",
                 [
-                    "x" => formatNumber($currencyFee->max_limit, optional($currencyFee->currency)->id)
+                    "x" => formatNumber($currencyFee->max_limit, optional($currencyFee->currency)->id),
+                    "y" => optional($currencyFee->currency)->code
                 ]
             ));
         } elseif ($minError) {
             throw new AmountLimitException(__(
-                "Minimum acceptable amount is :x",
+                "Minimum acceptable amount is :x :y",
                 [
-                    "x" => formatNumber($currencyFee->min_limit, optional($currencyFee->currency)->id)
+                    "x" => formatNumber($currencyFee->min_limit, optional($currencyFee->currency)->id),
+                    "y" => optional($currencyFee->currency)->code
                 ]
             ));
         }

@@ -35,6 +35,8 @@ use App\Models\{ActivityLog,
     User,
     Role
 };
+use App\Services\Sms\DepositViaAdminSMSService;
+use App\Services\Sms\WithdrawViaAdminSMSService;
 
 class UserController extends Controller
 {
@@ -115,7 +117,7 @@ class UserController extends Controller
                     }
                   
 
-                    if (isActive('TatumIo') && CryptoProvider::getStatus('TatumIo') == 'Active' && $user->status == 'Active') {
+                    if (!checkDemoEnvironment() && isActive('TatumIo') && CryptoProvider::getStatus('TatumIo') == 'Active' && $user->status == 'Active') {
                         $generateUserCryptoWalletAddress = $this->user->generateUserTatumIoWalletAddress($user);
                         if ($generateUserCryptoWalletAddress['status'] == 401) {
                             DB::rollBack();
@@ -192,6 +194,25 @@ class UserController extends Controller
     public function update(Request $request)
     {
         if ($request->isMethod('post')) {
+            if (checkDemoEnvironment()) {
+                switch ($request->status || $request->email) {
+                    case in_array($request->status, ['Inactive', 'Suspended']):
+                        $this->helper->one_time_message('warning', __('Demo user status update is not allowed in demo site.'));
+                        return redirect(Config::get('adminPrefix').'/users/edit/' . $request->id);
+                        break;
+                    case in_array($request->email, ['kyla@gmail.com', 'irish@gmail.com']):
+                        if (isset($request->password)) {
+                            $this->helper->one_time_message('warning', __('Demo user password update is not allowed in demo site.'));
+                            return redirect(Config::get('adminPrefix').'/users/edit/' . $request->id);
+                        } else {
+                            $this->helper->one_time_message('warning', __('Demo user email update is not allowed in demo site.'));
+                            return redirect(Config::get('adminPrefix').'/users/edit/' . $request->id);
+                        }
+
+                        break;
+                }
+            }
+
             $rules = array(
                 'first_name' => 'required|max:30|regex:/^[a-zA-Z\s]*$/',
                 'last_name' => 'required|max:30|regex:/^[a-zA-Z\s]*$/',
@@ -215,8 +236,10 @@ class UserController extends Controller
                     $user->email      = $request->email;
                     $user->role_id    = $request->role;
                     $user->status     = $request->status;
+                    $user->type       = Role::where('id', $request->role)->first()->customer_type;
 
                     $formattedPhone = ltrim($request->phone, '0');
+
                     if (!empty($request->phone)) {
                         $user->phone          = preg_replace("/[\s-]+/", "", $formattedPhone);
                         $user->defaultCountry = $request->user_defaultCountry;
@@ -232,6 +255,7 @@ class UserController extends Controller
                     if (!is_null($request->password) && !is_null($request->password_confirmation)) {
                         $user->password = \Hash::make($request->password);
                     }
+
                     $user->save();
 
                     RoleUser::where(['user_id' => $request->id, 'user_type' => 'User'])->update(['role_id' => $request->role]);
@@ -263,6 +287,12 @@ class UserController extends Controller
         $data['user_tab_menu'] = 'user_profile';
 
         $data['users'] = User::find($id, ['id', 'first_name', 'last_name']);
+
+        if (empty($data['users'])) {
+            $this->helper->one_time_message('error', __('User does not exist.'));
+            return redirect(config('adminPrefix') . '/users');
+        }
+
         $data['payment_met']     = $payment_met     = PaymentMethod::where(['name' => 'Mts', 'status' => 'Active'])->first(['id', 'name']);
         $data['active_currency'] = $activeCurrency = Currency::where(['status' => 'Active'])->get(['id', 'status', 'code', 'type', 'default']);
         $feesLimitCurrency       = FeesLimit::where(['transaction_type_id' => Deposit, 'payment_method_id' => $payment_met->id, 'has_transaction' => 'Yes'])->get(['currency_id', 'has_transaction']);
@@ -399,7 +429,7 @@ class UserController extends Controller
                 $wallet->save();
             }
 
-            if (module('Referral') && settings('referral_enabled') == 'Yes') {
+            if (moduleExists('Referral') && settings('referral_enabled') == 'Yes') {
             
                 $refAwardData = [
                     'userId'          => $deposit->user_id,
@@ -417,18 +447,15 @@ class UserController extends Controller
 
             // Notification Email/SMS
             (new DepositViaAdminMailService)->send($deposit);
-            if (module('Referral') && settings('referral_enabled') == 'Yes' && !empty($awardResponse)) {
+            // Send deposit sms to user
+            if (checkAppSmsEnvironment()) {
+                (new DepositViaAdminSMSService)->send($deposit);
+            }
+
+            if (moduleExists('Referral') && settings('referral_enabled') == 'Yes' && !empty($awardResponse)) {
                 if (isset($awardResponse['email_status']) && $awardResponse['email_status'] === 200 && !empty($awardResponse['email_details'])) {
                     $awardInfo = (new \Modules\Referral\Services\Email\ReferralAwardMailService)->send($awardResponse['email_details']);
                     \Modules\Referral\Jobs\ProcessRewardEmail::dispatch($awardInfo);
-                }
-            }
-
-            // Send deposit sms to admin
-            if (checkAppSmsEnvironment()) {
-                $payoutMessage = 'Amount ' . moneyFormat(optional($deposit->currency)->symbol, formatNumber($deposit->amount)) . ' was deposited by System Administrator.';
-                if (!empty($deposit->user->formattedPhone)) {
-                    sendSMS($deposit->user->formattedPhone, $payoutMessage);
                 }
             }
 
@@ -472,6 +499,11 @@ class UserController extends Controller
         $data['user_tab_menu'] = 'user_profile';
 
         $data['users'] = $users = User::find($id, ['id', 'first_name', 'last_name']);
+
+        if (empty($data['users'])) {
+            $this->helper->one_time_message('error', __('User does not exist.'));
+            return redirect(config('adminPrefix') . '/users');
+        }
 
         if ($request->isMethod('post')) {
 
@@ -573,7 +605,7 @@ class UserController extends Controller
                 ]);
             }
             // Calculate total amount including fees
-            $checkAmount = $amount + $chargeFixed + (($amount * $chargePercentage) / 100);
+            $checkAmount = $amount + $chargeFixed + (((float) $amount * $chargePercentage) / 100);
 
             if ($checkAmount > $balance || $balance < 0) {
                 return response()->json([
@@ -603,7 +635,7 @@ class UserController extends Controller
         }
 
         // Calculate fees and prepare the response
-        $feesPercentage = $amount * ($chargePercentage / 100);
+        $feesPercentage = (float) $amount * ($chargePercentage / 100);
         $feesFixed = $chargeFixed;
         return $this->prepareFeesResponse($feesPercentage, $feesFixed, $amount, $request->currency_id, $balance, $feesDetails);
     }
@@ -698,10 +730,7 @@ class UserController extends Controller
             (new WithdrawalViaAdminMailService)->send($withdrawal);
 
             if (checkAppSmsEnvironment()) {
-                $payoutMessage = 'Amount ' . moneyFormat(optional($withdrawal->currency)->symbol, formatNumber($withdrawal->amount)) . ' was withdrawn by System Administrator.';
-                if (!empty($withdrawal->user->formattedPhone)) {
-                    sendSMS($withdrawal->user->formattedPhone, $payoutMessage);
-                }
+                (new WithdrawViaAdminSMSService)->send($withdrawal);
             }
 
             $data['transInfo']['currency_id'] = $transaction->currency->id;
@@ -741,10 +770,12 @@ class UserController extends Controller
         $data['user_tab_menu'] = 'user_transactions';
 
         $data['users'] = User::find($id, ['id', 'first_name', 'last_name']);
+
         if (empty($data['users'])) {
             $this->helper->one_time_message('error', __('User does not exist.'));
             return redirect(config('adminPrefix').'/users');
         }
+        
         $data['transactionStatus'] = (new Transaction)->eachUserTransactionGroupBy('status', $id);
         $data['transactionCurrency'] = (new Transaction)->eachUserTransactionGroupBy('currency_id', $id);
         $data['transactionType'] = (new Transaction)->eachUserTransactionGroupBy('transaction_type_id', $id);
@@ -814,7 +845,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-
+ 
         if ($user) {
             try {
                 DB::beginTransaction();
@@ -988,7 +1019,6 @@ class UserController extends Controller
 
     public function adminUpdate(Request $request)
     {
-
         $rules = array(
             'first_name' => 'required|max:30|regex:/^[a-zA-Z\s]*$/',
             'last_name'  => 'required|max:30|regex:/^[a-zA-Z\s]*$/',

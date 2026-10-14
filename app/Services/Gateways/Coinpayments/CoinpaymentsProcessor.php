@@ -273,7 +273,11 @@ class CoinpaymentsProcessor extends PaymentProcessor
                 Session::put('transactionDetails', $makeTransaction);
                 Session::put('transactionInfo', $transactionInfo);
 
-                return route('coinpayment.summery');
+                if (array_key_exists($transactionData['currency1'], $currencyList['fiat'])) {
+                    return route('coinpayment.summery');
+                }
+
+                return redirect()->route('coinpayment.summery');
             }
         } catch (Exception $e) {
             throw new Exception($e->getMessage());

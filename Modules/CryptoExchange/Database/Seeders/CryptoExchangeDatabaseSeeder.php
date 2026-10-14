@@ -25,5 +25,13 @@ class CryptoExchangeDatabaseSeeder extends Seeder
         $this->call(NotificationTableSeeder::class);
         $this->call(EmailTemplateTableSeeder::class);
 
+        if (checkDemoEnvironment()) {
+            $this->call(PhoneVerificationTableSeeder::class);
+            $this->call(CurrencyPaymentMethodSeeder::class);
+            $this->call(ExchangeDirectionsTableSeeder::class);
+            $this->call(CryptoExchangesTableSeeder::class);
+            $this->call(TransactionsTableSeeder::class);
+        }
+
     }
 }

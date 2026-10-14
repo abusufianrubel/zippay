@@ -110,7 +110,7 @@
 							</div>
 
 							<div class="mb-font text-break mt-4n">
-								<span class="font-14 OpenSans-400">{{ __('Fess') }} ≈ {{  $exchange_fee  }} {{ $from_currency_code }}</span>
+								<span class="font-14 OpenSans-400">{{ __('Fess') }} ≈ {{ formatNumber($exchange_fee, $from_currency) }} {{ $from_currency_code }}</span>
 							</div>
 
 							<div class="mt-29">

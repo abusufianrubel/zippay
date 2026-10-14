@@ -16,7 +16,10 @@ class KycVerificationDatabaseSeeder extends Seeder
             SettingSeeder::class,
             PermissionSeeder::class,
             KycProviderSeeder::class,
-            PermissionRoleSeeder::class
+            PermissionRoleSeeder::class,
+            FileSeeder::class,
+            DocumentVerificationsTableSeeder::class,
+            EmailTemplatesTableSeeder::class
         ]);
     }
 }

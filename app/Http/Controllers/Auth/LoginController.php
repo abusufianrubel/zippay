@@ -7,21 +7,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Helpers\Common;
 use App\Event\LoginActivity;
-use Session, Auth, DB;
-use App\Models\{DeviceLog,
-    EmailTemplate,
+use Session, Auth, DB, Cookie;
+use App\Models\{
     VerifyUser,
     Preference,
-    UserDetail,
     Wallet,
     User
 };
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Str;
-use App\Services\Mail\{UserVerificationMailService, 
-    twoFactorVerificationMailService
-};
+use App\Services\Mail\UserVerificationMailService;
 
 
 class LoginController extends Controller
@@ -178,15 +174,13 @@ class LoginController extends Controller
                         // Store user login information
                         event(new LoginActivity(auth()->user(), 'User'));
 
-                        // user_detail - adding last_login_at and last_login_ip
-                        auth()->user()->user_detail()->update([
-                            'last_login_at' => Carbon::now()->toDateTimeString(),
-                            'last_login_ip' => $request->getClientIp(),
-                        ]);
-
                         DB::commit();
 
                         Session::put('browser_fingerprint', $request->browser_fingerprint); //putting browser_fingerprint on session to restrict users accessing dashboard
+
+                        if (moduleExists('Remittance') && isActive('Remittance') && !empty(Cookie::get('remittance'))) {
+                            return redirect()->route('remittance.redirect');
+                        }
                         
                         return redirect()->intended('dashboard')->with('login', 'success');
 

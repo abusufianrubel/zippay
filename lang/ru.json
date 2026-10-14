@@ -1709,6 +1709,7 @@
     "Bank": "Банк",
     "Branch": "Ветвь",
     "Cache Clear": "Кэш чистый",
+    "Pay with :x": "Оплатить с помощью :x",
     "Maximum acceptable amount is :x" : "Максимально допустимая сумма :x",
     "Minimum acceptable amount is :x" : "Минимально допустимая сумма :x",
     "Unable to retrieve the exchange rate at this moment" : "Не удается получить курс обмена в данный момент",
@@ -1739,10 +1740,6 @@
     "FOR THE CRYPTO ENTHUSIASTS" : "ДЛЯ ЛЮБИТЕЛЕЙ КРИПТОВАЛЮТ",
     "Unlock the Power of :x" : "Раскройте Потенциал :x",
     "Digital Assets" : "Цифровых Активов",
-    ":x integrates blockchain APIs to enable seamless creation, management, and transactions of cryptocurrencies, enhancing its platform with secure and versatile digital asset capabilities." : ":x интегрирует API блокчейна для обеспечения бесшовного создания, управления и транзакций криптовалют, расширяя свою платформу с безопасными и универсальными возможностями цифровых активов."
-
-
-
-
-
+    "Services" : "Сервисы",
+    "Activities": "Деятельность"
 }

@@ -30,9 +30,9 @@ function getBanks()
                 $('#account_number').html(response.bank.account_number);
 
                 if (response.bank_logo) {
-                    $("#bank_logo").html(`<img  src="${SITE_URL}/public/uploads/files/bank_logos/${response.bank_logo}"/>`);
+                    $("#bank_logo").html(`<img  src="${SITE_URL}/uploads/files/bank_logos/${response.bank_logo}"/>`);
                 } else {
-                    $("#bank_logo").html(`<img  src="${SITE_URL}/public/dist/images/gateways/bank.png"/>`);
+                    $("#bank_logo").html(`<img  src="${SITE_URL}/dist/images/gateways/bank.png"/>`);
                 }
             }
             else

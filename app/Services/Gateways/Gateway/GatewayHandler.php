@@ -26,7 +26,17 @@ class GatewayHandler
      */
     public static function gatewayIssue($gateway)
     {
-        $gateway = ($gateway == 'payumoney') ? 'PayUmoney' : ucfirst($gateway);
+        // $gateway = ($gateway == 'payumoney') ? 'PayUmoney' : ucfirst($gateway);
+        
+        if ($gateway == 'payumoney') {
+            $gateway = 'PayUmoney';
+        } elseif (strtolower($gateway) == 'fedapay') {
+            $gateway = 'FedaPay';
+        } else {
+            $gateway = ucfirst($gateway);
+        }
+
+
         $gatewayConcrete = "App\Services\Gateways\\" . $gateway . "\\" . $gateway . "Processor";
         if (class_exists($gatewayConcrete)) {
             app()->bind(PaymentProcessor::class, $gatewayConcrete);

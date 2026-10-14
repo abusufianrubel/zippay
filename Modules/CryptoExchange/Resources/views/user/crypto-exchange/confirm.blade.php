@@ -44,7 +44,7 @@
 
                     <p class="mb-0 f-24 l gilroy-Semibold mt-1"><span class="text-dark">{{  $send_amount }}</span><span class="text-primary"> {{ $from_currency_code }}</span></p>
 
-                    <p class="mb-0 f-12 leading-17 gilroy-medium text-gray mt-1"><span>{{ __('Fees') }} ≈ </span><span>{{ $exchange_fee }} {{ $from_currency_code }}</span></p>
+                    <p class="mb-0 f-12 leading-17 gilroy-medium text-gray mt-1"><span>{{ __('Fees') }} ≈ </span><span>{{ formatNumber($exchange_fee, $from_currency) }} {{ $from_currency_code }}</span></p>
 
                     <span class="wallet-error"></span>
                 </div>
@@ -84,7 +84,7 @@
             <div class="d-flex flex-wrap justify-content-between">
                 <div class="left-merchant pt-20p">
                     <p class="mb-0 f-16 gilroy-medium text-gray-100 mt-38">{{ __('Please make payment') }}</p>
-                    <p class="mb-0 f-32 l gilroy-Semibold mt-2"><span class="text-dark">{{ $send_amount + $exchange_fee  }}</span><span class="text-primary"> {{ $from_currency_code }}</span></p>
+                    <p class="mb-0 f-32 l gilroy-Semibold mt-2"><span class="text-dark">{{ formatNumber($send_amount + $exchange_fee, $from_currency)  }}</span><span class="text-primary"> {{ $from_currency_code }}</span></p>
                     <p class="f-16 leading-25 text-gray-100 gilroy-medium mt-6">{{ __('to our merchant address below') }}</p>
                 </div>
 

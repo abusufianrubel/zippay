@@ -66,6 +66,15 @@ class MtsProcessor extends PaymentProcessor
 
             $this->walletCheck();
 
+            if (moduleExists('PaymentLink') && in_array($this->data['transaction_type'], [Payment_Link_Received, Payment_Link_Sent])) {
+                $linkPaymentData = getPaymentParam(request()->params);
+                $paymentLink = (new \Modules\PaymentLink\Services\PaymentLinkService)->checkLinkValidity($linkPaymentData['reference']);
+
+                if ($paymentLink->user_id == auth()->user()->id) {
+                    throw new PaymentFailedException(__("You cannot make payment to yourself!"));
+                }
+            }
+
             return [
                 "type" => $this->gateway(),
                 'redirect_url' => $data['redirect_url'] . '?params=' . $data['params'] . '&user=' . auth()->id() ?? $data['user_id'],

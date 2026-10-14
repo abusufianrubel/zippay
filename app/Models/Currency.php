@@ -110,5 +110,10 @@ class Currency extends Model
         return $query->where('type', $value);
     }
 
+    public function country()
+    {
+        return $this->hasOne(Country::class, 'id');
+    }
+
 
 }

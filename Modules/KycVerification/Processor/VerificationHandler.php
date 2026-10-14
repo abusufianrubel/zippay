@@ -10,17 +10,18 @@ class VerificationHandler
     /**
      * Assigns the verification provider based on the current settings.
      *
-     * This method retrieves the KYC provider from the application settings and
-     * attempts to find and bind the corresponding provider concrete class to 
-     * the VerificationContract. If the class does not exist, an exception is thrown.
-     *
      * @return void
      * @throws \Exception if the verification processor is not found.
      */
     public static function assignVerificationProvider()
     {
         // Retrieve the current KYC provider setting
-        $provider = settings('kyc_provider');
+        $providerSetting = settings('kyc_provider');
+
+        // Extract a clean string representation for processing if an array is returned
+        $provider = is_array($providerSetting) 
+            ? ($providerSetting['alias'] ?? $providerSetting['name'] ?? 'manual') 
+            : (!empty($providerSetting) ? $providerSetting : 'manual');
 
         // Find the concrete provider class using the verification provider manager
         $providerConcrete = VerificationProviderManager::find($provider);
@@ -29,8 +30,9 @@ class VerificationHandler
         if (class_exists($providerConcrete)) {
             app()->bind(VerificationContract::class, $providerConcrete);
         } else {
-            // Throw an exception if the provider class is not found
-            throw new \Exception(__(":x Verification processor not found.", ["x" => ucfirst($provider)]));
+            // Safe fallback layout map execution to prevent a type mismatch error
+            $displayProvider = is_string($provider) ? $provider : 'Unknown';
+            throw new \Exception(__(":x Verification processor not found.", ["x" => ucfirst($displayProvider)]));
         }
     }
 }

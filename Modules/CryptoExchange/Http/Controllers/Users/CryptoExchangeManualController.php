@@ -5,7 +5,6 @@ namespace Modules\CryptoExchange\Http\Controllers\Users;
 use App\Http\Helpers\Common;
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Modules\CryptoExchange\Entities\CryptoExchange;
@@ -81,8 +80,16 @@ class CryptoExchangeManualController extends Controller
 
         try {
             $fromCurrency = isset($paymentData) ? $paymentData['from_currency'] : null;
-            $data = array_merge($data, $this->service->getCryptoExchangeDirection($exchange_type, $fromCurrency));
-            $data['min_amount'] = isset($paymentData) ? $paymentData['send_amount'] : $data['min_amount'];
+
+            $exchangeDirection = $this->service->getCryptoExchangeDirection($exchange_type, $fromCurrency);
+
+            $data = array_merge($data, $exchangeDirection);
+
+            if ($exchangeDirection['status'] == 'error') {
+                $this->helper->one_time_message('error', $exchangeDirection['message']);
+            }
+
+            $data['min_amount'] = isset($paymentData) ? $paymentData['send_amount'] : $data['min_amount'] ?? 0;
             $data['selectedTo'] = isset($paymentData) ? $paymentData['to_currency'] : '';
             $data['selectedFrom'] =  isset($paymentData) ? $paymentData['from_currency'] : '';
 
@@ -106,6 +113,11 @@ class CryptoExchangeManualController extends Controller
                 $request->send_amount,
                 $request->get_amount
             );
+
+            if ($data['status'] == 'error') {
+                $this->helper->one_time_message('error', $data['message']);
+                return redirect()->route('user_dashboard.crypto_buy_sell.create');
+            }
         } catch (Exception $e) {
            $this->helper->one_time_message('error', $e->getMessage());
            return redirect()->route('user_dashboard.crypto_buy_sell.create');
@@ -188,6 +200,11 @@ class CryptoExchangeManualController extends Controller
 
             $paymentData = $this->service->processExchange($processArray);
 
+            if (isset($paymentData['status']) && $paymentData['status'] == 'error') {
+                $this->helper->one_time_message('error', $paymentData['message']);
+                return redirect()->route('user_dashboard.crypto_buy_sell.create');
+            }
+
             $sessionValue['id'] = $paymentData['cryptoExchangeId'];
             $sessionValue['trackUrl'] = url('crypto-exchange/track-transaction', $paymentData['cryptoExchange']->uuid);
 
@@ -235,6 +252,10 @@ class CryptoExchangeManualController extends Controller
 
             $paymentData = $this->service->processExchange($processArray);
 
+            if (isset($paymentData['status']) && $paymentData['status'] == 'error') {
+                $this->helper->one_time_message('error', $paymentData['message']);
+                return redirect()->route('user_dashboard.crypto_buy_sell.create');
+            }
 
             $data = [];
             $data['result'] = $paymentData['cryptoExchange'];
@@ -273,6 +294,12 @@ class CryptoExchangeManualController extends Controller
             'fromCurrency:id,code,symbol',
             'toCurrency:id,code,symbol',
         ])->where(['id' => $trans_id])->first();
+
+        if (empty($data['currencyExchange'])) {
+            $this->helper->one_time_message('error', __('Transaction not found!'));
+            return redirect()->route('guest.crypto_exchange.home');
+        }
+        
         generatePDF('cryptoexchange::user.crypto-exchange.exchangeOfPaymentPdf', 'crypto_exchanges_tramsactopm_', $data);
     }
 

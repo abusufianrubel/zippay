@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Config;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Helpers\Common;
@@ -14,8 +13,7 @@ use App\Models\{Currency,
 
 class FeesLimitController extends Controller
 {
-    protected $helper;
-    protected $currency;
+    protected $helper, $currency;
 
     public function __construct()
     {
@@ -38,7 +36,6 @@ class FeesLimitController extends Controller
 
         $transactionType = TransactionType::where('name', ucfirst($tab))->first(['id', 'name']);
         $transactionTypeName = $transactionType->name;
-
         $data['transaction_type'] = $transactionType = $transactionType->id;
         $data['currency'] = $this->currency->getCurrency(['id' => $currencyId], ['id', 'default', 'name', 'type']);
         $type = $data['currency']->type;
@@ -50,7 +47,6 @@ class FeesLimitController extends Controller
         $condition = ($type == 'fiat') ? getPaymoneySettings('payment_methods')['web']['fiat']['deposit'] : getPaymoneySettings('payment_methods')['web']['crypto']['deposit'];
 
         foreach (getCustomModules() as $module) {
-
             if (!empty(config($module->get('alias') . '.fees_limit_settings')) && in_array($transactionType, config($module->get('alias') . '.transaction_types'))) {
                 foreach (config($module->get('alias') . '.' . 'fees_limit_settings') as $key => $moduleTransactionType) {
 
@@ -209,7 +205,7 @@ class FeesLimitController extends Controller
         $data = [];
         $transactionType = $request->transaction_type;
         $currencyId = $request->currency_id;
-        $moduleAlias = $request->moduleAlias;
+        $moduleAlias = $request->module_alias;
         $type = Currency::where('id', $currencyId)->value('type');
 
         $feesLimit = getModuleTransactionTypeFeesLimit($transactionType, $currencyId, $type, $moduleAlias);
@@ -269,7 +265,7 @@ class FeesLimitController extends Controller
         $data = [];
         $transactionType = $request->transaction_type;
         $currencyId = $request->currency_id;
-        $moduleAlias = $request->moduleAlias;
+        $moduleAlias = $request->module_alias;
         $type = Currency::where('id', $currencyId)->value('type');
         $currency = $this->currency->getCurrency(['id' => $currencyId], ['id', 'name', 'symbol']);
 

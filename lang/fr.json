@@ -1709,6 +1709,7 @@
     "Bank": "Banque",
     "Branch": "Bifurquer",
     "Cache Clear": "Cache claire",
+    "Pay with :x": "Payer avec :x",
     "Maximum acceptable amount is :x" : "Le montant maximum acceptable est :x",
     "Minimum acceptable amount is :x" : "Le montant minimum acceptable est :x",
     "Unable to retrieve the exchange rate at this moment" : "Impossible de récupérer le taux de change pour le moment",
@@ -1739,7 +1740,6 @@
     "FOR THE CRYPTO ENTHUSIASTS" : "POUR LES PASSIONNÉS DE CRYPTO",
     "Unlock the Power of :x" : "Libérez la Puissance de :x",
     "Digital Assets" : "Actifs Numériques",
-    ":x integrates blockchain APIs to enable seamless creation, management, and transactions of cryptocurrencies, enhancing its platform with secure and versatile digital asset capabilities." : ":x intègre des APIs blockchain pour permettre la création, la gestion et les transactions fluides de cryptomonnaies, renforçant sa plateforme avec des capacités d'actifs numériques sécurisées et polyvalentes."
-
-
+    "Services" : "Services",
+    "Activities": "Activités"
 }

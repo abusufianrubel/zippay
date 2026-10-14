@@ -3,6 +3,7 @@
 namespace Modules\TatumIo\Http\Controllers\Admin;
 
 use App\Http\Helpers\Common;
+use App\Models\CryptoProvider;
 use App\Models\Currency;
 use Modules\TatumIo\Traits\TokenTrait;
 use Exception, Cache;
@@ -25,6 +26,11 @@ class TatumIoTokenController extends Controller
     {
         $data['menu'] = 'crypto_token';
         $data['tokens'] = CryptoToken::get();
+
+        $data['provider'] = CryptoProvider::with([
+            'cryptoAssetSettings:id,currency_id,crypto_provider_id,network,network_credentials,status'
+        ])->where('alias', 'tatumio')
+        ->first();
 
         $cacheKey = 'crypto-token';
 
@@ -217,6 +223,4 @@ class TatumIoTokenController extends Controller
         }
 
     }
-
-
 }

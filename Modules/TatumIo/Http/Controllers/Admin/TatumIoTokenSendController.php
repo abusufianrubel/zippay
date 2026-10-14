@@ -193,6 +193,7 @@ class TatumIoTokenSendController extends Controller
     /* Token Sent :: success */
     public function tokenSendSuccess(Request $request)
     {
+       
         actionSessionCheck();
 
         $res = $this->tokenSendReceiveSuccess($request, 'send');
@@ -599,7 +600,4 @@ class TatumIoTokenSendController extends Controller
 
         generatePDF('tatumio::user.transactions.token_transaction_pdf', 'crypto-transaction_', $data);
     }
-
-
- 
 }

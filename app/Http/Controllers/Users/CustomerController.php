@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Users;
 use Artisan, Validator, Session, Hash, Auth, DB, Exception, Common;
 use App\Http\Controllers\Users\EmailController;
 use App\Http\Controllers\Auth\LoginController;
-use Intervention\Image\Facades\Image;
+use Modules\Virtualcard\Entities\Virtualcard;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use App\Http\Controllers\Controller;
 use App\Rules\CheckValidFile;
 use Illuminate\Http\Request;
@@ -23,6 +25,8 @@ use App\Models\{
 };
 
 use App\Services\Mail\TwoFactorVerificationMailService;
+use App\Services\Sms\TowFaSmsService;
+use App\Services\Sms\PhoneVerificationSmsService;
 
 class CustomerController extends Controller
 {
@@ -60,24 +64,50 @@ class CustomerController extends Controller
         return view('user.setting.phone2fa-verify');
     }
 
+    public function resend2fa()
+    {
+        $userDetail = UserDetail::with('user')->where('user_id', auth()->id())->first();
+        $userDetail->two_step_verification_code = otpCode6();
+        $userDetail->save();
+
+        $user = $userDetail->user;
+
+        if ($userDetail->two_step_verification_type == 'phone') {
+            if (!empty($user->formattedPhone)) {
+                (new TowFaSmsService())->send($user, ['optCode' => $userDetail->two_step_verification_code]);
+
+                return response()->json([
+                    'status'  => true,
+                    'message' => __('2FA code sent successfully to your phone!'),
+                    'success' => "alert-success",
+                ]);
+            }
+        } elseif ($userDetail->two_step_verification_type == 'email') {
+            $data['optCode'] = $userDetail->two_step_verification_code;
+            (new TwoFactorVerificationMailService())->send($user, $data);
+
+            return response()->json([
+                'status'  => true,
+                'message' => __('2FA code sent successfully to your email!'),
+                'success' => "alert-success",
+            ]);
+        }
+    }
+
     public function verify2fa(Request $request)
     {
         $validation = Validator::make($request->all(), [
             'two_step_verification_code' => 'required|numeric',
         ]);
 
-        if ($validation->passes())
-        {
-            if ($request->two_step_verification_code == auth()->user()->user_detail->two_step_verification_code)
-            {
+        if ($validation->passes()) {
+            if ($request->two_step_verification_code == auth()->user()->user_detail->two_step_verification_code) {
                 Session::put('2fa', '2fa');
                 $userDetail = UserDetail::where(['user_id' => auth()->user()->id])->first();
 
-                if ($request->remember_me == "true")
-                {
+                if ($request->remember_me == "true") {
                     $checkDeviceLog = DeviceLog::where(['user_id' => auth()->user()->id, 'browser_fingerprint' => $request->browser_fingerprint])->first();
-                    if (empty($checkDeviceLog))
-                    {
+                    if (empty($checkDeviceLog)) {
                         $deviceLog                      = new DeviceLog();
                         $deviceLog->user_id             = auth()->user()->id;
                         $deviceLog->browser_fingerprint = $request->browser_fingerprint;
@@ -87,8 +117,7 @@ class CustomerController extends Controller
                     }
                 }
 
-                if ($userDetail->two_step_verification == 0)
-                {
+                if ($userDetail->two_step_verification == 0) {
                     $userDetail->two_step_verification = 1;
                 }
                 $userDetail->save();
@@ -98,18 +127,14 @@ class CustomerController extends Controller
                     'message' => __('User Verified Successfully!'),
                     'success' => "alert-success",
                 ]);
-            }
-            else
-            {
+            } else {
                 return response()->json([
                     'status'  => false,
                     'message' => __('Verification Code Does Not Match!'),
                     'error'   => "alert-danger",
                 ]);
             }
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'status'  => 404,
                 'message' => $validation->errors()->all(),
@@ -138,11 +163,9 @@ class CustomerController extends Controller
 
     public function verifyGoogle2faOtp(Request $request)
     {
-        if ($request->remember_otp == "true")
-        {
+        if ($request->remember_otp == "true") {
             $checkDeviceLog = DeviceLog::where(['user_id' => auth()->user()->id, 'browser_fingerprint' => $request->browser_fingerprint])->first();
-            if (empty($checkDeviceLog))
-            {
+            if (empty($checkDeviceLog)) {
                 $deviceLog                      = new DeviceLog();
                 $deviceLog->user_id             = auth()->user()->id;
                 $deviceLog->browser_fingerprint = $request->browser_fingerprint;
@@ -187,11 +210,15 @@ class CustomerController extends Controller
 
         $transaction          = new Transaction();
         $data['transactions'] = $transaction->dashboardTransactionList();
-        $data['lastTransaction'] = Transaction::with(['transaction_type:id,name','currency:id,code,type,symbol'])->where('user_id', auth()->user()->id)->latest()->first();
+        $data['lastTransaction'] = Transaction::with(['transaction_type:id,name', 'currency:id,code,type,symbol'])->where('user_id', auth()->user()->id)->latest()->first();
         $data['wallets'] = Wallet::with('currency:id,type,logo,code,status,symbol')->where(['user_id' => Auth::user()->id])->orderBy('balance', 'ASC')->get(['id', 'currency_id', 'balance', 'is_default']);
         $data['user'] = User::where(['id' => Auth::user()->id])->first();
         $data['qrCode'] = QrCode::getQrCode(auth()->id(), 'user', ['qr_image']);
         $data['verification'] = DocumentVerification::getVerification();
+        $data['virtualcards'] = Virtualcard::with('virtualcardHolder')
+            ->whereHas('virtualcardHolder', function ($query) {
+                return $query->where('user_id', auth()->id());
+            })->whereStatus('Active')->get();
 
         return view('user.dashboard', $data);
     }
@@ -235,8 +262,7 @@ class CustomerController extends Controller
 
     public function disabledTwoFa(Request $request)
     {
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             $userDetail                             = UserDetail::where(['user_id' => auth()->user()->id])->first();
             $userDetail->two_step_verification_type = $request->two_step_verification_type;
             $userDetail->save();
@@ -259,10 +285,9 @@ class CustomerController extends Controller
             ]);
 
             if ($request->two_step_verification_type == 'phone') {
-                if (checkAppSmsEnvironment() == true) {
+                if (checkAppSmsEnvironment()) {
                     if (!empty($user->formattedPhone)) {
-                        $message = $data['optCode'] . ' is your ' . settings('name') . ' 2-factor verification code. ';
-                        sendSMS($user->formattedPhone, $message);
+                        (new TowFaSmsService())->send($user, ['optCode' => $data['optCode']]);
                     }
                 }
             } elseif ($request->two_step_verification_type == 'email') {
@@ -293,8 +318,7 @@ class CustomerController extends Controller
     //Google2fa in user profile- start
     public function google2fa(Request $request)
     {
-        if (auth()->user()->user_detail->two_step_verification_type !== $request->two_step_verification_type)
-        {
+        if (auth()->user()->user_detail->two_step_verification_type !== $request->two_step_verification_type) {
             $google2fa                             = app('pragmarx.google2fa');
             $registration_data                     = $request->all();
             $registration_data["google2fa_secret"] = $google2fa->generateSecretKey();
@@ -312,9 +336,7 @@ class CustomerController extends Controller
                 'QR_Image'                         => $QR_Image,
                 'twoFaVerificationTypeForResponse' => 'google_authenticator',
             ]);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'status' => false,
                 'two_step_verification_type' => auth()->user()->user_detail->two_step_verification_type,
@@ -335,12 +357,10 @@ class CustomerController extends Controller
 
     public function google2faOtpVerification(Request $request)
     {
-        if ($request->remember_otp == "true")
-        {
+        if ($request->remember_otp == "true") {
             $checkDeviceLog = DeviceLog::where(['user_id' => auth()->user()->id, 'browser_fingerprint' => $request->browser_fingerprint])->first();
 
-            if (empty($checkDeviceLog))
-            {
+            if (empty($checkDeviceLog)) {
                 $deviceLog                      = new DeviceLog();
                 $deviceLog->user_id             = auth()->user()->id;
                 $deviceLog->browser_fingerprint = $request->browser_fingerprint;
@@ -381,18 +401,14 @@ class CustomerController extends Controller
             'two_step_verification_code' => 'required|numeric',
         ]);
 
-        if ($validation->passes())
-        {
-            if ($request->two_step_verification_code == auth()->user()->user_detail->two_step_verification_code)
-            {
+        if ($validation->passes()) {
+            if ($request->two_step_verification_code == auth()->user()->user_detail->two_step_verification_code) {
 
                 $userDetail = UserDetail::where(['user_id' => auth()->user()->id])->first();
 
-                if ($request->remember_me == "true")
-                {
+                if ($request->remember_me == "true") {
                     $checkDeviceLog = DeviceLog::where(['user_id' => auth()->user()->id, 'browser_fingerprint' => $request->browser_fingerprint])->first();
-                    if (empty($checkDeviceLog))
-                    {
+                    if (empty($checkDeviceLog)) {
                         $deviceLog                      = new DeviceLog();
                         $deviceLog->user_id             = auth()->user()->id;
                         $deviceLog->browser_fingerprint = $request->browser_fingerprint;
@@ -402,8 +418,7 @@ class CustomerController extends Controller
                     }
                 }
 
-                if ($userDetail->two_step_verification == 0)
-                {
+                if ($userDetail->two_step_verification == 0) {
                     $userDetail->two_step_verification = 1;
                 }
                 $userDetail->two_step_verification_type = $request->twoFaVerificationType;
@@ -414,18 +429,14 @@ class CustomerController extends Controller
                     'message' => __('User Verified Successfully!'),
                     'success' => "alert-success",
                 ]);
-            }
-            else
-            {
+            } else {
                 return response()->json([
                     'status'  => false,
                     'message' => __('Verification Code Does Not Match!'),
                     'error'   => "alert-danger",
                 ]);
             }
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'status'  => 404,
                 'message' => $validation->errors()->all(),
@@ -436,15 +447,12 @@ class CustomerController extends Controller
 
     public function checkPhoneFor2fa(Request $request)
     {
-        if (!empty(auth()->user()->carrierCode) && !empty(auth()->user()->phone))
-        {
+        if (!empty(auth()->user()->carrierCode) && !empty(auth()->user()->phone)) {
             return response()->json([
                 'status'  => true,
                 'message' => __('Phone number is set.'),
             ]);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'status'  => false,
                 'message' => __('Please set your phone number first!'),
@@ -462,16 +470,13 @@ class CustomerController extends Controller
 
         $user = User::where(['id' => Auth::user()->id])->first();
 
-        if (Hash::check($request->old_password, $user->password))
-        {
+        if (Hash::check($request->old_password, $user->password)) {
             $user->password = Hash::make($request->password);
             $user->save();
 
             $this->helper->one_time_message('success', __('Password Updated successfully!'));
             return redirect()->intended("profile");
-        }
-        else
-        {
+        } else {
             $this->helper->one_time_message('error', __('Old Password is Wrong!'));
             return redirect()->intended("profile");
         }
@@ -479,10 +484,12 @@ class CustomerController extends Controller
 
     public function profileImage(Request $request)
     {
-        $validator = Validator::make($request->all(),
+        $validator = Validator::make(
+            $request->all(),
             [
                 'file' => new CheckValidFile(getFileExtensions(3), true),
-            ]);
+            ]
+        );
 
         if ($validator->fails()) {
             return array(
@@ -494,43 +501,50 @@ class CustomerController extends Controller
         $user     = User::find(Auth::user()->id);
 
         $picture = $request->file;
+
         if (isset($picture)) {
             $ext      = strtolower($picture->getClientOriginalExtension());
             $filename = time() . '.' . $ext;
 
-            $dir1 = public_path('/uploads/user-profile/' . $filename);
-            $dir2 = public_path('/uploads/user-profile/thumb/' . $filename);
-
             if (!empty(Auth::user()->picture)) {
-                if (file_exists($dir1)) {
-                    unlink($dir1);
+
+                $profile = public_path('/uploads/user-profile/' . Auth::user()->picture);
+                $thumbnail = public_path('/uploads/user-profile/thumb/' . Auth::user()->picture);
+
+                if (file_exists($profile)) {
+                    unlink($profile);
                 }
 
-                if (file_exists($dir2)) {
-                    unlink($dir2);
+                if (file_exists($thumbnail)) {
+                    unlink($thumbnail);
                 }
             }
 
-            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'gif' || $ext == 'bmp') {
-                $img = Image::make($picture->getRealPath());
+            $profileDirectory = public_path('/uploads/user-profile/' . $filename);
+            $thumbDirectory = public_path('/uploads/user-profile/thumb/' . $filename);
 
-                $img->resize(100, 100)->save($dir1);
-
-                $img->resize(70, 70)->save($dir2);
-
-                $user->picture = $filename;
-            } else {
+            if (!in_array($ext, getFileExtensions(3))) {
                 return array(
                     'fail'   => true,
                     'errors' => 'Invalid Image Format!',
                 );
             }
+
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read($picture->getRealPath());
+            $img->resize(100, 100);
+            $img->save($profileDirectory);
+            $img->resize(70, 70);
+            $img->save($thumbDirectory);
+            $user->picture = $filename;
         }
+
         $user->save();
 
-        if($filename != '') {
+        if ($filename != '') {
             $this->helper->one_time_message('success', __('User Image Updated Successfully'));
         }
+
         return $filename;
     }
 
@@ -539,21 +553,27 @@ class CustomerController extends Controller
         $data['status']  = false;
         $data['message'] = 'No';
 
-        if ( !checkAppSmsEnvironment() || empty(getSmsConfigDetails()) 
-        || getSmsConfigDetails()->status !== 'Active' || empty($request->phone) 
-        || empty($request->carrierCode) || empty($request->phone)) {
+        if (
+            !checkAppSmsEnvironment() || empty(getSmsConfigDetails())
+            || getSmsConfigDetails()->status !== 'Active' || empty($request->phone)
+            || empty($request->carrierCode) || empty($request->phone)
+        ) {
             return json_encode($data);
         }
 
         $six_digit_random_number = otpCode6();
-        $message = $six_digit_random_number . ' is your ' . settings('name') . ' verification code. ';
-        $phoneFormatted = str_replace('+' . $request->carrierCode, "", $request->phone);
 
-        try {
-            sendSMS($request->carrierCode . $phoneFormatted, $message);
-        } catch (Exception $e) {
-            $data['message'] = $e->getMessage();
-            return json_encode($data);
+        if (!checkDemoEnvironment()) {
+
+            try {
+                (new PhoneVerificationSmsService())->send(auth()->user(), [
+                    'optCode' => $six_digit_random_number,
+                    'phoneNumber' => str_replace('+' . $request->carrierCode, "", $request->phone)
+                ]);
+            } catch (Exception $e) {
+                $data['message'] = $e->getMessage();
+                return json_encode($data);
+            }
         }
 
         $userDetail = UserDetail::where(['user_id' => auth()->user()->id])->first(['phone_verification_code']);
@@ -572,8 +592,11 @@ class CustomerController extends Controller
         $data['status']  = true;
         $data['message'] = 'Yes';
 
-        return json_encode($data);
+        if (checkDemoEnvironment()) {
+            $data['otp'] = $six_digit_random_number;
+        }
 
+        return json_encode($data);
     }
 
     public function completePhoneVerification(Request $request)
@@ -584,12 +607,10 @@ class CustomerController extends Controller
             'phone_verification_code' => 'required|numeric',
         ]);
 
-        if ($validation->passes())
-        {
+        if ($validation->passes()) {
             $userDetail = UserDetail::where(['user_id' => auth()->user()->id])->first(['phone_verification_code']);
 
-            if ($request->phone_verification_code == $userDetail->phone_verification_code)
-            {
+            if ($request->phone_verification_code == $userDetail->phone_verification_code) {
                 $user                 = User::where(['id' => auth()->user()->id])->first();
                 $user->phone          = $phoneFormatted; //
                 $user->defaultCountry = $request->defaultCountry;
@@ -602,18 +623,14 @@ class CustomerController extends Controller
                     'message' => __('Phone Number Verified Successfully!'),
                     'success' => "alert-success",
                 ]);
-            }
-            else
-            {
+            } else {
                 return response()->json([
                     'status'  => false,
                     'message' => __('Verification Code Does Not Match!'),
                     'error'   => "alert-danger",
                 ]);
             }
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'status'  => 500,
                 'message' => $validation->errors()->all(),
@@ -631,8 +648,7 @@ class CustomerController extends Controller
             'phone' => 'required|unique:users,phone',
         ]);
 
-        if ($validation->passes())
-        {
+        if ($validation->passes()) {
             $user                 = User::findOrFail(auth()->user()->id);
             $user->phone          = $phoneFormatted;
             $user->defaultCountry = $request->defaultCountry;
@@ -645,9 +661,7 @@ class CustomerController extends Controller
                 'message'    => __('Phone Number Added Successfully!'),
                 'class_name' => 'alert-success',
             ]);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'status'     => false,
                 'message'    => $validation->errors()->all(),
@@ -664,8 +678,7 @@ class CustomerController extends Controller
 
         $userDetail = UserDetail::where(['user_id' => auth()->user()->id])->first(['phone_verification_code']);
 
-        if (!empty($userDetail))
-        {
+        if (!empty($userDetail)) {
             UserDetail::where([
                 'user_id'                 => auth()->user()->id,
                 'phone_verification_code' => $userDetail->phone_verification_code,
@@ -673,24 +686,18 @@ class CustomerController extends Controller
         }
 
         //SMS
-        if (!empty($request->phone))
-        {
-            if (!empty($request->code) && !empty($request->phone))
-            {
+        if (!empty($request->phone)) {
+            if (!empty($request->code) && !empty($request->phone)) {
                 $message = $six_digit_random_number . ' is your ' . settings('name') . ' verification code. ';
 
                 $data = [];
-                if (checkAppSmsEnvironment() == true && preference('phone_verification') == "Enabled")
-                {
-                    if (!empty(getSmsConfigDetails()) && getSmsConfigDetails()->status == 'Active')
-                    {
+                if (checkAppSmsEnvironment() == true && preference('phone_verification') == "Enabled") {
+                    if (!empty(getSmsConfigDetails()) && getSmsConfigDetails()->status == 'Active') {
                         sendSMS($request->code . $phoneFormatted, $message);
 
                         $data['status']  = true;
                         $data['message'] = 'Yes';
-                    }
-                    else
-                    {
+                    } else {
                         $data['status']  = false;
                         $data['message'] = 'No';
                     }
@@ -714,12 +721,10 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), $rules);
         $validator->setAttributeNames($fieldNames);
 
-        if ($validator->passes())
-        {
+        if ($validator->passes()) {
             $userDetail = UserDetail::where(['user_id' => auth()->user()->id])->first(['phone_verification_code']);
 
-            if ($request->edit_phone_verification_code == $userDetail->phone_verification_code)
-            {
+            if ($request->edit_phone_verification_code == $userDetail->phone_verification_code) {
                 $user                 = User::where(['id' => auth()->user()->id])->first();
                 $user->phone          = $phoneFormatted;
                 $user->defaultCountry = $request->flag;
@@ -732,18 +737,14 @@ class CustomerController extends Controller
                     'message' => __('Phone Number Verified Successfully!'),
                     'success' => "alert-success",
                 ]);
-            }
-            else
-            {
+            } else {
                 return response()->json([
                     'status'  => false,
                     'message' => __('Verification Code Does Not Match!'),
                     'error'   => "alert-danger",
                 ]);
             }
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'status'  => 500,
                 'message' => $validator->errors()->all(),
@@ -761,8 +762,7 @@ class CustomerController extends Controller
             'phone' => 'unique:users,phone,' . auth()->user()->id,
         ]);
 
-        if ($validation->passes())
-        {
+        if ($validation->passes()) {
             $user = User::findOrFail(auth()->user()->id);
 
             /*phone*/
@@ -779,9 +779,7 @@ class CustomerController extends Controller
                 'message'    => __('Phone Number Updated Successfully!'),
                 'class_name' => 'alert-success',
             ]);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'status'     => false,
                 'message'    => $validation->errors()->all(),
@@ -795,28 +793,25 @@ class CustomerController extends Controller
         $user       = User::find(auth()->user()->id, ['phone', 'carrierCode', 'defaultCountry']);
         $userDetail = UserDetail::where(['user_id' => auth()->user()->id])->first(['phone_verification_code']);
 
-        if (!empty($user))
-        {
+        if (!empty($user)) {
             User::where(['id' => auth()->user()->id])->update([
                 'phone'          => null,
+                'formattedPhone' => null,
                 'carrierCode'    => null,
                 'defaultCountry' => null,
             ]);
 
-            if (!empty($userDetail))
-            {
+            if (!empty($userDetail)) {
                 UserDetail::where([
                     'user_id'                 => auth()->user()->id,
-                    'phone_verification_code' => auth()->user()->user_detail->phone_verification_code,
+                    'phone_verification_code' => auth()->user()?->user_detail?->phone_verification_code,
                 ])->update(['phone_verification_code' => null]);
             }
             return response()->json([
                 'status'  => 'success',
                 'message' => __('Phone Deleted Successfully!'),
             ]);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'status'  => 'error',
                 'message' => __('Unable To Delete Phone!'),
@@ -828,25 +823,18 @@ class CustomerController extends Controller
     {
         $req_id = $request->id;
 
-        if (isset($req_id))
-        {
-            $user = User::where(['phone' => preg_replace("/[\s-]+/", "", $request->phone), 'carrierCode' => $request->carrierCode])->where(function ($query) use ($req_id)
-            {
+        if (isset($req_id)) {
+            $user = User::where(['phone' => preg_replace("/[\s-]+/", "", $request->phone), 'carrierCode' => $request->carrierCode])->where(function ($query) use ($req_id) {
                 $query->where('id', '!=', $req_id);
             })->first(['phone', 'carrierCode']);
-        }
-        else
-        {
+        } else {
             $user = User::where(['phone' => preg_replace("/[\s-]+/", "", $request->phone), 'carrierCode' => $request->carrierCode])->first(['phone', 'carrierCode']);
         }
 
-        if (!empty($user->phone) && !empty($user->carrierCode))
-        {
+        if (!empty($user->phone) && !empty($user->carrierCode)) {
             $data['status'] = true;
             $data['fail']   = __("The phone number has already been taken!");
-        }
-        else
-        {
+        } else {
             $data['status']  = false;
             $data['success'] = __("The phone number is Available!");
         }
@@ -865,8 +853,7 @@ class CustomerController extends Controller
 
     public function updateProfileInfo(Request $request)
     {
-        if ($request->isMethod('post'))
-        {
+        if ($request->isMethod('post')) {
             $rules = array(
                 'first_name' => 'required|max:30|regex:/^[a-zA-Z\s]*$/',
                 'last_name'  => 'required|max:30|regex:/^[a-zA-Z\s]*$/',
@@ -894,8 +881,8 @@ class CustomerController extends Controller
                     $data['userId'] = $user->id;
 
                     $UserDetail = UserDetail::with(['user:id', 'country:id'])
-                                ->where(['user_id' => Auth::user()->id])
-                                ->first(['id', 'user_id', 'country_id', 'address_1', 'address_2', 'city', 'state', 'timezone']);
+                        ->where(['user_id' => Auth::user()->id])
+                        ->first(['id', 'user_id', 'country_id', 'address_1', 'address_2', 'city', 'state', 'timezone']);
                     //optimized
                     $UserDetail->user_id    = Auth::user()->id;
                     $UserDetail->country_id = $request->country_id;
@@ -911,8 +898,7 @@ class CustomerController extends Controller
                     $isWalletExist = Wallet::where(['id' => $request->default_wallet, 'user_id' => Auth::user()->id])->exists();
 
                     if ($isWalletExist) {
-                        if ($defaultWallet->id != $request->default_wallet)
-                        {
+                        if ($defaultWallet->id != $request->default_wallet) {
                             //making existing default wallet to 'No'
                             $defaultWallet->is_default = 'No';
                             $defaultWallet->save();
@@ -973,14 +959,15 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function printUserQrCode($userId, $objectType){
+    public function printUserQrCode($userId, $objectType)
+    {
         $this->helper->printQrCode($userId, $objectType);
     }
 
     public function getWallets()
     {
         $data['tatum_provider_status'] = CryptoProvider::getStatus('TatumIo');
-        $data['wallets'] = Wallet::with(['currency:id,type,logo,code,symbol,status', 'cryptoAssetApiLogs' => function($query) {
+        $data['wallets'] = Wallet::with(['currency:id,type,logo,code,symbol,status', 'cryptoAssetApiLogs' => function ($query) {
             $query->where('object_type', 'wallet_address');
         }])->where(['user_id' => Auth::user()->id])->orderByDesc('balance')->get(['id', 'currency_id', 'balance', 'is_default']);
 

@@ -5,6 +5,8 @@
 <form id="payment-form" method="POST">
     {{ csrf_field() }}
 
+    <span id="stripe-error" class="fw-bold text-danger d-none"></span>
+
     <div id="payment-element">
         <!-- Elements will create form elements here -->
     </div>
@@ -62,6 +64,7 @@
     var paymentIntendKey = "{{ $paymentIntent }}";
     var publishableKey = "{{ $publishableKey }}";
     var lang = '{{ app()->getLocale() }}';
+    let stripeError = "{{ __('An unexpected error occurred. Please try again.') }}";
 
 </script>
 

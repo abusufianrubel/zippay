@@ -2,8 +2,16 @@
 <li class="accordion-item bg-secondary border-0">
     <div class="accordion-header {{ request()->route()->named('user_dashboard.crypto_buy_sell.*') ? 'bg-info' : '' }}" id="cryptoExchange">
         <button class="mb-1 shadow-none bg-transparent p-0 d-flex align-items-center list-option h-46 accordion-button accordion-icon collapsed {{ request()->route()->named('user_dashboard.crypto_buy_sell.*') ? 'text-white bg-info' : 'text-info-100' }}" type="button" data-bs-toggle="collapse" data-bs-target="#flush-cryptoExchange" aria-expanded="false" aria-controls="flush-cryptoExchange">
-            <span class="ms-3 mr-20">{!! menuSvgIcon('user_dashboard.crypto_buy_sell.*') !!}</span>
-            <span class="child-currency">{{ __('Crypto Exchange') }}</span>
+            <span class="ml-12 mr-20">{!! menuSvgIcon('user_dashboard.crypto_buy_sell.*') !!}</span>
+
+            <span class="child-currency d-flex justify-content-start align-items-center">{{ __('Crypto Exchange') }}
+
+                @if (checkDemoEnvironment())
+                    <small class="new-badge d-flex justify-content-start align-items-center p-1 rounded-pill mx-2">{{ __('Addon') }}</small>
+                @endif
+
+            </span>
+
         </button>
     </div>
     <div id="flush-cryptoExchange" class="accordion-collapse collapse {{ request()->is('crypto-exchange/*') || request()->is('crypto-buy-sell/success') ? 'show' : '' }}" aria-labelledby="cryptoExchange" data-bs-parent="#accordion-menu">

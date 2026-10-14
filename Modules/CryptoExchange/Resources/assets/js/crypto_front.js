@@ -580,7 +580,7 @@ if ($('#crypto-exchange-verification').length) {
                 if (response.data.status) {
                     $("#otp_details").show();
                     $("#verification_field").hide();
-                    $('#code-text').text(response.data.code);
+                    $('#phone_verification_code').val(response.data.code);
                     $("#submit_field").show();
                     $("#email").prop("disabled", true);
                     $(".spinner").addClass('d-none');

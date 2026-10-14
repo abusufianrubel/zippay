@@ -7,9 +7,9 @@ if (!app()->runningInConsole()) {
         'options' => [
             ['label' => __('Settings'), 'url' => url(config('paymoney.prefix') . '/crypto_settings')]
         ],
-        'supported_versions' => '4.3.1',
+        'supported_versions' => '5.0.0',
         'payment_methods' => [
-            'crypto_buy' => ['Stripe', 'Paypal', 'PayUmoney', 'Payeer', 'Bank', 'Coinbase', 'Coinpayments'],
+            'crypto_buy' => ['Stripe', 'Paypal', 'PayUmoney', 'Payeer', 'Bank', 'Coinbase', 'Coinpayments', 'Flutterwave'],
         ],
         'permission_group' => ['Crypto Direction', 'Crypto Exchange Transaction', 'Crypto Exchange Settings', 'Crypto Exchange'],
         'transaction_types' => (defined('Crypto_Sell') && defined('Crypto_Buy') && defined('Crypto_Swap')) ? [Crypto_Sell, Crypto_Buy, Crypto_Swap] : [],
@@ -32,7 +32,13 @@ if (!app()->runningInConsole()) {
                         ? [ Crypto_Sell => 'user', Crypto_Buy => 'user', Crypto_Swap => 'user']
                         : [],
             'receiver' => []
-        ]
+        ],
+        'menu_config' => [
+            'name' => __('Crypto Exchange'),
+            'label' => 'Crypto Exchange',
+            'icon' => megaMenuSvg('cryptoexchange'),
+            'route' => function_exists('cryptoValidity') && cryptoValidity('guest_user') ? 'guest.crypto_exchange.home' : 'login'
+        ],
     ];
 } else {
     return [
@@ -41,9 +47,9 @@ if (!app()->runningInConsole()) {
         'options' => [
             ['label' => __('Settings'), 'url' => url(config('paymoney.prefix') . '/crypto_settings')]
         ],
-        'supported_versions' => '4.3.1',
+        'supported_versions' => '5.0.0',
         'payment_methods' => [
-            'crypto_buy' => ['Stripe', 'Paypal', 'PayUmoney', 'Payeer', 'Bank', 'Coinbase', 'Coinpayments'],
+            'crypto_buy' => ['Stripe', 'Paypal', 'PayUmoney', 'Payeer', 'Bank', 'Coinbase', 'Coinpayments', 'Flutterwave'],
         ],
         'permission_group' => ['Crypto Direction', 'Crypto Exchange Transaction', 'Crypto Exchange Settings', 'Crypto Exchange']
     ];

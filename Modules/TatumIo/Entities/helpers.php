@@ -1,37 +1,45 @@
 <?php
 
 use App\Models\CryptoAssetApiLog;
-use App\Models\User;
 use Modules\TatumIo\Class\TatumIoTransaction;
 
 if (!function_exists('updateTatumAssetCredentials')) {
 
     function updateTatumAssetCredentials()
     {
-        $cryptoAssetSettings = \App\Models\CryptoAssetSetting::where('payment_method_id', TatumIo)->get();
-        if (!empty($cryptoAssetSettings)) {
-            $tatumIoNetworkArray = [];
-            foreach ($cryptoAssetSettings as  $cryptoAssetSetting) {
-                if ($cryptoAssetSetting->currency->type == 'crypto_token') {
-                    continue;
-                }
-                $network = $cryptoAssetSetting->network;
-                $tatumIo = new TatumIoTransaction($network) ?? 0;
-                $tatumIo->tatumIoAsset();
-                $balance = $tatumIo->getMerchantBalance();
-                $networkCredential = json_decode($cryptoAssetSetting->network_credentials);
+        try {
+            $cryptoAssetSettings = \App\Models\CryptoAssetSetting::where('payment_method_id', TatumIo)->get();
+            if (!empty($cryptoAssetSettings)) {
+                $tatumIoNetworkArray = [];
+                foreach ($cryptoAssetSettings as  $cryptoAssetSetting) {
+                    if ($cryptoAssetSetting->currency->type == 'crypto_token') {
+                        continue;
+                    }
+                    $network = $cryptoAssetSetting->network;
+                    $tatumIo = new TatumIoTransaction($network) ?? 0;
+                    $tatumIo->tatumIoAsset();
+                    $balance = $tatumIo->getMerchantBalance();
+                    $networkCredential = json_decode($cryptoAssetSetting->network_credentials);
 
-                $tatumIoNetworkArray['api_key'] = $networkCredential->api_key;
-                $tatumIoNetworkArray['coin'] = $networkCredential->coin;
-                $tatumIoNetworkArray['mnemonic'] = $networkCredential->mnemonic;
-                $tatumIoNetworkArray['xpub'] = $networkCredential->xpub;
-                $tatumIoNetworkArray['key'] = $networkCredential->key;
-                $tatumIoNetworkArray['address'] = $networkCredential->address;
-                $tatumIoNetworkArray['balance'] = $balance;
-                $cryptoAssetSetting->network_credentials = json_encode($tatumIoNetworkArray);
-                $cryptoAssetSetting->save();
+                    $tatumIoNetworkArray['api_key'] = $networkCredential->api_key;
+                    $tatumIoNetworkArray['coin'] = $networkCredential->coin;
+                    $tatumIoNetworkArray['mnemonic'] = $networkCredential->mnemonic;
+                    $tatumIoNetworkArray['xpub'] = $networkCredential->xpub;
+                    $tatumIoNetworkArray['key'] = $networkCredential->key;
+                    $tatumIoNetworkArray['address'] = $networkCredential->address;
+                    $tatumIoNetworkArray['balance'] = $balance;
+                    $cryptoAssetSetting->network_credentials = json_encode($tatumIoNetworkArray);
+                    $cryptoAssetSetting->save();
+                }
             }
+
+            return ['status' => true];
+
+        } catch (\Exception $exception) {
+            return ['status' => false, 'message' => $exception->getMessage()];
         }
+
+        
     }
 }
 
@@ -169,7 +177,16 @@ if (!function_exists('tatumApiUrl')) {
     {
         return config('tatumio.tatum_api_url') . '/' . config('tatumio.tatum_api_version'). '/'  . $endpoint;
     }
+}
 
+if (!function_exists('getTatumIoTransactionReference')) {
+    function getTatumIoTransactionReference($objectType, $network)
+    {
+        return (new CryptoAssetApiLog())
+            ->where(['object_type' => $objectType, 'network' => $network])
+            ->first()
+            ->id;
+    }
 }
 
 

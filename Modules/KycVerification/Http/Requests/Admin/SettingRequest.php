@@ -13,7 +13,6 @@ class SettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'kyc_provider' => ['required', 'string', 'max:100'],
             'kyc_mandatory' => ['required', 'string', 'max:10', 'in:Yes,No'],
             'kyc_required_for' => ['required', 'string', 'max:10'],
         ];
@@ -27,7 +26,6 @@ class SettingRequest extends FormRequest
     {
 
         return [
-            'kyc_provider' => __('Provider'),
             'kyc_mandatory' => __('KYC Mandatory'),
             'kyc_required_for' => __('KYC Required For')
         ];

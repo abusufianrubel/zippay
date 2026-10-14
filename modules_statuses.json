@@ -3,5 +3,7 @@
     "Upgrader": true,
     "TatumIo": true,
     "KycVerification": true,
+    "Virtualcard": true,
+    "Agent": true,
     "CryptoExchange": true
 }

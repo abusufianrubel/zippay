@@ -5,7 +5,7 @@
 @extends('frontend.layouts.app')
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('public/frontend/templates/css/prism.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/templates/css/prism.min.css') }}">
 @endsection
 
 @section('content')
@@ -204,5 +204,5 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('public/frontend/templates/js/prism.min.js') }}"></script>
+    <script src="{{ asset('frontend/templates/js/prism.min.js') }}"></script>
 @endsection

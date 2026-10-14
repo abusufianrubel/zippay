@@ -100,6 +100,45 @@
                         </div>
                     </div>
 
+                    @if (moduleExists("Remittance") && isActive("Remittance"))
+                        <div id="remittance-div">
+                            <!-- Remittance Type -->
+                            <div class="form-group row">
+                                <label class="f-14 mt-11 fw-bold text-sm-end col-sm-3 control-label" for="remittance_type">{{ __('Remittance Type') }}</label>
+                                <div class="col-sm-6 remittance">
+                                    <select class="form-control f-14 p-0 select2" name="remittance_type[]" id="remittance_type" multiple>
+                                        <option value="send">{{ __('Send') }}</option>
+                                        <option value="receive">{{ __('Receive') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Remittance Payout Method -->
+                            <div class="form-group row">
+                                <label class="f-14 mt-11 fw-bold text-sm-end col-sm-3 control-label" for="remittance_payout_method">{{ __('Remittance Payout Method') }}</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control f-14 p-0 select2" name="remittance_payout_method[]" id="remittance_payout_method" multiple>
+                                        @foreach($remittancePayoutMethods as $remittancePayoutMethod)
+                                            <option value="{{ $remittancePayoutMethod->id }}">{{ $remittancePayoutMethod->payout_method }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Country -->
+                            <div class="form-group row">
+                                <label class="f-14 mt-11 fw-bold text-sm-end col-sm-3 control-label" for="country_id">{{ __('Country') }}</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control f-14 p-0 select2" name="country_id" id="country_id">
+                                        <option value="">{{ __('Select Country') }}</option>
+                                        @foreach($countries as $country)
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
 
 					<!-- Status -->
                     <div class="form-group row">
@@ -172,10 +211,10 @@
         $(window).on('load', function(){
             var type = $('select#type').find(':selected').val();
             if (type == 'crypto') {
-                $('#exchange_from_div, #exchange_rate_div').css('display', 'none');
+                $('#exchange_from_div, #exchange_rate_div, #remittance-div').css('display', 'none');
                 $('#address_div').css('display', 'block');
             } else if (type == 'fiat') {
-                $('#exchange_from_div, #exchange_rate_div').css('display', 'block');
+                $('#exchange_from_div, #exchange_rate_div, #remittance-div').css('display', 'block');
                 $('#address_div').css('display', 'none');
             }
         });
@@ -203,10 +242,10 @@
         $('#type').on('change', function() {
             var type = $(this).find('option:selected').val();
             if (type == 'crypto') {
-                $('#exchange_from_div, #exchange_rate_div').css('display', 'none');
+                $('#exchange_from_div, #exchange_rate_div, #remittance-div').css('display', 'none');
                 $('#address_div').css('display', 'flex');
             } else if (type == 'fiat') {
-                $('#exchange_from_div, #exchange_rate_div').css('display', 'block');
+                $('#exchange_from_div, #exchange_rate_div, #remittance-div').css('display', 'block');
                 $('#address_div').css('display', 'none');
             }
         });
@@ -258,10 +297,10 @@
             },
             messages: {
                 rate: {
-                    min: "Please enter values greater than 0.0001!"
+                    min: "{{ __('Please enter values greater than 0.0001!') }}"
                 },
                 logo: {
-                    extension: "Please select (png, jpg, jpeg, gif or bmp) file!"
+                    extension: "{{ __('Please select (png, jpg, jpeg, gif or bmp) file!') }}"
                 }
             },
             submitHandler: function(form) {

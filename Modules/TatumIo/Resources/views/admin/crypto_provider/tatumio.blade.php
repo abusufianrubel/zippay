@@ -1,8 +1,3 @@
-@php
-updateTatumAssetCredentials();
-$activeCryptoProviders = getProviderActiveStatus($providers);
-@endphp
-
 @extends('admin.layouts.master')
 
 @section('title', __('Crypto Providers'))
@@ -227,6 +222,7 @@ $activeCryptoProviders = getProviderActiveStatus($providers);
         var validateAddressUrl = '{{ route("admin.tatumio_asset.validate_address") }}';
         var updateText = '{{ __("Updated") }}';
         var notFound = '{{ __("Not Found") }}';
+        var restricted = '{{ __("Restricted") }}';
         var wrongInput = '{{ __("Wrong Input") }}';
         var wentWrong = '{{ __("Something went wrong.") }}';
         var checking = '{{ __("Checking...") }}';

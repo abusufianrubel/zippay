@@ -1,0 +1,10 @@
+.spinner-border-custom {
+    border-color: #635bfe !important;
+    border-right-color: transparent !important;
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.2em;
+}
+.intlTel-phone .iti--allow-dropdown{
+    height: 50px;
+}

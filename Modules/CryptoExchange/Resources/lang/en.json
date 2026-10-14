@@ -319,5 +319,6 @@
     "The requested data does not exist for this feature overview.": "The requested data does not exist for this feature overview.",
     "We have sent you the crypto Exchange status. Please check your email.": "We have sent you the crypto Exchange status. Please check your email.",
     "We have sent you the Crypto details. Please check your email.": "We have sent you the Crypto details. Please check your email.",
-    "We have sent you the cryptoExchange status. Please check your sms.": "We have sent you the cryptoExchange status. Please check your sms."
+    "We have sent you the cryptoExchange status. Please check your sms.": "We have sent you the cryptoExchange status. Please check your sms.",
+    "User's can change crypto to fiat, fiat to crypto and swap crypto currency by the crypto exchange module.": "User's can change crypto to fiat, fiat to crypto and swap crypto currency by the crypto exchange module."
 }

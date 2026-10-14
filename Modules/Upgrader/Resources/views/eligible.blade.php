@@ -19,7 +19,7 @@
                         </div>
                         @if ($upgrader['status'])
                             <div class="col-auto">
-                                <a href="{{ route('systemUpdate.upgrade', ['waiting' => true]) }}" class="btn custom-btn-update" id="update_now">{{ __('Update Now') }}</a>
+                                <a href="{{ route('systemUpdate.upgrade', ['upgrade' => 'run', 'token' => $upgradeToken]) }}" class="btn custom-btn-update" id="update_now">{{ __('Update Now') }}</a>
                             </div>
                         @endif
                     </div>

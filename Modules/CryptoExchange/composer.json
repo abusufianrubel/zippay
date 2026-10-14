@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "nwidart/laravel-modules": "^10.0",
+        "nwidart/laravel-modules": "^11.0",
         "joshbrw/laravel-module-installer": "^2.0"
     }
 }

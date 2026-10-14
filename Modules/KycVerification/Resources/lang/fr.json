@@ -70,5 +70,7 @@
     "Verify Identity": "Vérifier l'Identité",
     "You need to verify your account first. To verify your account please :x": "Vous devez d'abord vérifier votre compte. Pour vérifier votre compte, veuillez :x",
     "click here": "cliquez ici",
-    "Class :x must extend the :y class as it requires credentials for verification.": "La classe :x doit étendre la classe :y car elle nécessite des identifiants pour la vérification."
+    "Class :x must extend the :y class as it requires credentials for verification.": "La classe :x doit étendre la classe :y car elle nécessite des identifiants pour la vérification.",
+    "This name will be visible on the verification list as provider.": "Ce nom sera visible sur la liste de vérification en tant que fournisseur.",
+    "If set to Yes, this will be the default verification provider for all users.": "Si défini sur Oui, cela sera le fournisseur de vérification par défaut pour tous les utilisateurs."
 }

@@ -319,5 +319,6 @@
     "The requested data does not exist for this feature overview.": "البيانات المطلوبة غير موجودة لهذه نظرة عامة على الميزة.",
     "We have sent you the crypto Exchange status. Please check your email.": "لقد أرسلنا لك حالة تبادل التشفير.تفقد بريدك الالكتروني من فضلك.",
     "We have sent you the Crypto details. Please check your email.": "لقد أرسلنا لك تفاصيل التشفير.تفقد بريدك الالكتروني من فضلك.",
-    "We have sent you the cryptoExchange status. Please check your sms.": "لقد أرسلنا لك حالة التشفير.يرجى التحقق من الرسائل القصيرة الخاصة بك."
+    "We have sent you the cryptoExchange status. Please check your sms.": "لقد أرسلنا لك حالة التشفير.يرجى التحقق من الرسائل القصيرة الخاصة بك.",
+    "User's can change crypto to fiat, fiat to crypto and swap crypto currency by the crypto exchange module.": "يمكن للمستخدمين تغيير التشفير إلى فيات وفيات إلى تشفير بواسطة وحدة تبادل التشفير."
 }

@@ -116,6 +116,7 @@
 		var cancelAlert = "{{ __('You have cancelled it') }}";
 		var copyTitle = "{{ __('Copied') }}";
 		var copyText = "{{ __('IPN URL link copied.') }}";
+		var flutterwaveCopyText = "{{ __('Webhook URL link copied.') }}";
 		var noResponseText = "{{ __('No response.') }}";
 		var yesText = "{{ __('Yes') }}";
 		var noText = "{{ __('No') }}";

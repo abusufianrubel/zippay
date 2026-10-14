@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class QrCode extends Model
 {
-	protected $table = 'qr_codes';
+    protected $table = 'qr_codes';
 
     protected $fillable = ['object_id', 'object_type', 'secret', 'qr_image', 'status'];
 
@@ -44,7 +45,7 @@ class QrCode extends Model
 
         $formattedPhone = $user->formattedPhone ?? '';
         $secretCode = convert_string('encrypt', 'user' . '-' . $user->email . '-' . $formattedPhone . '-' . Str::random(6));
-        
+
         $qrCode = new self();
         $qrCode->object_id = $user->id;
         $qrCode->object_type = 'user';
@@ -53,9 +54,12 @@ class QrCode extends Model
         $qrCode->status = 'Active';
         $qrCode->save();
 
-        $secretCodeImage = generateQrcode($qrCode->secret);
-        Image::make($secretCodeImage)->save(getDirectory('user_qrcode') . $imageName);
-        
+        $imageContent = file_get_contents(generateQrcode($qrCode->secret));
+
+        $manager = new ImageManager(new Driver());
+        $img = $manager->read($imageContent);
+        $img->save(getDirectory('user_qrcode') . $imageName);
+
         return $qrCode;
     }
 
@@ -70,7 +74,7 @@ class QrCode extends Model
         return self::createUserQrCode($user);
     }
 
-    
+
     /**
      * Create or update a QR code for a given object type
      *

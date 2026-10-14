@@ -1,0 +1,14 @@
+{
+    "name": "Agent",
+    "alias": "agent",
+    "description": "Paymoney provides a great feature of multiple agents to spread a business over the world. Agents can do a transaction for the user and so on.",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Agent\\Providers\\AgentServiceProvider"
+    ],
+    "files": [
+        "Entities/helper.php"
+    ],
+    "version": "1.1.5"
+}

@@ -122,18 +122,16 @@
 
     <script type="text/javascript">
         'use strict';
+        var dateFormateType = "{{ Session::get('date_format_type') }}";
+        var formDate = "{!! $from !!}";
+        var toDate = "{!! $to !!}";
         var ajaxUrl = "{{ route('admin.crypto_exchanges.user_search') }}";
         var csvUrl = "{{ route('admin.crypto_exchanges.csv') }}";
         var pdfUrl = "{{ route('admin.crypto_exchanges.pdf') }}";
+        var pickDateRange = "{{ __('Pick a date range') }}";
         var userDoesntExist = "{{ __('User Does Not Exist') }}";
-        let dateRangePickerText = '{{ __("Pick a date range") }}';
-        var sessionDateFormateType = '{{ Session::get("date_format_type") }}'
-        var startDate = "{!! $from !!}";
-        var endDate = "{!! $to !!}";
 
     </script>
     <script src="{{ asset('Modules/CryptoExchange/Resources/assets/js/admin_transaction.min.js') }}"></script>
-    <script src="{{ asset('public/admin/customs/js/csv-pdf.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('public/admin/customs/js/daterange-select.min.js') }}" type="text/javascript"></script>
 
 @endpush

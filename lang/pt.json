@@ -1706,6 +1706,7 @@
     "Bank": "Banco",
     "Branch": "Filial",
     "Cache Clear": "Cache claro",
+    "Pay with :x": "Pagar com :x",
     "Maximum acceptable amount is :x" : "O valor máximo aceitável é :x",
     "Minimum acceptable amount is :x" : "O valor mínimo aceitável é :x",
     "Unable to retrieve the exchange rate at this moment" : "Não é possível recuperar a taxa de câmbio neste momento",
@@ -1736,10 +1737,7 @@
     "FOR THE CRYPTO ENTHUSIASTS" : "PARA OS ENTUSIASTAS DE CRIPTO",
     "Unlock the Power of :x" : "Desbloqueie o Poder de :x",
     "Digital Assets" : "Ativos Digitais",
-    ":x integrates blockchain APIs to enable seamless creation, management, and transactions of cryptocurrencies, enhancing its platform with secure and versatile digital asset capabilities." : ":x integra APIs de blockchain para permitir a criação, gestão e transações perfeitas de criptomoedas, aprimorando sua plataforma com capacidades seguras e versáteis de ativos digitais."
-
-
-
-
-
+    ":x integrates blockchain APIs to enable seamless creation, management, and transactions of cryptocurrencies, enhancing its platform with secure and versatile digital asset capabilities." : ":x integra APIs de blockchain para permitir a criação, gestão e transações perfeitas de criptomoedas, aprimorando sua plataforma com capacidades seguras e versáteis de ativos digitais.",
+    "Services" : "Serviços",
+    "Activities": "Atividades"
 }

@@ -100,7 +100,7 @@
                         	<img class="ml-12 c-dimension img-fluid mtop-5" src="{{ image($from_currency_logo, 'currency') }}" alt="{{ $from_currency_code }}">
                         </div>
                         <div class="mb-font text-break mt-4n">
-                            <span class="font-14 OpenSans-400"> {{ __('Fees') }} ≈ {{ $exchange_fee }} {{ $from_currency_code }} </span>
+                            <span class="font-14 OpenSans-400"> {{ __('Fees') }} ≈ {{ formatNumber($exchange_fee, $from_currency) }} {{ $from_currency_code }} </span>
                         </div>
 
                         <!-- You Get Section -->

@@ -13,7 +13,8 @@ class ProviderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:100', 'unique:kyc_providers,name,' . $this->provider?->id]
+            'name' => ['required', 'string', 'max:100', 'unique:kyc_providers,name,' . $this->provider?->id],
+            'is_default' => ['required', 'string', 'max:5']
         ];
     }
 
@@ -33,7 +34,8 @@ class ProviderRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => __('Name')
+            'name' => __('Name'),
+            'is_default' => __('Default')
         ];
     }
 }

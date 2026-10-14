@@ -151,21 +151,54 @@ class TransactionController extends Controller
 
         $data['transaction'] = $transaction = Transaction::with($relation)->find($id);
 
+        if (empty($transaction)) {
+
+            $this->helper->one_time_message('error', __('The :x does not exist.', ['x' => __('transaction')]));
+
+            return redirect(config('adminPrefix') . '/transactions');
+        }
+
         $modules = getAllModules();
         foreach ($modules as $module) {
             if (!empty(config($module->get('alias') . '.transaction_types'))) {
                 if (in_array($transaction?->transaction_type->id, config($module->get('alias') . '.transaction_types'))) {
 
-                    $moduleName = $module->get('name');
-                    $moduleTransaction = file_exists(("\Modules\\". $moduleName . "\Entities\\" . ucfirst($moduleName) . "Transaction")) . '.php' ? (new ("\Modules\\". $moduleName . "\Entities\\" . ucfirst($moduleName) . "Transaction")($relation)) : '';
+                    $originalModuleName = $module->get('name');
+
+                    // Check if it's a virtual card module
+                    $isManualVirtual = moduleExists('ManualVirtualcard') && isActive('ManualVirtualcard') && $originalModuleName === 'ManualVirtualcard';
+                    $isStripeVirtual = moduleExists('StripeVirtualcard') && isActive('StripeVirtualcard') && $originalModuleName === 'StripeVirtualcard';
+
+                    $isVirtualCard = $isManualVirtual || $isStripeVirtual;
+
+                    // Resolve module name
+                    $moduleName = $isVirtualCard ? 'Virtualcard' : $originalModuleName;
+
+                    // Build class path
+                    $class = "\\Modules\\{$moduleName}\\Entities\\" . ucfirst($moduleName) . "Transaction";
+
+                    // Initialize transaction class if exists
+                    $moduleTransaction = class_exists($class) ? new $class($relation) : null;
+
+                    if (!$moduleTransaction) {
+                        continue;
+                    }
+
+                    // Get data
                     $data = $moduleTransaction->getTransactionDetails($id);
 
-                    return view($module->get('alias') . '::admin.transaction.edit', $data);
+                    // Resolve view
+                    $view = $isVirtualCard ? 'virtualcard' : $module->get('alias');
+
+                    return view("{$view}::admin.transaction.edit", $data);
                 }
             }
         }
-
-        $data['transactionOfRefunded'] = Transaction::where(['uuid' => $transaction->refund_reference, 'transaction_type_id' => $transaction->transaction_type_id])->first(['id']);
+        
+        if (isset($transaction->refund_reference)) {
+            $data['transactionOfRefunded'] = Transaction::where(['uuid' => $transaction->refund_reference, 'transaction_type_id' => $transaction->transaction_type_id])->first(['id']);
+        }
+        
         $data['dispute'] = Dispute::where(['transaction_id' => $id])->select('status')->latest()->first(['status']);
         return view('admin.transactions.edit', $data);
     }
@@ -224,7 +257,7 @@ class TransactionController extends Controller
                         Deposit::updateStatus($request->transaction_reference_id, $request->status);
                         $transaction = $this->transaction->updateTransactionStatus($request->id, $request->status);
                         Wallet::incrementWalletBalance($request->user_id, $request->currency_id, $request->subtotal);
-                        if (module('Referral') && settings('referral_enabled') == 'Yes') {
+                        if (moduleExists('Referral') && settings('referral_enabled') == 'Yes') {
                             $currency   = Currency::find($transaction['currency_id'], ['code']);
                             $refAwardData = [
                                 'userId'          => $transaction['user_id'],
@@ -240,7 +273,7 @@ class TransactionController extends Controller
                         Deposit::updateStatus($request->transaction_reference_id, $request->status);
                         $transaction = $this->transaction->updateTransactionStatus($request->id, $request->status);
                         Wallet::incrementWalletBalance($request->user_id, $request->currency_id, $request->subtotal);
-                        if (module('Referral') && settings('referral_enabled') == 'Yes') {
+                        if (moduleExists('Referral') && settings('referral_enabled') == 'Yes') {
                             $currency   = Currency::find($transaction['currency_id'], ['code']);
                             $refAwardData = [
                                 'userId'          => $transaction['user_id'],
@@ -258,7 +291,7 @@ class TransactionController extends Controller
 
                 DB::commit();
 
-                if (module('Referral') && settings('referral_enabled') == 'Yes' && !empty($awardResponse)) {
+                if (moduleExists('Referral') && settings('referral_enabled') == 'Yes' && !empty($awardResponse)) {
                     if (isset($awardResponse['email_status']) && $awardResponse['email_status'] === 200 && !empty($awardResponse['email_details'])) {
                         $awardInfo = (new \Modules\Referral\Services\Email\ReferralAwardMailService)->send($awardResponse['email_details']);
                         \Modules\Referral\Jobs\ProcessRewardEmail::dispatch($awardInfo);
@@ -2843,7 +2876,7 @@ class TransactionController extends Controller
         }
 
         // Crypto Exchange
-        if (module('CryptoExchange') && ($request->transaction_type_id == Crypto_Swap || $request->transaction_type_id == Crypto_Buy || $request->transaction_type_id == Crypto_Sell)) {
+        if (moduleExists('CryptoExchange') && ($request->transaction_type_id == Crypto_Swap || $request->transaction_type_id == Crypto_Buy || $request->transaction_type_id == Crypto_Sell)) {
             if (!isActive('CryptoExchange')) {
                 $this->helper->one_time_message('error',  __('Crypto Exchange module is Inactive'));
                 return redirect(config('adminPrefix') . '/transactions');
@@ -2970,7 +3003,7 @@ class TransactionController extends Controller
         }
 
         // Referral Award
-        if(module('Referral') && $request->transaction_type_id == Referral_Award) {
+        if(moduleExists('Referral') && $request->transaction_type_id == Referral_Award) {
 
             if ($request->status == $t->status) {
                 $this->helper->one_time_message('success', __('Transaction is already :x', ['x' => $request->status]));

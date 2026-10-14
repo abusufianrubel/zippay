@@ -33,8 +33,8 @@
                     <h3>{{ __('A step-by-step guide on how to integrate :x Standard', ['x' => settings('name')]) }}</h3>
                 </div>
                 <div class="merchant-left-img">
-                    <img src="{{ asset('public/frontend/templates/images/standard-merchant/merchant.svg') }}" class="img-fluid light-img">
-                    <img src="{{ asset('public/frontend/templates/images/standard-merchant/d-merchant.svg') }}" class="img-fluid dark-img">
+                    <img src="{{ asset('frontend/templates/images/standard-merchant/merchant.svg') }}" class="img-fluid light-img">
+                    <img src="{{ asset('frontend/templates/images/standard-merchant/d-merchant.svg') }}" class="img-fluid dark-img">
                 </div>
             </div>
             <div class="col-xl-5">
@@ -138,8 +138,8 @@
             </div>
             <div class="col-xl-7">
                 <div class="merchant-left-img">
-                    <img src="{{ asset('public/frontend/templates/images/standard-merchant/merchant-copy.svg') }}" class="img-fluid light-img">
-                    <img src="{{ asset('public/frontend/templates/images/standard-merchant/d-merchant-copy.svg') }}" class="img-fluid dark-img">
+                    <img src="{{ asset('frontend/templates/images/standard-merchant/merchant-copy.svg') }}" class="img-fluid light-img">
+                    <img src="{{ asset('frontend/templates/images/standard-merchant/d-merchant-copy.svg') }}" class="img-fluid dark-img">
                 </div>
             </div>
         </div>
@@ -149,8 +149,8 @@
         <div class="row">
             <div class="col-xl-7"> 
                 <div class="merchant-left-img">
-                    <img src="{{ asset('public/frontend/templates/images/standard-merchant/there.svg') }}" class="img-fluid light-img">
-                    <img src="{{ asset('public/frontend/templates/images/standard-merchant/d-there.svg') }}" class="img-fluid dark-img">
+                    <img src="{{ asset('frontend/templates/images/standard-merchant/there.svg') }}" class="img-fluid light-img">
+                    <img src="{{ asset('frontend/templates/images/standard-merchant/d-there.svg') }}" class="img-fluid dark-img">
                 </div>
             </div>
             <div class="col-xl-5 column-centered">

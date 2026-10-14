@@ -134,7 +134,7 @@
                                 <img class="ml-12 c-dimension img-fluid mtop-5" src="{{ image($from_currency_logo, 'currency') }}" alt="{{ $from_currency_code }}">
                             </div>
                             <div class="mb-font text-break mt-4n">
-                                <span class="font-14 OpenSans-400"> {{ __('Fees') }} ≈ {{ $exchange_fee }} {{ $from_currency_code }}</span>
+                                <span class="font-14 OpenSans-400"> {{ __('Fees') }} ≈ {{ formatNumber($exchange_fee, $from_currency) }} {{ $from_currency_code }}</span>
                             </div>
 
                             <!-- You Get Section -->
@@ -155,7 +155,7 @@
 
                                 <div class="details-curency details-curency-p mt-1n">
                                     <p class="font-16 OpenSans-400 mt-25 pr-28 color-CD">{{ __('Please make payment') }}
-                                        <strong class="c-blue color-E8">{{ $send_amount + $exchange_fee }} {{ $from_currency_code }}</strong> {{ __('to our') }}
+                                        <strong class="c-blue color-E8">{{ formatNumber($send_amount + $exchange_fee, $from_currency) }} {{ $from_currency_code }}</strong> {{ __('to our') }}
                                         <strong class="c-gray-black">{{ __('Merchant Address') }}</strong>
                                     </p>
                                 </div>

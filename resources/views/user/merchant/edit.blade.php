@@ -113,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                @if (module('WithdrawalApi') && isActive('WithdrawalApi'))
+                @if (moduleExists('WithdrawalApi') && isActive('WithdrawalApi'))
                     <!-- Withdrawal Approval -->
                     <div class="row">
                         <div class="col-12">

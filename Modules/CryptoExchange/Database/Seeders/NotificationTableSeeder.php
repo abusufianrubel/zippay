@@ -30,8 +30,8 @@ class NotificationTableSeeder extends Seeder
             [
                 'notification_type_id' => $notificationType,
                 'recipient_type'       => 'email',
-                'recipient'            => NULL,
-                'status'               => 'No',
+                'recipient'            => checkDemoEnvironment() ? 'admin@techvill.net' : null,
+                'status'               => checkDemoEnvironment() ? 'Yes' : 'No',
             ],
             [
                 'notification_type_id' => $notificationType,

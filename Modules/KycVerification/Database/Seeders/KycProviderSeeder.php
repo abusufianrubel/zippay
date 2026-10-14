@@ -16,6 +16,7 @@ class KycProviderSeeder extends Seeder
             [
                 'name'       => 'Manual',
                 'alias'      => 'manual',
+                'is_default' => 'Yes',
                 'created_at' => now(),
                 'updated_at' => now()
             ]

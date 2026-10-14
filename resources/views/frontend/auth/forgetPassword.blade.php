@@ -21,7 +21,7 @@
                         </div>
                         <div class="transaction-image">
                             <div class="static-image">
-                                <img class="img img-fluid" src="{{ asset('public/frontend/templates/images/login/signup-static-img.svg') }}">
+                                <img class="img img-fluid" src="{{ asset('frontend/templates/images/login/signup-static-img.svg') }}">
                             </div>
                         </div>
                      </div>
@@ -77,11 +77,11 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('public/dist/plugins/html5-validation/validation.min.js') }}"></script>
+    <script src="{{ asset('dist/plugins/html5-validation/validation.min.js') }}"></script>
     <script>
         'use strict';
         let submitBtnText = "{{ __('Sending...') }}"
     </script>
 
-    <script src="{{ asset('public/frontend/customs/js/forgot-password/forgot-password.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('frontend/customs/js/forgot-password/forgot-password.min.js') }}" type="text/javascript"></script>
 @endsection

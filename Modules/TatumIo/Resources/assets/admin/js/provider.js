@@ -61,7 +61,7 @@ $(".provider-status").on('click', function() {
                 });
             } else if (response.status == 400) {
                 swal({
-                    title: notFound,
+                    title: restricted,
                     text: response.message,
                     type: "error"
                 }, function() {

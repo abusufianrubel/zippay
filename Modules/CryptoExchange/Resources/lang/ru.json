@@ -319,5 +319,6 @@
     "The requested data does not exist for this feature overview.": "Запрашиваемые данные не существуют для этого обзора функций.",
     "We have sent you the crypto Exchange status. Please check your email.": "Мы отправили вам статус крипто -обмена.Пожалуйста, проверьте свою электронную почту.",
     "We have sent you the Crypto details. Please check your email.": "Мы отправили вам подробности крипто.Пожалуйста, проверьте свою электронную почту.",
-    "We have sent you the cryptoExchange status. Please check your sms.": "Мы отправили вам статус CryptoExchange.Пожалуйста, проверьте свои SMS."
+    "We have sent you the cryptoExchange status. Please check your sms.": "Мы отправили вам статус CryptoExchange.Пожалуйста, проверьте свои SMS.",
+    "User's can change crypto to fiat, fiat to crypto and swap crypto currency by the crypto exchange module.": "Пользователи могут изменить крипто на фиат и фиат на крипто через модуль крипто -обмена."
 }

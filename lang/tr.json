@@ -1709,6 +1709,7 @@
     "Bank": "Banka",
     "Branch": "Dal",
     "Cache Clear": "Önbellek net",
+    "Pay with :x": "Öde :x ile",
     "Maximum acceptable amount is :x" : "Kabul edilebilir maksimum miktar :x",
     "Minimum acceptable amount is :x" : "Kabul edilebilir minimum miktar :x",
     "Unable to retrieve the exchange rate at this moment" : "Şu anda döviz kuru alınamıyor",
@@ -1739,8 +1740,6 @@
     "FOR THE CRYPTO ENTHUSIASTS" : "KRİPTO MERAKLILARI İÇİN",
     "Unlock the Power of :x" : "Gücünü Açığa Çıkar :x",
     "Digital Assets" : "Dijital Varlıkların",
-    ":x integrates blockchain APIs to enable seamless creation, management, and transactions of cryptocurrencies, enhancing its platform with secure and versatile digital asset capabilities." : ":x, blok zinciri API'lerini entegre ederek kripto para birimlerinin sorunsuz bir şekilde oluşturulmasını, yönetilmesini ve işlem yapılmasını sağlar, platformunu güvenli ve çok yönlü dijital varlık yetenekleriyle geliştirir."
-
-
-
+    "Services" : "Hizmetler",
+    "Activities": "Etkinlikler"
 }

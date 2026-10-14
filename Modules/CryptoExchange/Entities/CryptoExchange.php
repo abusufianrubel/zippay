@@ -115,7 +115,7 @@ class CryptoExchange extends Model
         ])->where($conditions);
 
         if (!empty($from) && !empty($to)) {
-            $cryptoExchanges->whereBetween('crypto_exchanges.created_at', [$from, $to]);
+            $cryptoExchanges->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $to);
         }
 
         $cryptoExchanges->select('crypto_exchanges.id', 'crypto_exchanges.uuid', 'crypto_exchanges.user_id', 'crypto_exchanges.from_currency', 'crypto_exchanges.to_currency', 'crypto_exchanges.type', 'crypto_exchanges.exchange_rate', 'crypto_exchanges.amount', 'get_amount', 'fee', 'email_phone', 'crypto_exchanges.status', 'crypto_exchanges.created_at');

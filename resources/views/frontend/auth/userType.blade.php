@@ -24,7 +24,7 @@
                             </div>
                             <div class="transaction-image">
                                 <div class="static-image">
-                                    <img class="img img-fluid" src="{{ asset('public/frontend/templates/images/login/signup-static-img.svg') }}">
+                                    <img class="img img-fluid" src="{{ asset('frontend/templates/images/login/signup-static-img.svg') }}">
                                 </div>
                             </div>
                         </div>
@@ -64,14 +64,14 @@
                                             @if (!empty($checkUserRole))
                                             <input type="radio" name="type" id="user" value="user" required="" checked oninvalid="this.setCustomValidity('{{ __('This field is required.') }}')">
                                             <label for="user" class="usertype-module usertype-photo d-inline-flex flex-column justify-content-center align-items-center user-selected">
-                                                <img src="{{ asset('public/frontend/templates/images/login/woman-user.png') }}" alt="user">
+                                                <img src="{{ asset('frontend/templates/images/login/woman-user.png') }}" alt="user">
                                                 <p class="usertype mt-22">{{ __('User') }}</p>
                                             </label>
                                             @endif
                                             @if (!empty($checkMerchantRole))
                                             <input type="radio" name="type" id="merchant" value="merchant" required="" oninvalid="this.setCustomValidity('{{ __('This field is required.') }}')">
                                             <label for="merchant" class="usertype-module usertype-photo d-inline-flex flex-column justify-content-center align-items-center">
-                                                <img src="{{ asset('public/frontend/templates/images/login/men-merchant.png') }}" alt="merchant">
+                                                <img src="{{ asset('frontend/templates/images/login/men-merchant.png') }}" alt="merchant">
                                                 <p class="usertype mt-22">{{ __('Merchant') }}</p>
                                             </label>
                                             @endif
@@ -115,11 +115,11 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('public/dist/plugins/html5-validation/validation.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('dist/plugins/html5-validation/validation.min.js') }}" type="text/javascript"></script>
     <script>
         'use strict';
         let signingUpText = '{{ __("Signing Up...") }}';
     </script>
 
-    <script src="{{ asset('public/frontend/customs/js/register/user-type.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('frontend/customs/js/register/user-type.min.js') }}" type="text/javascript"></script>
 @endsection

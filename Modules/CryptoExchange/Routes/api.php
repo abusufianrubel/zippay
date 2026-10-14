@@ -1,25 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\CryptoExchange\Http\Controllers\Api\CryptoExchangeApiController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-
-Route::group(['namespace' => 'Api', 'middleware' => ['auth:api-v2']], function()
-{
-    Route::get('exchange-direction', 'CryptoExchangeApiController@exchangeDirection');
-    Route::post('direction-to-currencies', 'CryptoExchangeApiController@directionToCurrencies');
-    Route::post('direction-amount', 'CryptoExchangeApiController@exchangeAmount');
-    Route::post('confirm-exchange', 'CryptoExchangeApiController@confirmExchange');
-    Route::post('process-exchange', 'CryptoExchangeApiController@cryptoExchangeProcess');
-
+Route::group(['middleware' => ['auth:api-v2']], function() {
+    Route::get('exchange-direction', [CryptoExchangeApiController::class, 'exchangeDirection']);
+    Route::post('direction-to-currencies', [CryptoExchangeApiController::class, 'directionToCurrencies']);
+    Route::post('direction-amount', [CryptoExchangeApiController::class, 'exchangeAmount']);
+    Route::post('confirm-exchange', [CryptoExchangeApiController::class, 'confirmExchange']);
+    Route::post('process-exchange', [CryptoExchangeApiController::class, 'cryptoExchangeProcess']);
 });

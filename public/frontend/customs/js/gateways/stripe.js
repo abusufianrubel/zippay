@@ -24,12 +24,12 @@ var mode = localStorage.getItem('theme');
 
 var theme, bgcolor;
 
-if (localStorage.getItem('theme') === 'dark') {
-    theme = 'stripe';
-    bgcolor = '#F5F6FA';
-} else {
+if (localStorage.getItem('dark') === '1') {
     theme = 'night';
     bgcolor = '#30313d';
+} else {
+    theme = 'stripe';
+    bgcolor = '#F5F6FA';
 }
 
 $("#switch").on('click', function () {

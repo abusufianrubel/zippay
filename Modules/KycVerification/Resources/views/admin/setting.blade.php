@@ -6,7 +6,6 @@
 <!-- Main content -->
 <div class="row">
     <div class="col-md-12">
-        @include('kycverification::admin.setting-tab')
 
         <div class="box box-info">
             <div class="box-header with-border">
@@ -15,23 +14,6 @@
             <form action="{{ route('admin.kyc.settings.store') }}" method="POST" class="form-horizontal" id="setting-form">
                 @csrf
                 <div class="box-body">
-                    <!-- KYC Provider -->
-                    <div class="form-group row">
-                        <label class="col-sm-4 control-label f-14 fw-bold text-sm-end mt-11 require" for="kyc-provider">{{ __('Providers') }}</label>
-                        <div class="col-sm-6">
-                            <select class="form-control f-14 select2 sl_common_bx" name="kyc_provider" id="kyc-provider" required data-value-missing="{{ __('This field is required.') }}">
-                                @foreach ($providers as $provider)
-                                    <option value="{{ $provider->alias }}" {{ $result['kyc_provider'] == $provider->alias ? 'selected' : '' }}>{{ $provider->name }}</option>
-                                @endforeach
-                            </select>
-                            <small class="form-text text-muted f-12">
-                                <strong>*{{ __('With which provider KYC will be verified.') }}</strong>
-                            </small>
-                            @error('kyc_provider')
-                                <div class="error">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
 
                     <!-- Is KYC Mandatory -->
                     <div class="form-group row">

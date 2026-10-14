@@ -191,49 +191,48 @@ class User extends Authenticatable
         return $this->hasMany(CryptoAssetApiLog::class, 'object_id');
     }
     
-    public function createNewUser($request, $intiatedBy)
+    public function createNewUser($request, $initiatedBy)
     {
         $user = new self();
-        if ($intiatedBy == 'user')
-        {
+
+        if ($initiatedBy == 'user') {
             $user->type = $request->type;
+        } else {
+            $user->type = Role::where('id', $request->role)->first()->customer_type;
         }
+
         $user->first_name = $request->first_name;
         $user->last_name  = $request->last_name;
         $user->email      = $request->email;
-        $formattedPhone   = str_replace('+' . $request->carrierCode, "", $request->formattedPhone);
-        if (!empty($request->phone))
-        {
-            $user->phone          = preg_replace("/[\s-]+/", "", $formattedPhone);
+
+        if (!empty($request->phone)) {
+            $user->phone          = $request->phone;
             $user->defaultCountry = $request->defaultCountry;
             $user->carrierCode    = $request->carrierCode;
             $user->formattedPhone = $request->formattedPhone;
-        }
-        else
-        {
+        } else {
             $user->phone          = null;
             $user->defaultCountry = null;
             $user->carrierCode    = null;
             $user->formattedPhone = null;
         }
+
         $user->password = \Hash::make($request->password);
-        if ($intiatedBy == 'user')
-        {
-            if ($request->type == 'user')
-            {
+
+        if ($initiatedBy == 'user') {
+            if ($request->type == 'user') {
                 $role = Role::select('id')->where(['customer_type' => 'user', 'user_type' => 'User', 'is_default' => 'Yes'])->first(['id']);
-            }
-            else
-            {
+            } else {
                 $role = Role::select('id')->where(['customer_type' => 'merchant', 'user_type' => 'User', 'is_default' => 'Yes'])->first(['id']);
             }
+
             $user->role_id = $role->id;
-        }
-        else
-        {
+
+        } else {
             $user->role_id = $request->role;
             $user->status  = $request->status;
         }
+
         $user->save();
         return $user;
     }

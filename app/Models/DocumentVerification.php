@@ -80,29 +80,61 @@ class DocumentVerification extends Model
      * @return Modules\KycVerification\Entities\KycUserVerification|null
      */
 
+    // public static function getVerification()
+    // {
+    //     // active kyc provider
+    //     $kycProvider = settings('kyc_provider');
+
+    //     // active kyc provider id
+    //     $provider = KycProvider::where('alias', $kycProvider)->first(['id']);
+
+    //     // condition array
+    //     $conditions = ['user_id' => auth()->id(), 'status' => 'approved'];
+
+    //     // verification conditions based on kyc provider
+    //     $conditions = ($kycProvider == 'manual')
+    //                     ? $conditions + ['verification_type' => 'identity']
+    //                     : $conditions + ['provider_id' => $provider->id];
+
+    //     // get verification
+    //     $verification = self::where($conditions)->first();
+
+    //     // If the kyc provider is manual and identity verification is not empty
+    //     // check for the address verification and return it
+
+    //     if ($kycProvider === 'manual' && !empty($verification)) {
+    //        return self::where(array_merge($conditions, ['verification_type' => 'address']))->first();
+    //     }
+
+    //     return $verification;
+    // }
+
     public static function getVerification()
     {
         // active kyc provider
         $kycProvider = settings('kyc_provider');
 
         // active kyc provider id
-        $provider = KycProvider::where('alias', $kycProvider)->first(['id']);
+        // Using a fallback to prevent querying for boolean 'false' values
+        $providerAlias = !empty($kycProvider) ? $kycProvider : 'manual';
+        $provider = KycProvider::where('alias', $providerAlias)->first(['id']);
 
         // condition array
         $conditions = ['user_id' => auth()->id(), 'status' => 'approved'];
 
-        // verification conditions based on kyc provider
-        $conditions = ($kycProvider == 'manual')
-                        ? $conditions + ['verification_type' => 'identity']
-                        : $conditions + ['provider_id' => $provider->id];
+        // verification conditions based on kyc provider safely falling back if null
+        if ($providerAlias === 'manual') {
+            $conditions = $conditions + ['verification_type' => 'identity'];
+        } else {
+            $conditions = $conditions + ['provider_id' => $provider ? $provider->id : null];
+        }
 
         // get verification
         $verification = self::where($conditions)->first();
 
         // If the kyc provider is manual and identity verification is not empty
         // check for the address verification and return it
-
-        if ($kycProvider === 'manual' && !empty($verification)) {
+        if ($providerAlias === 'manual' && !empty($verification)) {
            return self::where(array_merge($conditions, ['verification_type' => 'address']))->first();
         }
 

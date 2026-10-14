@@ -2,11 +2,11 @@
 
 namespace Modules\KycVerification\Http\Requests\User;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CustomFormRequest;
 use Modules\KycVerification\Contract\VerificationContract;
 use Modules\KycVerification\Processor\VerificationHandler;
 
-class VerificationRequest extends FormRequest
+class VerificationRequest extends CustomFormRequest
 {
     protected $processor;
 

@@ -31,6 +31,19 @@ class PermissionTableSeeder extends Seeder
 
             // Token Send Receive User Panel
             ['group' => 'Token Send/Receive', 'name' => 'manage_token_send_receive', 'display_name' => 'Manage Token Send/Receive', 'description' => 'Manage Token Send/Receive', 'user_type' => 'User'],
+
+            
+            ['group' => 'Crypto Asset', 'name' => 'view_crypto_asset', 'display_name' => 'View Crypto Asset', 'description' => 'View Crypto Asset', 'user_type' => 'Admin'],
+            ['group' => 'Crypto Asset', 'name' => 'add_crypto_asset', 'display_name' => 'Add Crypto Asset', 'description' => 'Add Crypto Asset', 'user_type' => 'Admin'],
+            ['group' => 'Crypto Asset', 'name' => 'edit_crypto_asset', 'display_name' => 'Edit Crypto Asset', 'description' => 'Edit Crypto Asset','user_type' => 'Admin'],
+            ['group' => 'Crypto Asset', 'name' => 'delete_crypto_asset', 'display_name' => null, 'description' => null, 'user_type' => 'Admin'],
+
+            ['group' => 'Crypto Transactions', 'name' => 'view_crypto_transactions', 'display_name' => 'View Crypto Transactions', 'description' => 'View Crypto Transactions', 'user_type' => 'Admin'],
+            ['group' => 'Crypto Transactions', 'name' => 'add_crypto_transactions', 'display_name' => null, 'description' => null, 'user_type' => 'Admin'],
+            ['group' => 'Crypto Transactions', 'name' => 'edit_crypto_transactions', 'display_name' => null, 'description' => null, 'user_type' => 'Admin'],
+            ['group' => 'Crypto Transactions', 'name' => 'delete_crypto_transactions', 'display_name' => null, 'description' => null, 'user_type' => 'Admin'],
+            
+            ['group' => 'Crypto Send/Receive', 'name' => 'manage_crypto_send_receive', 'display_name' => 'Manage Crypto Send/Receive', 'description' => 'Manage Crypto Send/Receive', 'user_type' => 'User'],
             
         ];
 

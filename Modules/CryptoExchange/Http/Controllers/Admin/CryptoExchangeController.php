@@ -72,7 +72,7 @@ class CryptoExchangeController extends Controller
 
     public function exchangeCsv()
     {
-        return Excel::download(new CryptoExchangesExport(), 'crypto_exchanges_list_' . time() . '.csv');
+        return Excel::download(new CryptoExchangesExport(), 'crypto_exchanges_list_' . time() . '.xlsx');
     }
 
     public function exchangePdf()

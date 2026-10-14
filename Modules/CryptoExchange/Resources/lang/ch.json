@@ -319,5 +319,6 @@
     "The requested data does not exist for this feature overview.": "此功能概述不存在請求的數據。",
     "We have sent you the crypto Exchange status. Please check your email.": "我們已向您發送了加密交換狀態。請查看你的郵箱。",
     "We have sent you the Crypto details. Please check your email.": "我們已向您發送了加密細節。請查看你的郵箱。",
-    "We have sent you the cryptoExchange status. Please check your sms.": "我們已向您發送了加密貨幣匯率狀態。請檢查您的短信."
+    "We have sent you the cryptoExchange status. Please check your sms.": "我們已向您發送了加密貨幣匯率狀態。請檢查您的短信.",
+    "User's can change crypto to fiat, fiat to crypto and swap crypto currency by the crypto exchange module.": "用戶可以使用加密交換模塊將加密貨幣轉換為法定貨幣，並將法定貨幣轉換為加密貨幣。"
 }

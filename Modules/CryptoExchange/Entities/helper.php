@@ -133,14 +133,52 @@ if (!function_exists('cryptoExchangeTransactionUpdate')) {
 
     function cryptoExchangeTransactionUpdate($transaction, $status)
     {
-        $transaction->payment_status = $status; 
+        $transaction->payment_status = $status;
+        $transaction->status = $status;
         $transaction->save();
+
+        $exchange = \Modules\CryptoExchange\Entities\CryptoExchange::where(['uuid' => $transaction->uuid])->first();
+
+        if ($exchange->receive_via == 'wallet' || $status == 'Blocked') {
+            
+            \App\Models\Transaction::where('id', '!=', $transaction->id)->where(['uuid' => $transaction->uuid])->update(['payment_status' => $status, 'status' => $status]);
+
+            $exchange->status = $status;
+            $exchange->save();
+        }
+
+        if($status == 'Success' && $exchange->receive_via == 'wallet') {
+
+            $wallet = \App\Models\Wallet::where([
+                'user_id'     => $exchange->user_id,
+                'currency_id' => $exchange->to_currency,
+            ])->select('balance')->first();
+
+            if(empty($wallet)) {
+                $wallet = \App\Models\Wallet::createWallet($exchange->user_id, $exchange->to_currency);
+            }
+
+            \App\Models\Wallet::where([
+                'user_id'     => $exchange->user_id,
+                'currency_id' => $exchange->to_currency,
+            ])->update([
+                'balance' => $wallet->balance + $exchange->get_amount,
+            ]);
+        }
     }
 }
 
+if (!function_exists('getCryptoExchangeId')) {
 
-
-
-
-
-
+    /**
+     * Get crypto exchange id by uuid
+     *
+     * @param string $uuid
+     *
+     * @return int|null
+     */
+    function getCryptoExchangeId($uuid)
+    {
+        return \Modules\CryptoExchange\Entities\CryptoExchange::where('uuid', $uuid)->value('id');
+    }
+}

@@ -1709,6 +1709,7 @@
     "Bank": "Banco",
     "Branch": "Rama",
     "Cache Clear": "Caché claro",
+    "Pay with :x": "Pagar con :x",
     "Maximum acceptable amount is :x" : "La cantidad máxima aceptable es :x",
     "Minimum acceptable amount is :x" : "La cantidad mínima aceptable es :x",
     "Unable to retrieve the exchange rate at this moment" : "No se puede recuperar el tipo de cambio en este momento",
@@ -1739,8 +1740,7 @@
     "FOR THE CRYPTO ENTHUSIASTS" : "PARA LOS ENTUSIASTAS DE CRIPTO",
     "Unlock the Power of :x" : "Desbloquea el Poder de :x",
     "Digital Assets" : "Activos Digitales",
-    ":x integrates blockchain APIs to enable seamless creation, management, and transactions of cryptocurrencies, enhancing its platform with secure and versatile digital asset capabilities." : ":x integra APIs de blockchain para permitir la creación, gestión y transacciones sin problemas de criptomonedas, mejorando su plataforma con capacidades de activos digitales seguras y versátiles."
-
-    
-
+    ":x integrates blockchain APIs to enable seamless creation, management, and transactions of cryptocurrencies, enhancing its platform with secure and versatile digital asset capabilities." : ":x integra APIs de blockchain para permitir la creación, gestión y transacciones sin problemas de criptomonedas, mejorando su plataforma con capacidades de activos digitales seguras y versátiles.",
+    "Services" : "Servicios",
+    "Activities": "Actividades"
 }

@@ -2,33 +2,58 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\RoleUser;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RoleUserTableSeeder extends Seeder
 {
+    /**
+     * Auto generated seed file
+     *
+     * @return void
+     */
     public function run()
     {
-        RoleUser::create([
-            'user_id' => 1,
-            'role_id' => 1,
-            'user_type' => 'Admin',
-        ]);
+        DB::table('role_user')->delete();
 
-        if (app()->runningInConsole()) {
+        if (checkDemoEnvironment()) {
+            DB::table('role_user')->insert([
+                [
+                    'user_id' => getAdmin(),
+                    'role_id' => \App\Models\Role::where('user_type', 'Admin')->first()->id,
+                    'user_type' => 'Admin',
+                ],
+                [
+                    'user_id' => getUserByEmail('john@gmail.com'),
+                    'role_id' => getUserRoleID('user'),
+                    'user_type' => 'User',
+                ],
+                [
+                    'user_id' => getUserByEmail('irish@gmail.com'),
+                    'role_id' => getUserRoleID('merchant'),
+                    'user_type' => 'User',
+                ],
+                [
+                    'user_id' => getUserByEmail('kyla@gmail.com'),
+                    'role_id' => getUserRoleID('user'),
+                    'user_type' => 'User',
+                ],
+                [
+                    'user_id' => getUserByEmail('nuzhat@gmail.com'),
+                    'role_id' => getUserRoleID('user'),
+                    'user_type' => 'User',
+                ]
+            ]);
+        }
 
-            $users = User::get();
-
-            $roleUsers = $users->map(function ($user) {
-                return [
-                    'user_id' => $user->id,
-                    'role_id' => $user->role_id,
-                    'user_type' => ucfirst($user->type),
-                ];
-            })->toArray();
-
-            RoleUser::insert($roleUsers);
+        if (app()->runningInConsole() && !checkDemoEnvironment()) {
+            DB::table('role_user')->insert([
+                [
+                    'user_id' => getAdmin(),
+                    'role_id' => \App\Models\Role::where('user_type', 'Admin')->first()->id,
+                    'user_type' => 'Admin',
+                ],
+            ]);
         }
     }
 }

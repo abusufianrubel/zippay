@@ -13,6 +13,11 @@
                 <li {{ isset($list_menu) && $list_menu == 'paypal' ? 'class=active' : '' }}>
                     <a data-spinner="true" href='{{ url(config('adminPrefix') . '/settings/payment-methods/paypal/' . $currency->id) }}'>{{ __('Paypal') }}</a>
                 </li>
+                
+                <!-- ADD FEDAPAY HERE -->
+                <li {{ isset($list_menu) && $list_menu == 'fedapay' ? 'class=active' : '' }}>
+                    <a data-spinner="true" href='{{ url(config('adminPrefix') . '/settings/payment-methods/fedapay/' . $currency->id) }}'>{{ __('FedaPay') }}</a>
+                </li>
 
                 <li {{ isset($list_menu) && $list_menu == 'payUmoney' ? 'class=active' : '' }}>
                     <a data-spinner="true" href='{{ url(config('adminPrefix') . '/settings/payment-methods/payUmoney/' . $currency->id) }}'>{{ __('PayUMoney') }}</a>
@@ -27,6 +32,14 @@
                 <li {{ isset($list_menu) && $list_menu == 'bank' ? 'class=active' : '' }}>
                     <a data-spinner="true" href='{{ url(config('adminPrefix') . '/settings/payment-methods/bank/' . $currency->id) }}'>{{ __('Banks') }}</a>
                 </li>
+                <li {{ isset($list_menu) && $list_menu == 'flutterwave' ? 'class=active' : '' }}>
+                    <a data-spinner="true" href='{{ url(config('adminPrefix') . '/settings/payment-methods/flutterwave/' . $currency->id) }}'>{{ __('Flutterwave') }}</a>
+                </li>
+                @if (moduleExists('AirtimeRecharge') && isActive('AirtimeRecharge'))
+                    <li {{ isset($list_menu) && $list_menu == 'reloadly' ? 'class=active' : '' }}>
+                        <a data-spinner="true" href='{{ url(config('adminPrefix') . '/settings/payment-methods/reloadly/' . $currency->id) }}'>{{ __('Reloadly') }}</a>
+                    </li>
+                @endif
                 @php
                     $modules = addonPaymentMethods('Wallet');
                     $type = array_column($modules, 'type');
