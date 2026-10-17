@@ -3,12 +3,12 @@
 use Nwidart\Modules\Facades\Module;
 use Illuminate\Support\Facades\Cache;
 
-function moduleExists(String $name = null)
+function moduleExists(?string $name = null)
 {
     /**
      * Find a single module or collection
      *
-     * @param string $name
+     * @param string|null $name
      *
      * @return collection
      */
@@ -47,7 +47,7 @@ if (!function_exists('findModuleByName')) {
     /**
      * find Module By Name
      *
-     * @param mixed $name
+     * @param string $name
      * @return void
      */
     function findModuleByName(string $name)
@@ -60,7 +60,7 @@ if (!function_exists('hasModule')) {
     /**
      * Check if a module exists.
      *
-     * @param  string  $name
+     * @param   string  $name
      * @return bool
      */
     function hasModule(string $name): bool
@@ -74,10 +74,10 @@ if (!function_exists('getCoreModule')) {
     /**
      * Get the core module instance.
      *
-     * @param  string  $name
+     * @param   string|null  $name
      * @return array
      */
-    function getCoreModule(string $name = null)
+    function getCoreModule(?string $name = null)
     {
         if (!empty($name)) {
             return findModuleByName($name);
@@ -1223,6 +1223,6 @@ if (! function_exists('megaMenuSvg')) {
                             </svg>',
         ];
 
-        return $icons[$menu];
+        return $icons[$menu] ?? '';
     }
 }
